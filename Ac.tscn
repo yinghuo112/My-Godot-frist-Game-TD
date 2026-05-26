@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://d0srg3wgtcit1" path="res://防御塔/tower_base.tscn" id="1_sgd2l"]
 [ext_resource type="Texture2D" uid="uid://mbgv5g1h6204" path="res://assets/防御塔/弓箭手/111111_2.png" id="2_hhtj8"]
+[ext_resource type="Script" uid="uid://ckvum32tv0ct8" path="res://ac.gd" id="2_xmuh6"]
 [ext_resource type="Texture2D" uid="uid://bg7rm23q7tre8" path="res://assets/防御塔/弓箭手/111111_1.png" id="3_xmuh6"]
 [ext_resource type="Texture2D" uid="uid://cpm7jh1syi3xy" path="res://assets/防御塔/弓箭手/111111_3.png" id="4_ixre0"]
 [ext_resource type="Texture2D" uid="uid://bv7nnxq4chaku" path="res://assets/防御塔/弓箭手/111111_4.png" id="5_jyduf"]
@@ -42,7 +43,8 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="TowerBase" unique_id=2060410192 instance=ExtResource("1_sgd2l")]
+[node name="Ac" unique_id=2060410192 instance=ExtResource("1_sgd2l")]
+script = ExtResource("2_xmuh6")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="3" unique_id=1079979432]
 scale = Vector2(0.24390244, 0.24390244)

@@ -40,11 +40,11 @@ func take_damage(amount: float) -> void:
 		die()
 
 func reach_end():
-	emit_signal("reached_end")
+	reached_end.emit()
 	queue_free()
 
 func die():
-	emit_signal("died", self)
+	died.emit(self)
 	queue_free()
 
 func _update_health_bar():

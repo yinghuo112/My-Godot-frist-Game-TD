@@ -1,32 +1,34 @@
 extends Area2D
 
-@export var speed: float = 300.0
-@export var damage: float = 15.0
+@export var speed: float = 600.0  # 箭矢飞行速度
+@export var damage: int = 10      # 伤害值
 
-var _target: Node2D = null
-
-@onready var sprite: Sprite2D = $Sprite2D
+var target: Node2D = null         # 锁定的敌人目标
+var velocity: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	area_entered.connect(_on_area_entered)
-
+	# 初始时，如果目标存在，让子弹旋转并朝向目标
+	if is_instance_valid(target):
+		look_at(target.global_position)
 
 func _physics_process(delta: float) -> void:
-	if not _target or not is_instance_valid(_target):
-		queue_free()
-		return
-	var dir := (_target.global_position - global_position).normalized()
-	global_position += dir * speed * delta
+	# 强追踪逻辑：如果敌人还活着，不断更新方向
+	if is_instance_valid(target):
+		var direction = (target.global_position - global_position).normalized()
+		velocity = direction * speed
+		look_at(target.global_position) # 让箭尖始终指向敌人
+	else:
+		# 如果目标丢失（比如被其他塔杀了），子弹按最后的方向继续直线飞出屏幕
+		if velocity == Vector2.ZERO:
+			velocity = Vector2.RIGHT.rotated(rotation) * speed
+	
+	# 移动子弹
+	global_position += velocity * delta
 
-
-func initialize(p_target: Node2D, p_damage: float) -> void:
-	_target = p_target
-	damage = p_damage
-
-
-func _on_area_entered(area: Area2D) -> void:
-	if area.is_in_group("enemy") and is_instance_valid(_target):
-		var enemy = area.get_parent()
-		if enemy == _target or enemy.has_method("take_damage"):
-			enemy.take_damage(damage)
-		queue_free()
+# 记得在节点面板（Node）中，将 Area2D 的 body_entered 信号连接到这里
+func _on_body_entered(body: Node2D) -> void:
+	# 假设你的怪物节点都分在了 "enemies" 组里
+	if body.is_in_group("enemies"):
+		if body.has_method("take_damage"):
+			body.take_damage(damage) # 调用怪物的受伤函数
+		queue_free() # 击中后销毁子弹

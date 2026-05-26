@@ -6,13 +6,17 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_75qfg"]
 radius = 5.0
 
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_y25gk"]
+blend_mode = 1
+
 [node name="Bullet" type="Area2D" unique_id=840718259]
 script = ExtResource("1_y25gk")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1326629535]
 shape = SubResource("CircleShape2D_75qfg")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=566413034]
 modulate = Color(1, 1, 0.26666668, 1)
+material = SubResource("CanvasItemMaterial_y25gk")
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("2_l5glv")

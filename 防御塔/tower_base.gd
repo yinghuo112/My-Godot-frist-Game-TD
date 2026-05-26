@@ -3,7 +3,7 @@ class_name TowerBase # 声明类名，方便子类继承和类型检查
 
 # --- 属性参数（可由子类覆盖或在检查器中修改） ---
 ## 基础攻击力：每次命中怪物扣除的血量
-@export var damage: float = 15.0       # 攻击伤害
+@export var damage: float = 5.0       # 攻击伤害
 ## 攻击冷却时间（单位：秒）
 @export var fire_rate: float = 1.0 
 ## 攻击射程半径（单位：像素）    
@@ -29,6 +29,8 @@ var bullet_scene = preload("res://scenes/bullet.tscn")
 
 # --- 初始化设置 ---
 func _ready():
+	# 修复：CollisionShape 位置归零，避免检测偏移
+	range_shape.position = Vector2.ZERO
 	# 动态将导出的 range_radius 变量赋值给碰撞圆形的半径，改变实际射程圈大小
 	if range_shape and range_shape.shape is CircleShape2D:
 		range_shape.shape.radius = range_radius
@@ -42,6 +44,8 @@ func _ready():
 	# 连接检测区的进入和离开信号，用来感知怪物
 	range_area.area_entered.connect(_on_enemy_entered)
 	range_area.area_exited.connect(_on_enemy_exited)
+
+	
 
 # --- 每帧循环处理（核心控制流） ---
 func _process(delta):
@@ -127,5 +131,3 @@ func _draw():
 		
 		# 如果你还想要一圈细细的白色高亮外边框，可以再画一个空心圆：
 		# draw_arc(Vector2.ZERO, range_radius, 0, TAU, 64, Color(1, 1, 1, 0.5), 1.0)
-
-
