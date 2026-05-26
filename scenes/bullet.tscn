@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://dltmulxy4cnmr"]
+
+[ext_resource type="Script" uid="uid://o0gon6rabqa" path="res://核心/bullet.gd" id="1_y25gk"]
+[ext_resource type="Texture2D" uid="uid://ci7jm6gf671n1" path="res://icon.svg" id="2_l5glv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_75qfg"]
+radius = 5.0
+
+[node name="Bullet" type="Area2D" unique_id=840718259]
+script = ExtResource("1_y25gk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." index="0"]
+shape = SubResource("CircleShape2D_75qfg")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=566413034]
+modulate = Color(1, 1, 0.26666668, 1)
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_l5glv")

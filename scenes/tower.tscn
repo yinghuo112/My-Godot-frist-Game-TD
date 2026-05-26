@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bc86se2teb4u7"]
+
+[ext_resource type="Script" path="res://防御塔/tower_base.gd" id="1_ay4al"]
+[ext_resource type="Texture2D" uid="uid://ci7jm6gf671n1" path="res://icon.svg" id="2_ktxwe"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jfguu"]
+
+[node name="Tower" type="Node2D"]
+script = ExtResource("1_ay4al")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.26666668, 0.53333336, 1, 1)
+texture = ExtResource("2_ktxwe")
+
+[node name="RangeArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RangeArea"]
+shape = SubResource("CircleShape2D_jfguu")
+
+[node name="ShootTimer" type="Timer" parent="."]
+
+[node name="BulletSpawn" type="Marker2D" parent="."]
+position = Vector2(0, -30)

@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://c7ejp7m2bnl4d"]
+
+[ext_resource type="Script" uid="uid://dnqgh7dhw2y4t" path="res://怪物/enemy_base.gd" id="1_8nqel"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_edvsq"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8njqh"]
+radius = 7.0
+
+[node name="EnemyBase" type="PathFollow2D" unique_id=2011249988]
+rotates = false
+script = ExtResource("1_8nqel")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1004382448]
+sprite_frames = SubResource("SpriteFrames_edvsq")
+animation = &"walk"
+
+[node name="Area2D" type="Area2D" parent="." unique_id=18774613 groups=["enemy"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1849399512]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_8njqh")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=721683529]
+custom_minimum_size = Vector2(40, 6)
+offset_left = -20.0
+offset_top = -30.0
+offset_right = 20.0
+offset_bottom = -3.0

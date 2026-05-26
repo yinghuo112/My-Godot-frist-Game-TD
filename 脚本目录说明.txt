@@ -1,0 +1,157 @@
+# 项目脚本目录 / Project Script Directory
+
+## 目录结构 / Directory Structure
+
+```
+first-游戏/
+├── 核心/                    # Core game logic / 核心游戏逻辑
+│   ├── main.gd             # Main scene controller (tower placement, wave control)
+│   │                         # 主场景控制器（塔放置、波次控制）
+│   ├── game_manager.gd      # Game state singleton (gold, lives, waves, spawning)
+│   │                         # 游戏状态单例（金币、生命值、波次、生成敌人）
+│   └── bullet.gd            # Projectile (Area2D collision, tracking via initialize)
+│                               # 子弹（Area2D 碰撞，通过 initialize 追踪目标）
+│
+├── 怪物/                    # Enemy related / 怪物相关
+│   ├── enemy_base.gd       # Enemy base class (path following, HP, death rewards)
+│   │                         # 怪物基类（路径跟随、生命值、死亡奖励）
+│   ├── enemy_base.tscn     # Enemy base scene (with ProgressBar for HP display)
+│   │                         # 怪物基类场景（含血条 ProgressBar）
+│   └── green_monster.tscn   # Green monster scene instance (extends enemy_base.tscn)
+│                               # 绿色怪物场景实例（继承 enemy_base.tscn）
+│
+├── 防御塔/                  # Tower related / 防御塔相关
+│   ├── tower_base.gd       # Tower base class (targeting, shooting, cooldown)
+│   │                         # 防御塔基类（目标锁定、射击、冷却）
+│   ├── tower_base.tscn     # Tower base scene (RangeArea, AnimatedSprite2D, BulletSpawn)
+│   │                         # 防御塔基类场景（检测区域、动画精灵、子弹生成点）
+│   ├── ArrowTower.tscn      # Arrow tower instance (extends tower_base.tscn)
+│   │                         # 弓箭塔实例（继承 tower_base.tscn）
+│   └── Ac.tscn              # Ac tower instance (alternative variant)
+│                               # Ac 塔实例（另一个变体）
+│
+├── 工具/                    # Utility / 工具类
+│   └── camera_2d.gd        # Camera with edge scrolling
+│                               # 带边缘滚动的相机
+│
+├── scenes/                  # Game scenes / 游戏场景
+│   └── bullet.tscn         # Bullet scene
+│
+├── assets/                  # Game assets / 游戏资源
+├── addons/godot_ai/         # Godot MCP plugin (AI integration)
+├── project.godot            # Godot project config
+└── tower_defense.tscn       # Main game scene
+```
+
+## 脚本职责说明 / Script Responsibilities
+
+### 核心 / Core
+
+| 文件 | 类名 | 职责 |
+|------|------|------|
+| `核心/main.gd` | `main.gd` (extends Node2D) | 点击放置塔、波次按钮、UI 更新 |
+| `核心/game_manager.gd` | `game_manager.gd` (extends Node) | 金币/生命/波次管理、敌人生成信号 |
+| `核心/bullet.gd` | `bullet.gd` (extends Area2D) | 子弹飞行、通过 Area2D 碰撞检测命中目标 |
+
+### 怪物 / Enemy
+
+| 文件 | 类名 | 职责 |
+|------|------|------|
+| `怪物/enemy_base.gd` | `Enemy` (extends PathFollow2D) | 沿路径移动、扣血、死亡信号、方向翻转 |
+
+### 防御塔 / Tower
+
+| 文件 | 类名 | 职责 |
+|------|------|------|
+| `防御塔/tower_base.gd` | `TowerBase` (extends Node2D) | 目标检测、冷却射击、子弹生成、射程圈绘制 |
+
+### 工具 / Utility
+
+| 文件 | 类名 | 职责 |
+|------|------|------|
+| `工具/camera_2d.gd` | `camera_2d.gd` (extends Camera2D) | 鼠标靠近窗口边缘时自动滚动 |
+
+## ⚠️ 注意事项 / Important Notes
+
+1. **path_follow_2d.gd 已删除** / path_follow_2d.gd has been deleted
+   - 该文件与 `enemy_base.gd` 逻辑完全重复，已从 `怪物/` 文件夹中删除
+   - This file had identical logic to `enemy_base.gd`, it has been removed from the `怪物/` folder
+
+2. **bullet.gd 优化** / bullet.gd Optimization
+   - 使用 Area2D 碰撞检测替代手动距离判断
+   - 使用 `initialize(p_target, p_damage)` 方法初始化，而非直接设置属性
+   - Uses Area2D collision detection instead of manual distance checks
+   - Uses `initialize(p_target, p_damage)` method instead of setting properties directly
+
+3. **preload 路径** / preload Paths
+   - `核心/main.gd`: `preload("res://scenes/ArrowTower.tscn")`
+   - `核心/game_manager.gd`: `preload("res://怪物/green_monster.tscn")`
+   - `防御塔/tower_base.gd`: `preload("res://scenes/bullet.tscn")`（类级别变量）
+
+4. **Autoload** / Autoload
+   - `GameManager`: `*res://核心/game_manager.gd`
+   - `_mcp_game_helper`: `*res://addons/godot_ai/runtime/game_helper.gd`
+
+## 游戏流程 / Game Flow
+
+```
+1. Player clicks Start Wave → GameManager.start_wave()
+2. GameManager spawns enemies via Timer
+3. Enemy walks along Path2D → reaches end → lives--
+4. Tower detects enemy in range → cooldown timer → _shoot()
+5. Tower spawns bullet → bullet.initialize(target, damage)
+6. Bullet moves toward target → Area2D collision → enemy.take_damage()
+7. Enemy HP ≤ 0 → die() → gold += reward
+8. Wave ends → player can place more towers
+```
+
+## 类的继承关系 / Class Inheritance
+
+```
+Node (Godot base)
+├── Node2D
+│   ├── main.gd (main scene controller)
+│   ├── bullet.gd (Area2D - collision detection)
+│   └── TowerBase
+│       ├── ArrowTower (scene instance)
+│       └── Ac (scene instance)
+├── PathFollow2D
+│   └── Enemy (enemy_base.gd)
+│       └── GreenMonster (scene instance)
+└── Camera2D
+    └── camera_2d.gd (edge scrolling)
+```
+
+## 信号关系 / Signal Relationships
+
+```
+GameManager
+├── gold_changed → main._update_gold()
+├── lives_changed → main._update_lives()
+├── wave_started → main._on_wave_started()
+├── wave_done → main._on_wave_done()
+├── enemy_killed → (bonus gold signal)
+└── game_over → main._on_game_over()
+
+Enemy
+├── died → GameManager._on_enemy_died()
+└── reached_end → GameManager._on_enemy_reached_end()
+
+bullet (Area2D)
+└── area_entered → _on_area_entered() → enemy.take_damage()
+```
+
+## 代码规范 / Code Conventions
+
+1. **子弹初始化**：使用 `bullet.initialize(target, damage)` 而非直接设置属性
+2. **preload 位置**：作为类级别变量（如 `tower_base.gd` 中的 `bullet_scene`），避免每帧重复加载
+3. **类型标注**：使用 GDScript 4.x 的 `-> void` / `-> bool` 等返回类型标注
+4. **信号连接**：在 `_ready()` 中连接，避免重复连接
+5. **enemy group**：怪物统一添加 `"enemy"` group，便于 Area2D 检测
+6. **私有变量**：内部状态用 `_` 前缀（如 `_last_pos`、`_spawn_timer`、`_CLICK_RADIUS_SQ`）
+7. **性能优化**：
+   - `distance_squared_to()` 替代 `distance_to()` 避免 sqrt
+   - `maxf()` 替代 `max()` 避免类型推断
+   - `slot.get_child_count() == 0` 替代遍历检查 tower group
+   - `_enemy_path` 延迟获取，避免每波重复查找
+8. **early return**：在 `_on_enemy_reached_end` 中 lives > 0 时先处理 game_over 分支再调 `_check_wave_done`
