@@ -42,9 +42,27 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sk4lb"]
+size = Vector2(20, 13)
+
 [node name="GreenMonster" unique_id=2011249988 instance=ExtResource("1_bo7j3")]
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=1004382448]
+position = Vector2(0, 2)
 scale = Vector2(0.6, 0.6)
-playing = true
 sprite_frames = SubResource("SpriteFrames_xf7ir")
+
+[node name="Area2D" parent="." index="1" unique_id=18774613]
+position = Vector2(0, 2)
+collision_layer = 2
+collision_mask = 0
+
+[node name="CollisionShape2D" parent="Area2D" index="0" unique_id=1849399512]
+position = Vector2(0, 9.5)
+shape = SubResource("RectangleShape2D_sk4lb")
+
+[node name="RayCast2D" parent="." index="3"]
+position = Vector2(0, 12)
+target_position = Vector2(10, 0)
+collision_mask = 2
+hit_from_inside = false
