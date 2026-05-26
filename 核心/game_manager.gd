@@ -81,6 +81,7 @@ func _spawn_enemy():
 	if enemies_to_spawn <= 0:
 		timer.stop()
 		return
+	print("生成怪物，场景: ", _current_entry.enemy_scene.resource_path, "  路径节点: ", enemy_path)
 	var enemy = _current_entry.enemy_scene.instantiate()
 	enemy.died.connect(_on_enemy_died)
 	enemy.reached_end.connect(_on_enemy_reached_end)
