@@ -14,15 +14,18 @@ var enemies_to_spawn: int = 0
 var enemies_on_field: int = 0
 var is_wave_active: bool = false
 
-var enemy_scene = preload("res://怪物/green_monster.tscn")
 var enemy_path: Path2D
 var timer: Timer
+var _config: WaveConfigData
+var _current_entry: WaveEntry
 
 func _ready():
 	timer = Timer.new()
 	timer.name = "SpawnTimer"
 	timer.timeout.connect(_spawn_enemy)
 	add_child(timer)
+
+	_config = _load_config()
 
 func start_wave():
 	if is_wave_active:
@@ -32,18 +35,45 @@ func start_wave():
 	is_wave_active = true
 	wave_started.emit(wave)
 
-	enemies_to_spawn = 8 + wave * 4
+	_current_entry = _get_wave_entry(wave)
+	enemies_to_spawn = _current_entry.count
 	enemies_on_field = 0
-	timer.wait_time = maxf(0.2, 0.8 - wave * 0.05)
+	timer.wait_time = _current_entry.spawn_interval
 	enemy_path = get_tree().root.get_node("TowerDefense/EnemyPath")
 	timer.one_shot = false
 	timer.start()
+
+func _load_config() -> WaveConfigData:
+	if ResourceLoader.exists("res://配置/wave_config.tres"):
+		var data: WaveConfigData = load("res://配置/wave_config.tres")
+		if data and data.waves.size() > 0:
+			return data
+	var entry = WaveEntry.new()
+	entry.enemy_scene = preload("res://怪物/green_monster.tscn")
+	entry.count = 12
+	entry.spawn_interval = 0.5
+	var fallback = WaveConfigData.new()
+	fallback.waves = [entry]
+	return fallback
+
+func _get_wave_entry(wave_number: int) -> WaveEntry:
+	var idx = wave_number - 1
+	if idx >= 0 and idx < _config.waves.size():
+		return _config.waves[idx]
+	return _config.waves[-1] if _config.waves.size() > 0 else _fallback_entry()
+
+func _fallback_entry() -> WaveEntry:
+	var entry = WaveEntry.new()
+	entry.enemy_scene = preload("res://怪物/green_monster.tscn")
+	entry.count = 12
+	entry.spawn_interval = 0.5
+	return entry
 
 func _spawn_enemy():
 	if enemies_to_spawn <= 0:
 		timer.stop()
 		return
-	var enemy = enemy_scene.instantiate()
+	var enemy = _current_entry.enemy_scene.instantiate()
 	enemy.died.connect(_on_enemy_died)
 	enemy.reached_end.connect(_on_enemy_reached_end)
 	enemy_path.add_child(enemy)
