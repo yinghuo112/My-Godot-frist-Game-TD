@@ -7,6 +7,7 @@ extends Node2D
 @onready var game_over_bg: ColorRect = $UI/GameOverBG
 @onready var game_over_label: Label = $UI/GameOverLabel
 @onready var tower_slots: Node2D = $TowerSlots
+@onready var wave_config_label: Label = $UI/WaveConfigLabel
 
 var tower_scene = preload("res://scenes/ArrowTower.tscn")
 
@@ -26,6 +27,8 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
+		_spawn_test_enemy()
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var click_pos := get_global_mouse_position()
 		for slot in tower_slots.get_children():
@@ -43,6 +46,22 @@ func _place_tower(slot: Marker2D) -> void:
 	slot.add_child(tower)
 	tower.position = Vector2.ZERO
 	GameManager.spend_gold(50)
+
+func _spawn_test_enemy() -> void:
+	print("=== 调试: 直接生成测试小怪 ===")
+	var scene = preload("res://怪物/green_monster.tscn")
+	var enemy = scene.instantiate()
+	enemy.died.connect(_on_test_enemy_died)
+	enemy.reached_end.connect(_on_test_enemy_reached_end)
+	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
+	path.add_child(enemy)
+	print("测试小怪已生成，路径: EnemyPath")
+
+func _on_test_enemy_died(enemy):
+	print("测试小怪被击杀，金币奖励: %d" % enemy.gold_reward)
+
+func _on_test_enemy_reached_end():
+	print("测试小怪到达终点")
 
 func _on_start_wave() -> void:
 	start_btn.disabled = true
@@ -62,13 +81,15 @@ func _update_wave(wave: int) -> void:
 	wave_label.text = "Wave: %d" % wave
 
 
-func _on_wave_started(wave_number: int) -> void:
+func _on_wave_started(wave_number: int, count: int, spawn_interval: float) -> void:
 	_update_wave(wave_number)
+	wave_config_label.text = "Enemies: %d  |  Interval: %.1fs" % [count, spawn_interval]
 
 
 func _on_wave_done() -> void:
 	start_btn.disabled = false
 	start_btn.text = "Start Wave"
+	wave_config_label.text = ""
 
 
 func _on_game_over() -> void:

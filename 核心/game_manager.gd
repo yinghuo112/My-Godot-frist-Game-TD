@@ -1,6 +1,6 @@
 extends Node
 
-signal wave_started(wave_number)
+signal wave_started(wave_number, count, spawn_interval)
 signal wave_done
 signal enemy_killed(gold_reward)
 signal game_over
@@ -33,7 +33,6 @@ func start_wave():
 
 	wave += 1
 	is_wave_active = true
-	wave_started.emit(wave)
 
 	_current_entry = _get_wave_entry(wave)
 	enemies_to_spawn = _current_entry.count
@@ -43,17 +42,26 @@ func start_wave():
 	timer.one_shot = false
 	timer.start()
 
+	print("第 %d 波开始: 敌人=%d, 间隔=%.1fs" % [wave, _current_entry.count, _current_entry.spawn_interval])
+	wave_started.emit(wave, _current_entry.count, _current_entry.spawn_interval)
+
 func _load_config() -> WaveConfigData:
+	print("尝试加载波次配置: res://配置/wave_config.tres")
 	if ResourceLoader.exists("res://配置/wave_config.tres"):
 		var data: WaveConfigData = load("res://配置/wave_config.tres")
 		if data and data.waves.size() > 0:
+			print("波次配置加载成功: %d 个波次" % data.waves.size())
 			return data
+		print("配置文件存在但数据无效，使用默认配置")
+	else:
+		print("配置文件不存在，使用默认配置")
 	var entry = WaveEntry.new()
 	entry.enemy_scene = preload("res://怪物/green_monster.tscn")
 	entry.count = 12
 	entry.spawn_interval = 0.5
 	var fallback = WaveConfigData.new()
 	fallback.waves = [entry]
+	print("使用默认配置: 敌人=12, 间隔=0.5s")
 	return fallback
 
 func _get_wave_entry(wave_number: int) -> WaveEntry:

@@ -1,42 +1,70 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dr6uswbec6dy5"]
 
-[ext_resource type="Script" path="res://场景/wave_config_panel.gd" id="1_rh6r3"]
+[ext_resource type="Script" uid="uid://k4cfji8ee3r" path="res://场景/wave_config_panel.gd" id="1_rh6r3"]
 
-[node name="WaveConfigPanel" type="Panel"]
-offset_left = 0.0
-offset_top = 0.0
+[node name="WaveConfigPanel" type="Panel" unique_id=973926304]
 offset_right = 400.0
-offset_bottom = 200.0
+offset_bottom = 220.0
 script = ExtResource("1_rh6r3")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2070574928]
 layout_mode = 0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 390.0
-offset_bottom = 190.0
+offset_bottom = 210.0
 
-[node name="VBox" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBox" type="VBoxContainer" parent="MarginContainer" unique_id=302567858]
 layout_mode = 2
 
-[node name="Title" type="Label" parent="MarginContainer/VBox"]
+[node name="Title" type="Label" parent="MarginContainer/VBox" unique_id=1174478259]
 layout_mode = 2
-text = "波次配置面板（开发者工具）"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
+text = "波次配置面板（开发者工具）"
 
-[node name="Hint" type="Label" parent="MarginContainer/VBox"]
+[node name="Hint" type="Label" parent="MarginContainer/VBox" unique_id=999071895]
 layout_mode = 2
-text = "在 Inspector 中编辑 waves 数组，然后点击导出"
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+text = "设置数值后点击导出"
 
-[node name="ExportBtn" type="Button" parent="MarginContainer/VBox"]
+[node name="CountRow" type="HBoxContainer" parent="MarginContainer/VBox" unique_id=606372199]
+layout_mode = 2
+
+[node name="CountLabel" type="Label" parent="MarginContainer/VBox/CountRow" unique_id=1481593407]
+layout_mode = 2
+text = "敌人数量:"
+
+[node name="CountInput" type="SpinBox" parent="MarginContainer/VBox/CountRow" unique_id=1868837817]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 1.0
+max_value = 999.0
+value = 3.0
+
+[node name="IntervalRow" type="HBoxContainer" parent="MarginContainer/VBox" unique_id=1003101927]
+layout_mode = 2
+
+[node name="IntervalLabel" type="Label" parent="MarginContainer/VBox/IntervalRow" unique_id=200024649]
+layout_mode = 2
+text = "生成间隔(秒):"
+
+[node name="IntervalInput" type="SpinBox" parent="MarginContainer/VBox/IntervalRow" unique_id=2100905289]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 10.0
+step = 0.1
+value = 2.0
+
+[node name="ExportBtn" type="Button" parent="MarginContainer/VBox" unique_id=1112882024]
+unique_name_in_owner = true
 layout_mode = 2
 text = "导出配置"
-unique_name_in_owner = true
 
-[node name="StatusLabel" type="Label" parent="MarginContainer/VBox"]
-layout_mode = 2
-text = ""
-theme_override_colors/font_color = Color(0.4, 0.9, 0.4, 1)
+[node name="StatusLabel" type="Label" parent="MarginContainer/VBox" unique_id=1542413468]
 unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.9, 0.4, 1)
