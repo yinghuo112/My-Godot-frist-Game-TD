@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://cpfuaeo4uvigo"]
+
+[ext_resource type="Script" uid="uid://cnm0un85p1num" path="res://核心/settings_panel.gd" id="1_qw5p7"]
+
+[node name="SettingsPanel" type="Control" unique_id=564713927]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_qw5p7")
+
+[node name="Background" type="ColorRect" parent="." unique_id=760573756]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.5)
+
+[node name="Dialog" type="Panel" parent="." unique_id=501420250]
+layout_mode = 0
+offset_left = 439.0
+offset_top = 260.0
+offset_right = 873.0
+offset_bottom = 522.0
+
+[node name="VBox" type="VBoxContainer" parent="Dialog" unique_id=340017491]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 410.0
+offset_bottom = 277.0
+
+[node name="Title" type="Label" parent="Dialog/VBox" unique_id=665279255]
+layout_mode = 2
+text = "设置"
+horizontal_alignment = 1
+
+[node name="FullscreenBtn" type="CheckButton" parent="Dialog/VBox" unique_id=1293392115]
+layout_mode = 2
+text = "全屏"
+alignment = 1
+
+[node name="MusicVolLabel" type="Label" parent="Dialog/VBox" unique_id=1383132375]
+layout_mode = 2
+text = "音乐音量"
+
+[node name="MusicVolSlider" type="HSlider" parent="Dialog/VBox" unique_id=307758124]
+layout_mode = 2
+value = 50.0
+
+[node name="SfxVolLabel" type="Label" parent="Dialog/VBox" unique_id=1461549301]
+layout_mode = 2
+text = "音效音量"
+
+[node name="SfxVolSlider" type="HSlider" parent="Dialog/VBox" unique_id=2066486152]
+layout_mode = 2
+value = 70.0
+
+[node name="Control" type="Control" parent="Dialog/VBox" unique_id=717873316]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="CloseBtn" type="Button" parent="Dialog/VBox" unique_id=1694274170]
+layout_mode = 2
+text = "关闭"

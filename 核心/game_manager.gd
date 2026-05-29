@@ -29,6 +29,16 @@ func _ready():
 
 	_config = _load_config()
 
+func reset():
+	gold = 100
+	lives = 20
+	wave = 0
+	enemies_to_spawn = 0
+	enemies_on_field = 0
+	is_wave_active = false
+	if timer:
+		timer.stop()
+
 # --- 开始一波 ---
 func start_wave():
 	if is_wave_active:

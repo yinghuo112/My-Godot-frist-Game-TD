@@ -1,0 +1,89 @@
+[gd_scene format=3 uid="uid://m76ufcttltpb"]
+
+[ext_resource type="Script" uid="uid://dkojt2bdqbnci" path="res://防御塔/tower_action_ring.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="Style_confirm"]
+bg_color = Color(0.12, 0.12, 0.2, 0.95)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="TowerActionRing" type="Control" unique_id=1415092191]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1")
+
+[node name="BtnUpgrade" type="Button" parent="." unique_id=1134477041]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "升级"
+
+[node name="BtnSell" type="Button" parent="." unique_id=16691955]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "出售"
+
+[node name="BtnInfo" type="Button" parent="." unique_id=1877771461]
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = "信息"
+
+[node name="ConfirmPopup" type="Panel" parent="." unique_id=1958098556]
+visible = false
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 0
+theme_override_styles/panel = SubResource("Style_confirm")
+
+[node name="Margin" type="MarginContainer" parent="ConfirmPopup" unique_id=863861037]
+layout_mode = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBox" type="VBoxContainer" parent="ConfirmPopup/Margin" unique_id=2085802491]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ConfirmPopup/Margin/VBox" unique_id=1580413460]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "确认操作？"
+autowrap_mode = 1
+
+[node name="HSeparator" type="Control" parent="ConfirmPopup/Margin/VBox" unique_id=483885455]
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+
+[node name="HBox" type="HBoxContainer" parent="ConfirmPopup/Margin/VBox" unique_id=976784966]
+layout_mode = 2
+alignment = 1
+
+[node name="ConfirmBtn" type="Button" parent="ConfirmPopup/Margin/VBox/HBox" unique_id=1929156046]
+custom_minimum_size = Vector2(60, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "确认"
+
+[node name="CancelBtn" type="Button" parent="ConfirmPopup/Margin/VBox/HBox" unique_id=257220359]
+custom_minimum_size = Vector2(60, 28)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 13
+text = "取消"

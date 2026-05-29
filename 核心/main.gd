@@ -4,10 +4,13 @@ extends Node2D
 @onready var lives_label: Label = $UI/HUD/LivesLabel
 @onready var wave_label: Label = $UI/HUD/WaveLabel
 @onready var start_btn: Button = $UI/HUD/StartWaveBtn
+@onready var settings_btn: Button = $UI/HUD/SettingsBtn
+@onready var settings_panel: Control = $UI/SettingsPanel
 @onready var game_over_bg: ColorRect = $UI/GameOverBG
 @onready var game_over_label: Label = $UI/GameOverLabel
 @onready var tower_slots: Node2D = $TowerSlots
 @onready var wave_config_label: Label = $UI/WaveConfigLabel
+@onready var tower_ring: Control = $UI/TowerActionRing
 
 var tower_scene = preload("res://scenes/ArrowTower.tscn")
 
@@ -15,7 +18,9 @@ var tower_scene = preload("res://scenes/ArrowTower.tscn")
 const _CLICK_RADIUS_SQ: float = 20.0 * 20.0
 
 func _ready() -> void:
+	GameManager.reset()
 	start_btn.pressed.connect(_on_start_wave)
+	settings_btn.pressed.connect(_on_settings)
 	GameManager.gold_changed.connect(_update_gold)
 	GameManager.lives_changed.connect(_update_lives)
 	GameManager.wave_started.connect(_on_wave_started)
@@ -24,6 +29,7 @@ func _ready() -> void:
 	_update_gold(100)
 	_update_lives(20)
 	_update_wave(0)
+	AudioManager.play_music()
 
 
 func _input(event: InputEvent) -> void:
@@ -32,10 +38,20 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var click_pos := get_global_mouse_position()
 		for slot in tower_slots.get_children():
-			if slot is Marker2D and slot.get_child_count() == 0:
+			if slot is Marker2D:
 				if slot.global_position.distance_squared_to(click_pos) < _CLICK_RADIUS_SQ:
-					_place_tower(slot)
-					break  # 找到就不再检查其他 slot
+					if slot.get_child_count() == 0:
+						_place_tower(slot)
+					else:
+						tower_ring.show_for_tower(slot.get_child(0))
+					get_viewport().set_input_as_handled()
+					break
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if tower_ring.visible:
+			tower_ring.hide_ring()
 
 
 func _place_tower(slot: Marker2D) -> void:
@@ -63,6 +79,9 @@ func _on_test_enemy_died(enemy):
 func _on_test_enemy_reached_end():
 	print("测试小怪到达终点")
 
+func _on_settings() -> void:
+	settings_panel.open()
+
 func _on_start_wave() -> void:
 	start_btn.disabled = true
 	start_btn.text = "In Progress..."
@@ -84,6 +103,7 @@ func _update_wave(wave: int) -> void:
 func _on_wave_started(wave_number: int, count: int, spawn_interval: float) -> void:
 	_update_wave(wave_number)
 	wave_config_label.text = "Enemies: %d  |  Interval: %.1fs" % [count, spawn_interval]
+	AudioManager.play_wave()
 
 
 func _on_wave_done() -> void:
@@ -96,3 +116,4 @@ func _on_game_over() -> void:
 	game_over_bg.visible = true
 	game_over_label.visible = true
 	start_btn.visible = false
+	AudioManager.play_gameover()

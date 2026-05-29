@@ -102,6 +102,7 @@ func reach_end():
 	queue_free()
 
 func die():
+	AudioManager.play_die()
 	died.emit(self)
 	queue_free()
 

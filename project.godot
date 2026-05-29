@@ -11,13 +11,14 @@ config_version=5
 [application]
 
 config/name="first_游戏"
-run/main_scene="res://tower_defense.tscn"
+run/main_scene="res://场景/StartScreen.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameManager="*res://核心/game_manager.gd"
+AudioManager="*res://核心/audio_manager.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [editor_plugins]

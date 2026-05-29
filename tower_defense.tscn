@@ -5,6 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://dlfcste8d18kt" path="res://assets/tiles/path.png" id="3_4xjh4"]
 [ext_resource type="PackedScene" uid="uid://07sie8ex2xn3" path="res://怪物/green_monster.tscn" id="3_8fgb4"]
 [ext_resource type="Texture2D" uid="uid://bip40iu65e5a2" path="res://assets/tiles/wall.png" id="4_4xjh4"]
+[ext_resource type="PackedScene" uid="uid://cpfuaeo4uvigo" path="res://场景/SettingsPanel.tscn" id="5_7k3j9"]
+[ext_resource type="PackedScene" path="res://防御塔/TowerActionRing.tscn" id="6_6t6t6"]
 [ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rqaol"]
@@ -108,13 +110,14 @@ position = Vector2(94, 307)
 position = Vector2(223, 275)
 
 [node name="Slot5" type="Marker2D" parent="TowerSlots" unique_id=770919734]
-position = Vector2(991, 291)
+position = Vector2(991, 286)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=604907210]
 
 [node name="HUD_BG" type="ColorRect" parent="UI" unique_id=2146947520]
-offset_right = 340.0
-offset_bottom = 50.0
+offset_top = 3.0
+offset_right = 390.0
+offset_bottom = 53.0
 color = Color(0, 0, 0, 0.6)
 
 [node name="HUD" type="HBoxContainer" parent="UI" unique_id=943518492]
@@ -138,6 +141,10 @@ text = "Wave: 1"
 [node name="StartWaveBtn" type="Button" parent="UI/HUD" unique_id=271683862]
 layout_mode = 2
 text = "Start Wave"
+
+[node name="SettingsBtn" type="Button" parent="UI/HUD" unique_id=364084437]
+layout_mode = 2
+text = "设置"
 
 [node name="WaveConfigLabel" type="Label" parent="UI" unique_id=860749863]
 offset_left = 15.0
@@ -163,3 +170,9 @@ theme_override_font_sizes/font_size = 64
 text = "GAME OVER"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="SettingsPanel" parent="UI" unique_id=571369356 instance=ExtResource("5_7k3j9")]
+visible = false
+
+[node name="TowerActionRing" parent="UI" instance=ExtResource("6_6t6t6")]
+visible = false
