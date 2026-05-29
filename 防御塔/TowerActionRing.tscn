@@ -9,6 +9,13 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
+[sub_resource type="StyleBoxFlat" id="Style_info"]
+bg_color = Color(0.08, 0.08, 0.15, 0.92)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="TowerActionRing" type="Control" unique_id=1415092191]
 layout_mode = 3
 anchors_preset = 15
@@ -87,3 +94,23 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 13
 text = "取消"
+
+[node name="InfoPopupPanel" type="PanelContainer" parent="."]
+visible = false
+custom_minimum_size = Vector2(240, 0)
+layout_mode = 0
+theme_override_styles/panel = SubResource("Style_info")
+
+[node name="Margin" type="MarginContainer" parent="InfoPopupPanel"]
+layout_mode = 0
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="StatsLabel" type="Label" parent="InfoPopupPanel/Margin"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+text = ""
+autowrap_mode = 1

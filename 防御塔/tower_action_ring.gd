@@ -16,6 +16,8 @@ var _confirm_action: Callable = Callable()  # 确认按钮绑定的回调函数
 @onready var confirm_label: Label = $ConfirmPopup/Margin/VBox/Label
 @onready var confirm_btn: Button = $ConfirmPopup/Margin/VBox/HBox/ConfirmBtn
 @onready var cancel_btn: Button = $ConfirmPopup/Margin/VBox/HBox/CancelBtn
+@onready var info_popup: PanelContainer = $InfoPopupPanel
+@onready var stats_label: Label = $InfoPopupPanel/Margin/StatsLabel
 
 func _ready():
 	btn_upgrade.pressed.connect(_on_upgrade_click)
@@ -24,6 +26,7 @@ func _ready():
 	confirm_btn.pressed.connect(_on_confirm)
 	cancel_btn.pressed.connect(_on_cancel)
 	confirm_popup.hide()
+	info_popup.hide()
 	hide()
 
 # 打开环形菜单并定位到指定塔周围
@@ -61,12 +64,14 @@ func show_for_tower(tower: Node2D):
 	btn_sell.disabled = false
 
 	confirm_popup.hide()
+	info_popup.hide()
 	visible = true
 
 # 关闭环形菜单
 func hide_ring():
 	visible = false
 	confirm_popup.hide()
+	info_popup.hide()
 	target_tower = null
 
 # ==================== 按钮点击回调 ====================
@@ -104,9 +109,9 @@ func _on_info_click():
 	var dmg = target_tower.get_current_damage()
 	var fr = target_tower.get_current_fire_rate()
 	var rng = target_tower.get_current_range()
-	confirm_label.text = "Lv." + str(lv) + "\n伤害: %.1f\n射速: %.2fs\n射程: %.0f" % [dmg, fr, rng]
-	_confirm_action = Callable()
-	_show_confirm_near(btn_info, false)
+	stats_label.text = "Lv." + str(lv) + "\n伤害: %.1f\n射速: %.2fs\n射程: %.0f" % [dmg, fr, rng]
+	_show_info_near(btn_info)
+
 
 # 在按钮旁显示确认浮窗
 func _show_confirm_near(btn: Button, show_btns: bool = true):
@@ -114,6 +119,11 @@ func _show_confirm_near(btn: Button, show_btns: bool = true):
 	confirm_btn.visible = show_btns
 	cancel_btn.visible = show_btns
 	confirm_popup.show()
+
+# 在按钮旁显示信息浮窗
+func _show_info_near(btn: Button):
+	info_popup.position = btn.position + Vector2(btn.size.x + 8, -10)
+	info_popup.show()
 
 # ==================== 确认 / 取消 ====================
 
