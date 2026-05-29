@@ -2,13 +2,6 @@
 
 [ext_resource type="Script" uid="uid://dkojt2bdqbnci" path="res://防御塔/tower_action_ring.gd" id="1"]
 
-[sub_resource type="StyleBoxFlat" id="Style_confirm"]
-bg_color = Color(0.12, 0.12, 0.2, 0.95)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
 [sub_resource type="StyleBoxFlat" id="Style_info"]
 bg_color = Color(0.08, 0.08, 0.15, 0.92)
 corner_radius_top_left = 8
@@ -50,67 +43,48 @@ theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 14
 text = "信息"
 
-[node name="ConfirmPopup" type="Panel" parent="." unique_id=1958098556]
+[node name="InfoPopupPanel" type="PanelContainer" parent="." unique_id=455038412]
 visible = false
-custom_minimum_size = Vector2(180, 0)
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 0
-theme_override_styles/panel = SubResource("Style_confirm")
+theme_override_styles/panel = SubResource("Style_info")
 
-[node name="Margin" type="MarginContainer" parent="ConfirmPopup" unique_id=863861037]
-layout_mode = 0
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+[node name="Margin" type="MarginContainer" parent="InfoPopupPanel" unique_id=1324648926]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
 
-[node name="VBox" type="VBoxContainer" parent="ConfirmPopup/Margin" unique_id=2085802491]
+[node name="VBox" type="VBoxContainer" parent="InfoPopupPanel/Margin" unique_id=1561333091]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="ConfirmPopup/Margin/VBox" unique_id=1580413460]
+[node name="PopupLabel" type="Label" parent="InfoPopupPanel/Margin/VBox" unique_id=1827178374]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 13
-text = "确认操作？"
+theme_override_font_sizes/font_size = 14
 autowrap_mode = 1
 
-[node name="HSeparator" type="Control" parent="ConfirmPopup/Margin/VBox" unique_id=483885455]
+[node name="HSep" type="Control" parent="InfoPopupPanel/Margin/VBox" unique_id=1041210291]
 custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 
-[node name="HBox" type="HBoxContainer" parent="ConfirmPopup/Margin/VBox" unique_id=976784966]
+[node name="HBox" type="HBoxContainer" parent="InfoPopupPanel/Margin/VBox" unique_id=397788258]
 layout_mode = 2
 alignment = 1
 
-[node name="ConfirmBtn" type="Button" parent="ConfirmPopup/Margin/VBox/HBox" unique_id=1929156046]
+[node name="ConfirmBtn" type="Button" parent="InfoPopupPanel/Margin/VBox/HBox" unique_id=1499291513]
+visible = false
 custom_minimum_size = Vector2(60, 28)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 13
 text = "确认"
 
-[node name="CancelBtn" type="Button" parent="ConfirmPopup/Margin/VBox/HBox" unique_id=257220359]
+[node name="CancelBtn" type="Button" parent="InfoPopupPanel/Margin/VBox/HBox" unique_id=1616541629]
+visible = false
 custom_minimum_size = Vector2(60, 28)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 13
 text = "取消"
-
-[node name="InfoPopupPanel" type="PanelContainer" parent="."]
-visible = false
-custom_minimum_size = Vector2(240, 0)
-layout_mode = 0
-theme_override_styles/panel = SubResource("Style_info")
-
-[node name="Margin" type="MarginContainer" parent="InfoPopupPanel"]
-layout_mode = 0
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="StatsLabel" type="Label" parent="InfoPopupPanel/Margin"]
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 14
-text = ""
-autowrap_mode = 1
