@@ -158,31 +158,23 @@ func _show_floating_text(msg: String):
 	var camera = get_viewport().get_camera_2d()
 	if not camera:
 		return
-	var viewport = get_viewport()
-	var center = (target_tower.global_position - camera.global_position) * camera.zoom
-	center += viewport.get_visible_rect().size / 2
-
-	var bg = ColorRect.new()
-	bg.color = Color(0, 0, 0, 0.85)
-	bg.size = Vector2(200, 40)
-	bg.position = center - Vector2(100, 50)
-	add_child(bg)
+	var viewport_size = get_viewport().get_visible_rect().size
+	var world_to_screen = (target_tower.global_position - camera.global_position) * camera.zoom
+	var screen_pos = viewport_size / 2 + world_to_screen
 
 	var ft = Label.new()
 	ft.text = msg
 	ft.add_theme_color_override("font_color", Color(1, 0.3, 0.3))
 	ft.add_theme_font_size_override("font_size", 20)
 	ft.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	ft.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	ft.size = Vector2(200, 40)
-	ft.position = center - Vector2(100, 50)
+	ft.position = screen_pos - Vector2(100, 60)
 	add_child(ft)
 
-	var timer = get_tree().create_timer(1.5)
-	timer.timeout.connect(func():
-		bg.queue_free()
-		ft.queue_free()
-	)
+	var tween = create_tween()
+	tween.tween_property(ft, "position", ft.position - Vector2(0, 40), 1.2)
+	tween.parallel().tween_property(ft, "modulate:a", 0.0, 1.2)
+	tween.tween_callback(ft.queue_free)
 
 func _do_sell():
 	if not is_instance_valid(target_tower) or not target_tower.has_method("get_sell_value"):
