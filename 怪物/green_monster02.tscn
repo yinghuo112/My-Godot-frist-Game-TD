@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://b7sdcx5q0l3ep"]
+
+[ext_resource type="PackedScene" uid="uid://c7ejp7m2bnl4d" path="res://怪物/enemy_base.tscn" id="1_xjx3e"]
+[ext_resource type="Texture2D" uid="uid://cekqw8uwoau0s" path="res://assets/jingling/创造怪物与行走序列帧 (2) 像素.png" id="2_qwcfv"]
+[ext_resource type="Texture2D" uid="uid://bt6n546tqpnn8" path="res://assets/jingling/创造怪物与行走序列帧 (1) 拷贝.png" id="2_vbosa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wkmwi"]
+atlas = ExtResource("2_qwcfv")
+region = Rect2(0, 0, 128, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xo76"]
+atlas = ExtResource("2_qwcfv")
+region = Rect2(128, 0, 128, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ab4lm"]
+atlas = ExtResource("2_qwcfv")
+region = Rect2(256, 0, 128, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_24dws"]
+atlas = ExtResource("2_qwcfv")
+region = Rect2(384, 0, 128, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c55qw"]
+atlas = ExtResource("2_qwcfv")
+region = Rect2(0, 139, 128, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_m6414"]
+atlas = ExtResource("2_qwcfv")
+region = Rect2(128, 139, 128, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_52n4b"]
+atlas = ExtResource("2_qwcfv")
+region = Rect2(256, 139, 128, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1ha6j"]
+atlas = ExtResource("2_qwcfv")
+region = Rect2(384, 139, 128, 139)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwcfv"]
+atlas = ExtResource("2_vbosa")
+region = Rect2(0, 4, 693, 754)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqj3p"]
+atlas = ExtResource("2_vbosa")
+region = Rect2(693, 4, 693, 754)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tpyse"]
+atlas = ExtResource("2_vbosa")
+region = Rect2(1386, 4, 693, 754)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7u1sw"]
+atlas = ExtResource("2_vbosa")
+region = Rect2(2079, 4, 693, 754)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rp531"]
+atlas = ExtResource("2_vbosa")
+region = Rect2(0, 758, 693, 754)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lreh"]
+atlas = ExtResource("2_vbosa")
+region = Rect2(693, 758, 693, 754)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fdvia"]
+atlas = ExtResource("2_vbosa")
+region = Rect2(1386, 758, 693, 754)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_goeyu"]
+atlas = ExtResource("2_vbosa")
+region = Rect2(2079, 758, 693, 754)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wkmwi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wkmwi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5xo76")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ab4lm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_24dws")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c55qw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_m6414")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_52n4b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1ha6j")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwcfv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fqj3p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tpyse")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7u1sw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rp531")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lreh")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fdvia")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_goeyu")
+}],
+"loop": true,
+"name": &"walk_1",
+"speed": 10.0
+}]
+
+[node name="EnemyBase" unique_id=2011249988 instance=ExtResource("1_xjx3e")]
+
+[node name="AnimatedSprite2D" parent="." index="1" unique_id=1004382448]
+position = Vector2(0, 2)
+scale = Vector2(0.3, 0.3)
+sprite_frames = SubResource("SpriteFrames_wkmwi")
+frame_progress = 0.36467117

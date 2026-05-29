@@ -25,7 +25,7 @@ var overtake_target: Node2D = null       # 正在超越的前方怪物
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var health_bar: ProgressBar = $ProgressBar
 @onready var ray_cast: RayCast2D = $RayCast2D
-
+ 
 func _ready():
 	current_hp = max_hp
 	if sprite:
