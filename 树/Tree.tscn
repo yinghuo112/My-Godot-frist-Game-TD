@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://b3x45585lfwlw"]
+[gd_scene format=3 uid="uid://bghpx2ufpkl3v"]
 
 [ext_resource type="Script" uid="uid://bireon27oqa4e" path="res://树/tree.gd" id="1"]
 
@@ -24,3 +24,4 @@ monitorable = false
 shape = SubResource("CircleShape2D_p2csb")
 
 [node name="GrowTimer" type="Timer" parent="." unique_id=582322538]
+one_shot = true
