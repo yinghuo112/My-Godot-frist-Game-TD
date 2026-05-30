@@ -141,6 +141,19 @@ bullet (Area2D)
 └── area_entered → _on_area_entered() → enemy.take_damage()
 ```
 
+## ⚠️ .tscn 手动创建注意事项
+
+手动编写 .tscn 文件时必须遵循编辑器生成的格式，否则 Godot 会解析失败：
+
+1. **SubResource 必须放在所有 node 定义之前**
+2. **Control 节点（ColorRect 等）使用 `offset_left/top/right/bottom` 定位**，非 `position/size`
+3. **每个节点必须加 `unique_id=数字`**
+4. **颜色值必须带 alpha**：`Color(r, g, b, 1)` 而非 `Color(r, g, b)`
+5. **`[gd_scene format=3]` 后可加 `uid="uid://..."`**
+6. **ExtResource 引用必须带 uid**：`uid="uid://..."`
+
+推荐做法：**永远在 Godot 编辑器里创建场景**，不要手动写 .tscn（test_bug.tscn 这种极简场景除外）。
+
 ## 代码规范 / Code Conventions
 
 1. **子弹初始化**：使用 `bullet.initialize(target, damage)` 而非直接设置属性
