@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://bmrhcopfl2rnw"]
+
+[ext_resource type="Script" path="res://工具/floating_text.gd" id="1"]
+
+[node name="FloatingText" type="Label" unique_id=1010470134]
+script = ExtResource("1")
+theme_override_colors/font_color = Color(1, 1, 0.011764706, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 200
+text = "金币不足..."

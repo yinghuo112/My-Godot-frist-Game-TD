@@ -4,6 +4,7 @@ extends Control
 # 所有弹窗信息统一使用 InfoPopupPanel 子节点
 
 const RADIUS: float = 75.0
+var floating_text_scene = preload("res://工具/FloatingText.tscn")
 
 var target_tower: Node2D = null
 var _confirm_action: Callable = Callable()
@@ -162,19 +163,10 @@ func _show_floating_text(msg: String):
 	var world_to_screen = (target_tower.global_position - camera.global_position) * camera.zoom
 	var screen_pos = viewport_size / 2 + world_to_screen
 
-	var ft = Label.new()
+	var ft = floating_text_scene.instantiate()
 	ft.text = msg
-	ft.add_theme_color_override("font_color", Color(1, 0.3, 0.3))
-	ft.add_theme_font_size_override("font_size", 20)
-	ft.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	ft.size = Vector2(200, 40)
 	ft.position = screen_pos - Vector2(100, 60)
 	add_child(ft)
-
-	var tween = create_tween()
-	tween.tween_property(ft, "position", ft.position - Vector2(0, 40), 1.2)
-	tween.parallel().tween_property(ft, "modulate:a", 0.0, 1.2)
-	tween.tween_callback(ft.queue_free)
 
 func _do_sell():
 	if not is_instance_valid(target_tower) or not target_tower.has_method("get_sell_value"):

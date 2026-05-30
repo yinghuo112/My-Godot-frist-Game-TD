@@ -1,25 +1,26 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://b3x45585lfwlw"]
 
 [ext_resource type="Script" uid="uid://bireon27oqa4e" path="res://树/tree.gd" id="1"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_xn4m1"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_p2csb"]
 radius = 20.0
 
-[node name="Tree" type="Node2D"]
+[node name="Tree" type="Node2D" unique_id=588968716]
 script = ExtResource("1")
 
-[node name="Visual" type="ColorRect" parent="."]
-color = Color(0.3, 0.8, 0.3)
-size = Vector2(24, 24)
-position = Vector2(-12, -12)
+[node name="Visual" type="ColorRect" parent="." unique_id=158144621]
+offset_left = -12.0
+offset_top = -12.0
+offset_right = 12.0
+offset_bottom = 12.0
+color = Color(0.3, 0.8, 0.3, 1)
 
-[node name="Area2D" type="Area2D" parent="."]
+[node name="Area2D" type="Area2D" parent="." unique_id=1136152752]
 collision_layer = 2
 monitoring = false
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_xn4m1")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1630777521]
+shape = SubResource("CircleShape2D_p2csb")
 
-[node name="GrowTimer" type="Timer" parent="."]
-one_shot = true
+[node name="GrowTimer" type="Timer" parent="." unique_id=582322538]

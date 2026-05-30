@@ -16,9 +16,11 @@ extends Node2D
 
 var tower_scene = preload("res://scenes/ArrowTower.tscn")
 var tree_scene = preload("res://树/Tree.tscn")
+var floating_text_scene = preload("res://工具/FloatingText.tscn")
 
 const _CLICK_RADIUS_SQ: float = 20.0 * 20.0
 const _TREE_CLICK_RADIUS_SQ: float = 25.0 * 25.0
+const _TREE_MARK_COST: int = 10
 const _MAX_TREES: int = 8
 var _tree_spawn_timer: Timer
 
@@ -151,8 +153,23 @@ func _click_tree(click_pos: Vector2):
 			if child.is_marked:
 				child.unmark()
 			else:
-				child.mark()
+				if GameManager.can_afford(_TREE_MARK_COST):
+					GameManager.spend_gold(_TREE_MARK_COST)
+					child.mark()
+				else:
+					_show_floating_text(child.global_position)
 			return
+
+func _show_floating_text(world_pos: Vector2):
+	var camera = get_viewport().get_camera_2d()
+	if not camera:
+		return
+	var viewport_size = get_viewport().get_visible_rect().size
+	var screen_pos = viewport_size / 2 + (world_pos - camera.global_position) * camera.zoom
+	var ft = floating_text_scene.instantiate()
+	ft.position = screen_pos - Vector2(100, 60)
+	ft.text = "金币不足..."
+	add_child(ft)
 
 func _on_tree_died(reward: int):
 	GameManager.add_gold(reward)
