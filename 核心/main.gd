@@ -147,20 +147,22 @@ func _click_tree(click_pos: Vector2):
 	for child in tree_container.get_children():
 		if not is_instance_valid(child):
 			continue
-		if child.state != child.State.MATURE:
+		if child.global_position.distance_squared_to(click_pos) >= _TREE_CLICK_RADIUS_SQ:
 			continue
-		if child.global_position.distance_squared_to(click_pos) < _TREE_CLICK_RADIUS_SQ:
-			if child.is_marked:
-				child.unmark()
-			else:
-				if GameManager.can_afford(_TREE_MARK_COST):
-					GameManager.spend_gold(_TREE_MARK_COST)
-					child.mark()
-				else:
-					_show_floating_text(child.global_position)
+		if child.state != child.State.MATURE:
+			_show_floating_text(child.global_position, "树苗成长中...")
 			return
+		if child.is_marked:
+			child.unmark()
+		else:
+			if GameManager.can_afford(_TREE_MARK_COST):
+				GameManager.spend_gold(_TREE_MARK_COST)
+				child.mark()
+			else:
+				_show_floating_text(child.global_position, "金币不足...")
+		return
 
-func _show_floating_text(world_pos: Vector2):
+func _show_floating_text(world_pos: Vector2, msg: String = "金币不足..."):
 	var camera = get_viewport().get_camera_2d()
 	if not camera:
 		return
@@ -168,7 +170,7 @@ func _show_floating_text(world_pos: Vector2):
 	var screen_pos = viewport_size / 2 + (world_pos - camera.global_position) * camera.zoom
 	var ft = floating_text_scene.instantiate()
 	ft.position = screen_pos - Vector2(100, 60)
-	ft.text = "金币不足..."
+	ft.text = msg
 	add_child(ft)
 
 func _on_tree_died(reward: int):
