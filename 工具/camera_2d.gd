@@ -14,12 +14,13 @@ var _target_zoom: float = 1.0
 var _is_dragging: bool = false
 
 
+# 初始化目标缩放值
 func _ready():
 	_target_zoom = zoom.x
 
 
+# 每帧检测鼠标边缘位置实现滚动，平滑缩放至目标值
 func _process(delta):
-	# --- 边缘滚动 ---
 	var mouse_pos = get_viewport().get_mouse_position()
 	var window_size = get_viewport().get_visible_rect().size
 	var move_direction = Vector2.ZERO
@@ -37,11 +38,10 @@ func _process(delta):
 	if move_direction != Vector2.ZERO:
 		position += move_direction.normalized() * scroll_speed * delta
 	
-	# --- 平滑缩放 ---
-	# 让 zoom 逐渐逼近目标值，实现平滑过渡效果
 	zoom = zoom.lerp(Vector2(_target_zoom, _target_zoom), zoom_speed * delta)
 
 
+# 处理鼠标点击拖动和滚轮缩放
 func _unhandled_input(event: InputEvent):
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:

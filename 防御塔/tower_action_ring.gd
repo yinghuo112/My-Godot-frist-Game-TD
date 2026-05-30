@@ -18,6 +18,7 @@ var _popup_mode: String = ""
 @onready var confirm_btn: Button = $InfoPopupPanel/Margin/VBox/HBox/ConfirmBtn
 @onready var cancel_btn: Button = $InfoPopupPanel/Margin/VBox/HBox/CancelBtn
 
+# 连接按钮信号，初始隐藏
 func _ready():
 	btn_upgrade.pressed.connect(_on_upgrade_click)
 	btn_sell.pressed.connect(_on_sell_click)
@@ -26,6 +27,7 @@ func _ready():
 	cancel_btn.pressed.connect(_on_cancel)
 	hide()
 
+# 在目标塔周围显示环形菜单，更新按钮状态
 func show_for_tower(tower: Node2D):
 	if not is_instance_valid(tower):
 		return
@@ -60,6 +62,7 @@ func show_for_tower(tower: Node2D):
 	info_popup.hide()
 	visible = true
 
+# 隐藏环形菜单并清空状态
 func hide_ring():
 	visible = false
 	_popup_mode = ""
@@ -68,6 +71,7 @@ func hide_ring():
 
 # ==================== 按钮点击回调 ====================
 
+# 点击升级按钮：弹窗显示升级前后属性对比
 func _on_upgrade_click():
 	if not is_instance_valid(target_tower) or not target_tower.has_method("can_upgrade") or not target_tower.can_upgrade():
 		return
@@ -92,6 +96,7 @@ func _on_upgrade_click():
 	_popup_mode = "upgrade"
 	info_popup.show()
 
+# 点击出售按钮：弹窗确认出售金额
 func _on_sell_click():
 	if not is_instance_valid(target_tower):
 		return
@@ -109,6 +114,7 @@ func _on_sell_click():
 	_popup_mode = "sell"
 	info_popup.show()
 
+# 点击信息按钮：显示当前塔的属性
 func _on_info_click():
 	if not is_instance_valid(target_tower):
 		return
@@ -130,6 +136,7 @@ func _on_info_click():
 
 # ==================== 确认 / 取消 ====================
 
+# 确认操作：执行升级或出售
 func _on_confirm():
 	if _confirm_action.is_valid():
 		_confirm_action.call()
@@ -138,12 +145,12 @@ func _on_confirm():
 	if is_instance_valid(target_tower):
 		show_for_tower(target_tower)
 
+# 取消操作：关闭弹窗
 func _on_cancel():
 	info_popup.hide()
 	_popup_mode = ""
 
-# ==================== 实际操作 ====================
-
+# 执行升级：调用塔的升级接口，失败时显示金币不足
 func _do_upgrade():
 	if not is_instance_valid(target_tower) or not target_tower.has_method("do_upgrade"):
 		return
@@ -153,6 +160,7 @@ func _do_upgrade():
 	if is_instance_valid(target_tower):
 		show_for_tower(target_tower)
 
+# 在塔位置显示浮动提示文字
 func _show_floating_text(msg: String):
 	if not is_instance_valid(target_tower):
 		return
@@ -168,6 +176,7 @@ func _show_floating_text(msg: String):
 	ft.position = screen_pos - Vector2(100, 60)
 	add_child(ft)
 
+# 执行出售：回收金币，删除塔
 func _do_sell():
 	if not is_instance_valid(target_tower) or not target_tower.has_method("get_sell_value"):
 		return

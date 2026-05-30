@@ -9,7 +9,7 @@ signal gold_changed(amount)                              # 金币变化
 signal lives_changed(amount)                             # 生命值变化
 
 # --- 游戏状态 ---
-var gold: int = 100
+var gold: int = 1000
 var lives: int = 20
 var wave: int = 0
 var enemies_to_spawn: int = 0       # 当前波次还未生成的敌人数
@@ -21,6 +21,7 @@ var timer: Timer                    # 生成定时器
 var _config: WaveConfigData         # 波次配置数据
 var _current_entry: WaveEntry       # 当前波次配置条目
 
+# 初始化生成计时器和波次配置
 func _ready():
 	timer = Timer.new()
 	timer.name = "SpawnTimer"
@@ -29,8 +30,9 @@ func _ready():
 
 	_config = _load_config()
 
+# 重置所有游戏状态到初始值
 func reset():
-	gold = 100
+	gold = 1000
 	lives = 20
 	wave = 0
 	enemies_to_spawn = 0
@@ -40,6 +42,7 @@ func reset():
 		timer.stop()
 
 # --- 开始一波 ---
+# 开始新一波敌人：读取配置，启动生成计时器
 func start_wave():
 	if is_wave_active:
 		return
@@ -59,6 +62,7 @@ func start_wave():
 	wave_started.emit(wave, _current_entry.count, _current_entry.spawn_interval)
 
 # --- 加载波次配置 ---
+# 从文件加载波次配置，失败时用默认配置
 func _load_config() -> WaveConfigData:
 	print("尝试加载波次配置: res://配置/wave_config.tres")
 	if ResourceLoader.exists("res://配置/wave_config.tres"):
@@ -78,13 +82,14 @@ func _load_config() -> WaveConfigData:
 	print("使用默认配置: 敌人=12, 间隔=0.5s")
 	return fallback
 
+# 根据波次号获取配置条目，超出则复用最后一波
 func _get_wave_entry(wave_number: int) -> WaveEntry:
 	var idx = wave_number - 1
 	if idx >= 0 and idx < _config.waves.size():
 		return _config.waves[idx]
-	# 超出配置则重复使用最后一波
 	return _config.waves[-1] if _config.waves.size() > 0 else _fallback_entry()
 
+# 创建默认波次配置条目作为后备
 func _fallback_entry() -> WaveEntry:
 	var entry = WaveEntry.new()
 	entry.enemy_scene = preload("res://怪物/green_monster.tscn")
@@ -93,6 +98,7 @@ func _fallback_entry() -> WaveEntry:
 	return entry
 
 # --- 批量生成怪物（每 tick 生成最多 3 只） ---
+# 每 tick 批量生成最多 3 只敌人，分散在路径上
 func _spawn_enemy():
 	if enemies_to_spawn <= 0:
 		timer.stop()
@@ -115,6 +121,7 @@ func _spawn_enemy():
 	enemies_on_field += batch
 
 # --- 敌人死亡 / 到达终点 ---
+# 敌人死亡：增加金币，检查波次是否结束
 func _on_enemy_died(enemy):
 	var reward = enemy.gold_reward
 	gold += reward
@@ -123,6 +130,7 @@ func _on_enemy_died(enemy):
 	enemies_on_field -= 1
 	_check_wave_done()
 
+# 敌人到达终点：扣减生命值，检查是否游戏结束
 func _on_enemy_reached_end():
 	lives -= 1
 	lives_changed.emit(lives)
@@ -134,20 +142,23 @@ func _on_enemy_reached_end():
 	else:
 		_check_wave_done()
 
-# --- 检查波次是否结束 ---
+# 检查当前波次是否全部敌人已生成且已消灭
 func _check_wave_done():
 	if enemies_to_spawn <= 0 and enemies_on_field <= 0:
 		is_wave_active = false
 		wave_done.emit()
 
 # --- 金币操作 ---
+# 增加金币并发射信号
 func add_gold(amount):
 	gold += amount
 	gold_changed.emit(gold)
 
+# 检查是否足以支付指定花费
 func can_afford(cost: int) -> bool:
 	return gold >= cost
 
+# 扣除金币，返回是否成功
 func spend_gold(cost: int) -> bool:
 	if gold >= cost:
 		gold -= cost

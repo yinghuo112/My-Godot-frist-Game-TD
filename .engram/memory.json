@@ -1,0 +1,9 @@
+{
+  "memories": [
+    {
+      "id": "mps1tcb3",
+      "text": "All .gd script functions must have Chinese comment (# 注释) written ABOVE the function declaration, not inside the function body. Example: `# 初始化游戏\\nfunc _ready():`",
+      "retention": 100
+    }
+  ]
+}

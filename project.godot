@@ -25,6 +25,11 @@ _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg")
 
+[layer_names]
+
+2d_physics/layer_1="Enemy"
+2d_physics/layer_2="Tree"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

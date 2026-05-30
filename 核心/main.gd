@@ -24,6 +24,7 @@ const _TREE_MARK_COST: int = 10
 const _MAX_TREES: int = 8
 var _tree_spawn_timer: Timer
 
+# 初始化游戏状态，连接信号
 func _ready() -> void:
 	GameManager.reset()
 	start_btn.pressed.connect(_on_start_wave)
@@ -33,12 +34,13 @@ func _ready() -> void:
 	GameManager.wave_started.connect(_on_wave_started)
 	GameManager.wave_done.connect(_on_wave_done)
 	GameManager.game_over.connect(_on_game_over)
-	_update_gold(100)
+	_update_gold(1000)
 	_update_lives(20)
 	_update_wave(0)
 	AudioManager.play_music()
 	_setup_tree_spawning()
 
+# 设置树木生成计时器，3秒后开始生成
 func _setup_tree_spawning():
 	_tree_spawn_timer = Timer.new()
 	_tree_spawn_timer.name = "TreeSpawnTimer"
@@ -48,9 +50,14 @@ func _setup_tree_spawning():
 	_tree_spawn_timer.start(3.0)
 
 
+# 输入处理：按键T生成测试敌人，左键点击塔槽或树木
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
 		_spawn_test_enemy()
+	if event is InputEventKey and event.pressed and event.keycode == KEY_G:
+		$Camera2D.position = Vector2.ZERO
+		$Camera2D.zoom = Vector2(1, 1)
+		($Camera2D as Camera2D)._target_zoom = 1.0
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if tower_ring.visible:
 			return
@@ -68,12 +75,14 @@ func _input(event: InputEvent) -> void:
 		_click_tree(click_pos)
 
 
+# 未处理的点击：关闭环形菜单
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if tower_ring.visible:
 			tower_ring.hide_ring()
 
 
+# 在指定塔槽放置防御塔，花费50金币
 func _place_tower(slot: Marker2D) -> void:
 	if not GameManager.can_afford(50):
 		return
@@ -83,6 +92,7 @@ func _place_tower(slot: Marker2D) -> void:
 	tower.position = Vector2.ZERO
 	GameManager.spend_gold(50)
 
+# 调试功能：按T键直接生成一个测试怪物
 func _spawn_test_enemy() -> void:
 	print("=== 调试: 直接生成测试小怪 ===")
 	var scene = preload("res://怪物/green_monster.tscn")
@@ -93,14 +103,17 @@ func _spawn_test_enemy() -> void:
 	path.add_child(enemy)
 	print("测试小怪已生成，路径: EnemyPath")
 
+# 调试：测试怪物死亡回调
 func _on_test_enemy_died(enemy):
 	print("测试小怪被击杀，金币奖励: %d" % enemy.gold_reward)
 
+# 调试：测试怪物到达终点回调
 func _on_test_enemy_reached_end():
 	print("测试小怪到达终点")
 
 # ==================== 树系统 ====================
 
+# 在草地格上随机生成一棵树
 func _spawn_tree():
 	if tree_container.get_child_count() >= _MAX_TREES:
 		_tree_spawn_timer.start(5.0)
@@ -115,6 +128,7 @@ func _spawn_tree():
 	tree_container.add_child(tree)
 	_tree_spawn_timer.start(randf_range(8.0, 15.0))
 
+# 在 TileMap 中寻找未被占用的草地格子
 func _find_grass_position() -> Vector2:
 	var cells = tile_map_layer.get_used_cells()
 	cells.shuffle()
@@ -127,6 +141,7 @@ func _find_grass_position() -> Vector2:
 		return world_pos
 	return Vector2.ZERO
 
+# 检查位置是否被塔槽、其他树木或路径阻挡
 func _is_position_blocked(pos: Vector2) -> bool:
 	for slot in tower_slots.get_children():
 		if slot is Marker2D and slot.global_position.distance_squared_to(pos) < 1600:
@@ -143,6 +158,7 @@ func _is_position_blocked(pos: Vector2) -> bool:
 				return true
 	return false
 
+# 处理树木点击：花费金币标记成熟树木，或取消标记
 func _click_tree(click_pos: Vector2):
 	for child in tree_container.get_children():
 		if not is_instance_valid(child):
@@ -162,6 +178,7 @@ func _click_tree(click_pos: Vector2):
 				_show_floating_text(child.global_position, "金币不足...")
 		return
 
+# 在世界坐标位置显示浮动提示文字
 func _show_floating_text(world_pos: Vector2, msg: String = "金币不足..."):
 	var camera = get_viewport().get_camera_2d()
 	if not camera:
@@ -173,42 +190,51 @@ func _show_floating_text(world_pos: Vector2, msg: String = "金币不足..."):
 	ft.text = msg
 	add_child(ft)
 
+# 树木死亡时获得金币奖励
 func _on_tree_died(reward: int):
 	GameManager.add_gold(reward)
 
+# 打开设置面板
 func _on_settings() -> void:
 	settings_panel.open()
 
+# 开始下一波敌人
 func _on_start_wave() -> void:
 	start_btn.disabled = true
 	start_btn.text = "In Progress..."
 	GameManager.start_wave()
 
 
+# 更新金币 UI 显示
 func _update_gold(amount: int) -> void:
 	gold_label.text = "Gold: %d" % amount
 
 
+# 更新生命值 UI 显示
 func _update_lives(amount: int) -> void:
 	lives_label.text = "Lives: %d" % amount
 
 
+# 更新波次 UI 显示
 func _update_wave(wave: int) -> void:
 	wave_label.text = "Wave: %d" % wave
 
 
+# 波次开始时更新 UI 并播放音效
 func _on_wave_started(wave_number: int, count: int, spawn_interval: float) -> void:
 	_update_wave(wave_number)
 	wave_config_label.text = "Enemies: %d  |  Interval: %.1fs" % [count, spawn_interval]
 	AudioManager.play_wave()
 
 
+# 波次结束后恢复按钮
 func _on_wave_done() -> void:
 	start_btn.disabled = false
 	start_btn.text = "Start Wave"
 	wave_config_label.text = ""
 
 
+# 游戏结束：显示结束画面
 func _on_game_over() -> void:
 	game_over_bg.visible = true
 	game_over_label.visible = true

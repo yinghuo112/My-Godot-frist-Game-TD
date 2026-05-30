@@ -5,7 +5,7 @@ class_name TowerBase
 @export var fire_rate: float = 1.0
 @export var range_radius: float = 120.0
 @export var cost: int = 50
-@export var show_range_circle: bool = false
+@export var show_range_circle: bool = true
 
 # --- 升级系统 ---
 var level: int = 1
@@ -24,6 +24,7 @@ var bullet_scene = preload("res://scenes/bullet.tscn")
 @onready var bullet_spawn: Marker2D = $BulletSpawn
 @onready var level_label: Label = null
 
+# 初始化范围碰撞体、射击计时器、范围检测和等级标签
 func _ready():
 	range_shape.position = Vector2.ZERO
 	if range_shape and range_shape.shape is CircleShape2D:
@@ -44,17 +45,20 @@ func _ready():
 	level_label.position = Vector2(-10, -40)
 	add_child(level_label)
 
+# 每帧扫描目标并开火
 func _process(delta):
+	_find_next_target()
 	if target and is_instance_valid(target):
 		if can_shoot:
 			_shoot()
 			can_shoot = false
 			shoot_timer.start()
 
+# 播放攻击动画，生成子弹并发射
 func _shoot():
 	if sprite and sprite.sprite_frames.has_animation("attack"):
 		sprite.play("attack")
-
+	# 播放攻击音效
 	AudioManager.play_shoot()
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = bullet_spawn.global_position
@@ -66,6 +70,7 @@ func _shoot():
 	else:
 		get_parent().add_child(bullet)
 
+# 敌人或树进入范围时加入目标列表
 func _on_area_entered(area):
 	if area.is_in_group(enemy_group):
 		var parent = area.get_parent()
@@ -76,6 +81,7 @@ func _on_area_entered(area):
 		elif not target or (target and is_instance_valid(target) and target is GameTree):
 			target = parent
 
+# 敌人或树离开范围时重新选择目标
 func _on_area_exited(area):
 	var parent = area.get_parent()
 	if parent == target:
@@ -86,10 +92,14 @@ func _on_area_exited(area):
 	elif parent == _tree_target:
 		_tree_target = null
 
+# 在范围内寻找下一个最优目标（优先敌人，其次树）
 func _find_next_target():
-	var areas = range_area.get_overlapping_areas()
+	var best_distance = INF
 	var found_enemy = null
 	var found_tree = null
+
+	var areas = range_area.get_overlapping_areas()
+	var range_sq = get_current_range() * get_current_range()
 	for a in areas:
 		if not a.is_in_group(enemy_group) or not is_instance_valid(a.get_parent()):
 			continue
@@ -99,44 +109,61 @@ func _find_next_target():
 				found_tree = p
 		elif not found_enemy:
 			found_enemy = p
+
+	if not found_tree:
+		for tree in get_tree().get_nodes_in_group("tree_group"):
+			if not is_instance_valid(tree) or tree.state < tree.State.MATURE:
+				continue
+			var d2 = global_position.distance_squared_to(tree.global_position)
+			if d2 < range_sq and d2 < best_distance:
+				best_distance = d2
+				found_tree = tree
+
 	if found_enemy:
 		target = found_enemy
 	elif found_tree:
 		target = found_tree
 	_tree_target = found_tree if found_tree else null
 
+# 射击冷却结束，标记可射击；若目标已丢失则停止动画
 func _on_shoot_timer_timeout():
 	if not target or not is_instance_valid(target):
 		if sprite:
 			sprite.stop()
 	can_shoot = true
 
+# 绘制范围指示圈
 func _draw():
 	if show_range_circle:
-		draw_circle(Vector2.ZERO, range_radius, Color(1, 1, 1, 0.15))
+		draw_circle(Vector2.ZERO, get_current_range(), Color(1, 1, 1, 0.15))
 
 # --- 升级接口（供 TowerActionRing 调用）---
+# 检查是否可以继续升级
 func can_upgrade() -> bool:
 	return level < max_level
 
+# 获取当前等级升级所需金币
 func get_upgrade_cost() -> int:
 	match level:
 		1: return 80
 		2: return 150
 		_: return -1
 
+# 计算出售价格 = 总投入的 50%
 func get_sell_value() -> int:
 	var total = cost
 	for lv in range(1, level):
 		total += get_upgrade_cost_at(lv)
 	return total / 2
 
+# 获取指定等级的升级花费
 func get_upgrade_cost_at(lv: int) -> int:
 	match lv:
 		1: return 80
 		2: return 150
 		_: return 0
 
+# 执行升级：扣除金币，更新属性，刷新视觉
 func do_upgrade() -> bool:
 	if not can_upgrade():
 		return false
@@ -149,13 +176,17 @@ func do_upgrade() -> bool:
 	shoot_timer.wait_time = get_current_fire_rate()
 	if level_label:
 		level_label.text = "Lv." + str(level)
+	queue_redraw()
 	return true
 
+# 计算当前等级伤害：基础值 × 1.5^(等级-1)
 func get_current_damage() -> float:
 	return damage * pow(1.5, level - 1)
 
+# 计算当前等级射速：基础值 × 0.85^(等级-1)
 func get_current_fire_rate() -> float:
 	return fire_rate * pow(0.85, level - 1)
 
+# 计算当前等级射程：基础值 × 4.0^(等级-1)
 func get_current_range() -> float:
-	return range_radius * pow(1.1, level - 1)
+	return range_radius * pow(4.0, level - 1)

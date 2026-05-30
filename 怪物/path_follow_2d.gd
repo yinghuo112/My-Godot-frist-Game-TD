@@ -6,10 +6,12 @@ var last_position: Vector2
 
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 
+# 初始化：播放动画，记录初始位置
 func _ready():
 	sprite.play("new_animation")
 	last_position = global_position
 
+# 每帧沿路径前进，根据移动方向翻转精灵，到达终点时销毁
 func _process(delta):
 	progress += speed * delta
 	var horizontal_movement = global_position.x - last_position.x

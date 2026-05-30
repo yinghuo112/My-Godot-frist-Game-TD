@@ -6,6 +6,7 @@ extends Area2D
 var target: Node2D = null           # 追踪的目标怪物
 var velocity: Vector2 = Vector2.ZERO  # 当前速度向量
 
+# 初始化子弹碰撞掩码和命中信号
 func _ready():
 	collision_mask |= 2
 	area_entered.connect(_on_area_entered)
@@ -17,21 +18,18 @@ func initialize(p_target: Node2D, p_damage: float) -> void:
 	if is_instance_valid(target):
 		look_at(target.global_position)
 
+# 每帧追踪目标飞行或惯性飞行，接近目标时命中
 func _physics_process(delta: float) -> void:
 	if is_instance_valid(target):
-		# 目标存活 → 追踪飞行
 		var direction = (target.global_position - global_position).normalized()
 		velocity = direction * speed
 		look_at(target.global_position)
-		# 接近目标到 12 像素以内 → 判定命中
 		if global_position.distance_to(target.global_position) < 12.0:
 			_hit()
 			return
 	else:
-		# 目标已丢失 → 沿原方向惯性飞行
 		if velocity == Vector2.ZERO:
 			velocity = Vector2.RIGHT.rotated(rotation) * speed
-		# 飞得太远 → 自动销毁
 		if global_position.distance_to(Vector2.ZERO) > 3000:
 			queue_free()
 			return
