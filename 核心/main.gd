@@ -11,11 +11,16 @@ extends Node2D
 @onready var tower_slots: Node2D = $TowerSlots
 @onready var wave_config_label: Label = $UI/WaveConfigLabel
 @onready var tower_ring: Control = $UI/TowerActionRing
+@onready var tree_container: Node2D = $TreeContainer
+@onready var tile_map_layer: TileMapLayer = $TileMapLayer
 
 var tower_scene = preload("res://scenes/ArrowTower.tscn")
+var tree_scene = preload("res://树/Tree.tscn")
 
-# 预计算点击半径平方，避免每帧 sqrt
 const _CLICK_RADIUS_SQ: float = 20.0 * 20.0
+const _TREE_CLICK_RADIUS_SQ: float = 25.0 * 25.0
+const _MAX_TREES: int = 8
+var _tree_spawn_timer: Timer
 
 func _ready() -> void:
 	GameManager.reset()
@@ -30,12 +35,23 @@ func _ready() -> void:
 	_update_lives(20)
 	_update_wave(0)
 	AudioManager.play_music()
+	_setup_tree_spawning()
+
+func _setup_tree_spawning():
+	_tree_spawn_timer = Timer.new()
+	_tree_spawn_timer.name = "TreeSpawnTimer"
+	_tree_spawn_timer.one_shot = true
+	_tree_spawn_timer.timeout.connect(_spawn_tree)
+	add_child(_tree_spawn_timer)
+	_tree_spawn_timer.start(3.0)
 
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
 		_spawn_test_enemy()
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if tower_ring.visible:
+			return
 		var click_pos := get_global_mouse_position()
 		for slot in tower_slots.get_children():
 			if slot is Marker2D:
@@ -45,7 +61,9 @@ func _input(event: InputEvent) -> void:
 					else:
 						tower_ring.show_for_tower(slot.get_child(0))
 					get_viewport().set_input_as_handled()
-					break
+					return
+		# 不是塔槽 → 检查是否点到树
+		_click_tree(click_pos)
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -78,6 +96,66 @@ func _on_test_enemy_died(enemy):
 
 func _on_test_enemy_reached_end():
 	print("测试小怪到达终点")
+
+# ==================== 树系统 ====================
+
+func _spawn_tree():
+	if tree_container.get_child_count() >= _MAX_TREES:
+		_tree_spawn_timer.start(5.0)
+		return
+	var pos = _find_grass_position()
+	if pos == Vector2.ZERO:
+		_tree_spawn_timer.start(3.0)
+		return
+	var tree = tree_scene.instantiate()
+	tree.global_position = pos
+	tree.died.connect(_on_tree_died)
+	tree_container.add_child(tree)
+	_tree_spawn_timer.start(randf_range(8.0, 15.0))
+
+func _find_grass_position() -> Vector2:
+	var cells = tile_map_layer.get_used_cells()
+	cells.shuffle()
+	for cell in cells:
+		if tile_map_layer.get_cell_source_id(cell) != 0:
+			continue
+		var world_pos = tile_map_layer.map_to_local(cell)
+		if _is_position_blocked(world_pos):
+			continue
+		return world_pos
+	return Vector2.ZERO
+
+func _is_position_blocked(pos: Vector2) -> bool:
+	for slot in tower_slots.get_children():
+		if slot is Marker2D and slot.global_position.distance_squared_to(pos) < 1600:
+			return true
+	for child in tree_container.get_children():
+		if child.global_position.distance_squared_to(pos) < 2500:
+			return true
+	var path = $EnemyPath
+	var curve = path.curve
+	if curve:
+		var baked = curve.get_baked_points()
+		for bp in baked:
+			if bp.distance_squared_to(pos) < 1600:
+				return true
+	return false
+
+func _click_tree(click_pos: Vector2):
+	for child in tree_container.get_children():
+		if not is_instance_valid(child):
+			continue
+		if child.state != child.State.MATURE:
+			continue
+		if child.global_position.distance_squared_to(click_pos) < _TREE_CLICK_RADIUS_SQ:
+			if child.is_marked:
+				child.unmark()
+			else:
+				child.mark()
+			return
+
+func _on_tree_died(reward: int):
+	GameManager.add_gold(reward)
 
 func _on_settings() -> void:
 	settings_panel.open()

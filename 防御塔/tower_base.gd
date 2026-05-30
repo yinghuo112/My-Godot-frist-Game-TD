@@ -13,6 +13,7 @@ var max_level: int = 3
 
 var can_shoot: bool = true
 var target: Node2D = null
+var _tree_target: Node2D = null
 var enemy_group: String = "enemy"
 var bullet_scene = preload("res://scenes/bullet.tscn")
 
@@ -30,8 +31,9 @@ func _ready():
 
 	shoot_timer.wait_time = fire_rate
 	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
-	range_area.area_entered.connect(_on_enemy_entered)
-	range_area.area_exited.connect(_on_enemy_exited)
+	range_area.area_entered.connect(_on_area_entered)
+	range_area.area_exited.connect(_on_area_exited)
+	range_area.collision_mask |= 2
 
 	level_label = Label.new()
 	level_label.name = "LevelLabel"
@@ -64,22 +66,44 @@ func _shoot():
 	else:
 		get_parent().add_child(bullet)
 
-func _on_enemy_entered(area):
-	if area.is_in_group(enemy_group) and not target:
-		target = area.get_parent()
+func _on_area_entered(area):
+	if area.is_in_group(enemy_group):
+		var parent = area.get_parent()
+		if parent is GameTree:
+			_tree_target = parent
+			if not target:
+				target = _tree_target
+		elif not target or (target and is_instance_valid(target) and target is GameTree):
+			target = parent
 
-func _on_enemy_exited(area):
-	if area.get_parent() == target:
+func _on_area_exited(area):
+	var parent = area.get_parent()
+	if parent == target:
 		target = null
+		if parent is GameTree:
+			_tree_target = null
 		_find_next_target()
+	elif parent == _tree_target:
+		_tree_target = null
 
 func _find_next_target():
 	var areas = range_area.get_overlapping_areas()
+	var found_enemy = null
+	var found_tree = null
 	for a in areas:
-		if a.is_in_group(enemy_group) and is_instance_valid(a.get_parent()):
-			target = a.get_parent()
-			return
-	target = null
+		if not a.is_in_group(enemy_group) or not is_instance_valid(a.get_parent()):
+			continue
+		var p = a.get_parent()
+		if p is GameTree:
+			if not found_tree:
+				found_tree = p
+		elif not found_enemy:
+			found_enemy = p
+	if found_enemy:
+		target = found_enemy
+	elif found_tree:
+		target = found_tree
+	_tree_target = found_tree if found_tree else null
 
 func _on_shoot_timer_timeout():
 	if not target or not is_instance_valid(target):

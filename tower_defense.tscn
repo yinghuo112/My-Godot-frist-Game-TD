@@ -98,6 +98,8 @@ script = ExtResource("131_fsg3x")
 
 [node name="TowerSlots" type="Node2D" parent="." unique_id=1907941790]
 
+[node name="TreeContainer" type="Node2D" parent="." unique_id=1415092192]
+
 [node name="Slot1" type="Marker2D" parent="TowerSlots" unique_id=2130101613]
 position = Vector2(1007, 83)
 

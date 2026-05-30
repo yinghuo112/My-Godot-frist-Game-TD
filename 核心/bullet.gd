@@ -7,7 +7,7 @@ var target: Node2D = null           # 追踪的目标怪物
 var velocity: Vector2 = Vector2.ZERO  # 当前速度向量
 
 func _ready():
-	# 连接 Area2D 碰撞信号，用于检测与敌方碰撞体的直接接触
+	collision_mask |= 2
 	area_entered.connect(_on_area_entered)
 
 # 初始化：设置目标和伤害，并朝向目标
