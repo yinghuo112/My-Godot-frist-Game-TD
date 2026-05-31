@@ -4,9 +4,9 @@ extends Control
 signal dialogue_finished
 
 # 节点绑定 (注意：这里将 text_label 改为了 RichTextLabel 以支持滚动条)
-@onready var speaker_label: Label = $PanelContainer/VBoxContainer/SpeakerLabel
-@onready var text_label: RichTextLabel = $PanelContainer/VBoxContainer/TextLabel 
-@onready var choices_box: VBoxContainer = $ChoicesBox
+@onready var speaker_label: Label = $VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/SpeakerLabel
+@onready var text_label: RichTextLabel = $VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/TextLabel
+@onready var choices_box: VBoxContainer = $VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ChoicesBox
 
 # 打字机效果配置
 var typing_timer: Timer = Timer.new()
