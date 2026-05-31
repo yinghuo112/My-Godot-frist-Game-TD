@@ -104,7 +104,7 @@ func _display_choices(choices: Array):
 	for choice_data in choices:
 		var button = Button.new()
 		button.text = choice_data["text"]
-		button.pressed.connect(func(): _on_choice_selected(choice_data["next_id"]))
+		button.pressed.connect(_on_choice_selected.bind(choice_data["next_id"]))
 		choices_box.add_child(button)
 
 func _on_choice_selected(next_id: String):
