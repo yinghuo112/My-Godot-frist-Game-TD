@@ -133,12 +133,15 @@ func _advance_text():
 func _unhandled_input(event: InputEvent):
 	if not is_visible():
 		return
+	if not current_dialogue_id or not dialogue_data.has(current_dialogue_id):
+		return
 	print("[DUI] 输入: type=", event.get_class(), " visible=", visible, " id=", current_dialogue_id)
-	if event.is_action_pressed("ui_accept") or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
-		if event is InputEventMouseButton and current_dialogue_id and dialogue_data.has(current_dialogue_id):
-			var entry = dialogue_data[current_dialogue_id]
-			if entry.has("choices"):
-				print("[DUI]   阻止左键: 有选项")
-				return
+	if event.is_action_pressed("ui_accept"):
+		_advance_text()
+		get_viewport().set_input_as_handled()
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var entry = dialogue_data[current_dialogue_id]
+		if entry.has("choices"):
+			return
 		_advance_text()
 		get_viewport().set_input_as_handled()
