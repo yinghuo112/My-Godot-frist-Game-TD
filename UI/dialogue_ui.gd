@@ -101,11 +101,16 @@ func _on_typing_timer_timeout():
 			_display_choices(entry["choices"])
 
 func _display_choices(choices: Array):
-	for choice_data in choices:
+	for i in range(choices.size()):
 		var button = Button.new()
-		button.text = choice_data["text"]
-		button.pressed.connect(_on_choice_selected.bind(choice_data["next_id"]))
+		button.text = choices[i]["text"]
 		choices_box.add_child(button)
+		button.pressed.connect(_on_choice_at_index.bind(i))
+
+func _on_choice_at_index(index: int):
+	var entry = dialogue_data[current_dialogue_id]
+	if entry.has("choices") and index < entry["choices"].size():
+		_show_dialogue(entry["choices"][index]["next_id"])
 
 func _on_choice_selected(next_id: String):
 	_show_dialogue(next_id)
@@ -115,30 +120,28 @@ func end_dialogue():
 	dialogue_finished.emit()
 
 # ==================== 输入控制 ====================
+func _advance_text():
+	var entry = dialogue_data.get(current_dialogue_id, {})
+	if typing_timer.is_stopped():
+		if entry.has("choices"):
+			return
+		elif entry.has("next_id"):
+			_show_dialogue(entry["next_id"])
+		else:
+			end_dialogue()
+	else:
+		typing_timer.stop()
+		text_label.visible_characters = current_text.length()
+		_on_typing_timer_timeout()
+
 func _unhandled_input(event: InputEvent):
 	if not is_visible():
 		return
-		
-	if event.is_action_pressed("ui_accept"):
-		var entry = dialogue_data[current_dialogue_id]
-		
-		# 状态1：文本已经播放完毕
-		if typing_timer.is_stopped():
+	
+	if event.is_action_pressed("ui_accept") or (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):
+		if event is InputEventMouseButton and current_dialogue_id and dialogue_data.has(current_dialogue_id):
+			var entry = dialogue_data[current_dialogue_id]
 			if entry.has("choices"):
-				# 有选项时，不响应回车键跳过，强制玩家用鼠标点击选项
-				pass 
-			elif entry.has("next_id"):
-				# 无选项且有下一句时，按下回车才跳转下一句（修复了原代码瞬间跳转的Bug）
-				_show_dialogue(entry["next_id"])
-			else:
-				# 无选项无后续则关闭对话
-				end_dialogue()
-				
-		# 状态2：文本还在播放中
-		else:
-			# 一键跳过，直接展示全文
-			typing_timer.stop()
-			text_label.visible_characters = current_text.length()
-			_on_typing_timer_timeout() # 触发一次以显示可能的选项
-			
+				return
+		_advance_text()
 		get_viewport().set_input_as_handled()
