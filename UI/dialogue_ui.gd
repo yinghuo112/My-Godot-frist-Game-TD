@@ -89,6 +89,8 @@ func _display_choices(choices: Array):
 	for i in range(choices.size()):
 		var button = Button.new()
 		button.text = choices[i]["text"]
+		button.layout_mode = 2
+		button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		choices_box.add_child(button)
 		button.pressed.connect(_on_choice_at_index.bind(i))
 		print("[DUI]   按钮[", i, "]: text=", choices[i]["text"], " next=", choices[i]["next_id"])
