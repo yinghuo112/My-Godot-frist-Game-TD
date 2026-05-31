@@ -4,9 +4,9 @@ extends Control
 signal dialogue_finished
 
 # 节点绑定 (注意：这里将 text_label 改为了 RichTextLabel 以支持滚动条)
-@onready var speaker_label: Label = $VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/SpeakerLabel
-@onready var text_label: RichTextLabel = $VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/TextLabel
-@onready var choices_box: VBoxContainer = $VBoxContainer/PanelContainer/MarginContainer/VBoxContainer/ChoicesBox
+@onready var speaker_label: Label = $PanelContainer/MarginContainer/VBoxContainer/SpeakerLabel
+@onready var text_label: RichTextLabel = $PanelContainer/MarginContainer/VBoxContainer/TextLabel
+@onready var choices_box: VBoxContainer = $PanelContainer/MarginContainer/VBoxContainer/ChoicesBox
 
 # 打字机效果配置
 var typing_timer: Timer = Timer.new()
@@ -130,12 +130,11 @@ func _advance_text():
 		text_label.visible_characters = current_text.length()
 		_on_typing_timer_timeout()
 
-func _unhandled_input(event: InputEvent):
+func _input(event: InputEvent):
 	if not is_visible():
 		return
 	if not current_dialogue_id or not dialogue_data.has(current_dialogue_id):
 		return
-	print("[DUI] 输入: type=", event.get_class(), " visible=", visible, " id=", current_dialogue_id)
 	if event.is_action_pressed("ui_accept"):
 		_advance_text()
 		get_viewport().set_input_as_handled()
