@@ -13,6 +13,7 @@ extends Node2D
 @onready var tower_ring: Control = $UI/TowerActionRing
 @onready var tree_container: Node2D = $TreeContainer
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
+@onready var dialogue_ui: Control = $UI/DialogueUi
 
 var tower_scene = preload("res://scenes/ArrowTower.tscn")
 var tree_scene = preload("res://树/Tree.tscn")
@@ -38,7 +39,10 @@ func _ready() -> void:
 	_update_lives(20)
 	_update_wave(0)
 	AudioManager.play_music()
-	_setup_tree_spawning()
+	if dialogue_ui and dialogue_ui.visible:
+		dialogue_ui.connect("dialogue_finished", _setup_tree_spawning)
+	else:
+		_setup_tree_spawning()
 
 # 设置树木生成计时器，3秒后开始生成
 func _setup_tree_spawning():
@@ -59,7 +63,7 @@ func _input(event: InputEvent) -> void:
 		$Camera2D.zoom = Vector2(1, 1)
 		($Camera2D as Camera2D)._target_zoom = 1.0
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if tower_ring.visible:
+		if tower_ring.visible or (dialogue_ui and dialogue_ui.visible):
 			return
 		var click_pos := get_global_mouse_position()
 		for slot in tower_slots.get_children():
