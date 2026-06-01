@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="EnemyType" format=3 uid="uid://cwupnufgigbix"]
+
+[ext_resource type="PackedScene" uid="uid://dv66tjrfyg6cv" path="res://怪物/哥布林/gbl.tscn" id="1_7hjkl"]
+[ext_resource type="Script" uid="uid://c67ocaxkc0vfl" path="res://资源与配置/enemy_type.gd" id="1_vqlgh"]
+
+[resource]
+script = ExtResource("1_vqlgh")
+display_name = "哥布林"
+scene = ExtResource("1_7hjkl")

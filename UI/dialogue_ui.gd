@@ -19,6 +19,7 @@ var current_dialogue_id: String
 
 func _ready():
 	print("[DUI] _ready() start")
+	process_mode = PROCESS_MODE_WHEN_PAUSED
 	typing_timer.timeout.connect(_on_typing_timer_timeout)
 	add_child(typing_timer)
 	hide()
@@ -50,6 +51,7 @@ func load_and_start_dialogue(file_path: String, start_id: String):
 func start(data: Dictionary, start_id: String):
 	print("[DUI] start() id=", start_id, " data_size=", data.size())
 	self.dialogue_data = data
+	get_tree().paused = true
 	show()
 	_show_dialogue(start_id)
 
@@ -112,6 +114,7 @@ func _on_choice_selected(next_id: String):
 
 func end_dialogue():
 	print("[DUI] end_dialogue")
+	get_tree().paused = false
 	hide()
 	dialogue_finished.emit()
 

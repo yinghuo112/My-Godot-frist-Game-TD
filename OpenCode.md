@@ -63,12 +63,14 @@
 | `树/tree.gd` (class_name GameTree, extends Node2D) | 2 stages: SAPLING→MATURE (15s), HP=30, mark/unmark for tower attack, take_damage/die, Area2D on collision_layer=2 |
 | `树/Tree.tscn` | Scene: ColorRect + Area2D(layer2) + CollisionShape2D + GrowTimer |
 
-### Config
+### Config / Data
 | File | What it does |
 |------|-------------|
 | `配置/wave_config.tres` | Wave data (2 entries, fallback repeats last) |
-| `配置/wave_entry.gd` | Resource class: enemy_scene, count, spawn_interval |
-| `配置/wave_config_data.gd` | Resource class: array of WaveEntry |
+| `资源/wave_entry.gd` | Resource class: enemy_scene, enemy_type, count, spawn_interval |
+| `资源/wave_config_data.gd` | Resource class: array of WaveEntry |
+| `资源/enemy_type.gd` (class_name EnemyType) | Monster stat config: max_hp, speed, gold_reward, scene |
+| `资源/tower_type.gd` (class_name TowerType) | Tower stat config: damage, fire_rate, range_radius, cost |
 
 ## Key Technical Details
 
@@ -127,6 +129,13 @@
 ## Collision Layers
 - Layer 1: enemies + towers + bullets
 - Layer 2: marked trees (Area2D enabled only when marked)
+
+## Data-Driven Architecture
+- `enemy_base.gd`: Removed `@export` stats → `init(data: EnemyType)` copies values from `.tres` file
+- `tower_base.gd`: Removed `@export` stats → `init(data: TowerType)` copies values from `.tres` file
+- `game_manager.gd`: Spawning uses `WaveEntry.enemy_type` if set, falls back to `enemy_scene`
+- `main.gd`: Tower placement reads `tower_type.cost`, calls `tower.init(tower_type)` if set
+- `.tres` files: Create in editor via `EnemyType`/`TowerType` Resource, drag into scene fields
 
 ## Current State
 - Trees spawn on grass tiles, grow in 15s, click to mark for tower attack

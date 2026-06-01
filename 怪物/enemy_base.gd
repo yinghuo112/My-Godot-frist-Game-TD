@@ -5,12 +5,15 @@ extends PathFollow2D
 signal died(enemy)
 signal reached_end
 
-# --- 导出属性 ---
-@export var speed: float = 150.0
-@export var max_hp: float = 10.0
-@export var gold_reward: int = 10
-@export var lane_width: float = 40.0
-@export var lane_change_speed: float = 120.0
+# --- 数据驱动（通过 EnemyType .tres 文件配置数值）---
+var enemy_type: EnemyType            # 怪物类型数据（由生成器传入）
+
+# 基础属性（init() 会从 EnemyType 覆盖这些值）
+var speed: float = 150.0             # 移动速度
+var max_hp: float = 10.0             # 最大生命
+var gold_reward: int = 10            # 击杀奖励金币
+var lane_width: float = 40.0         # 变道宽度
+var lane_change_speed: float = 120.0 # 超车速度
 
 # --- 运行时状态 ---
 var current_hp: float
@@ -25,6 +28,16 @@ var overtake_target: Node2D = null
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var health_bar: ProgressBar = $ProgressBar
 @onready var ray_cast: RayCast2D = $RayCast2D
+
+# 由 GameManager 在生成时调用，传入 EnemyType 数据覆盖默认值
+func init(data: EnemyType):
+	enemy_type = data
+	speed = data.speed
+	max_hp = data.max_hp
+	gold_reward = data.gold_reward
+	lane_width = data.lane_width
+	lane_change_speed = data.lane_change_speed
+	current_hp = max_hp
  
 # 初始化怪物：设置血量、播放行走动画
 func _ready():

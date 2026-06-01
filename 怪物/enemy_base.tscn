@@ -17,11 +17,10 @@ radius = 7.0
 rotates = false
 script = ExtResource("1_8nqel")
 
-[node name="RayCast2D" type="RayCast2D" parent="."]
-enabled = true
+[node name="RayCast2D" type="RayCast2D" parent="." unique_id=172227106]
+target_position = Vector2(50, 0)
 hit_from_inside = true
 collide_with_areas = true
-target_position = Vector2(50, 0)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1004382448]
 sprite_frames = SubResource("SpriteFrames_edvsq")

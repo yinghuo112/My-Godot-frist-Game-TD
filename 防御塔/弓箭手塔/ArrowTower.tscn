@@ -39,7 +39,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l6fjp"]
@@ -47,13 +47,10 @@ resource_local_to_scene = true
 radius = 120.0
 
 [node name="ArrowTower" unique_id=2060410192 instance=ExtResource("1_b7lgr")]
-show_range_circle = true
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." index="0" unique_id=321390388]
-scale = Vector2(0.3, 0.3)
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=741884957]
 sprite_frames = SubResource("SpriteFrames_l6fjp")
-animation = &"attack"
 
-[node name="CollisionShape2D" parent="RangeArea" index="0"]
+[node name="CollisionShape2D" parent="RangeArea" parent_id_path=PackedInt32Array(1830428088) index="0" unique_id=2105987512]
 position = Vector2(-7, 0)
 shape = SubResource("CircleShape2D_l6fjp")

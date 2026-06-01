@@ -64,9 +64,9 @@ func start_wave():
 # --- 加载波次配置 ---
 # 从文件加载波次配置，失败时用默认配置
 func _load_config() -> WaveConfigData:
-	print("尝试加载波次配置: res://配置/wave_config.tres")
-	if ResourceLoader.exists("res://配置/wave_config.tres"):
-		var data: WaveConfigData = load("res://配置/wave_config.tres")
+	print("尝试加载波次配置: res://资源与配置/wave_config.tres")
+	if ResourceLoader.exists("res://资源与配置/wave_config.tres"):
+		var data: WaveConfigData = load("res://资源与配置/wave_config.tres")
 		if data and data.waves.size() > 0:
 			print("波次配置加载成功: %d 个波次" % data.waves.size())
 			return data
@@ -106,7 +106,13 @@ func _spawn_enemy():
 
 	var batch = mini(3, enemies_to_spawn)
 	for i in range(batch):
-		var enemy = _current_entry.enemy_scene.instantiate()
+		# 优先使用 EnemyType 数据驱动，否则回退旧方式
+		var enemy
+		if _current_entry.enemy_type:
+			enemy = _current_entry.enemy_type.scene.instantiate()
+			enemy.init(_current_entry.enemy_type)
+		else:
+			enemy = _current_entry.enemy_scene.instantiate()
 		enemy.died.connect(_on_enemy_died)
 		enemy.reached_end.connect(_on_enemy_reached_end)
 		enemy_path.add_child(enemy)

@@ -1,11 +1,16 @@
 extends Node2D
 class_name TowerBase
 
-@export var damage: float = 5.0
-@export var fire_rate: float = 1.0
-@export var range_radius: float = 120.0
-@export var cost: int = 50
-@export var show_range_circle: bool = true
+# --- 数据驱动（通过 TowerType .tres 文件配置数值）---
+var tower_type: TowerType            # 塔类型数据（由 main.gd 传入）
+
+# 基础属性（init() 会从 TowerType 覆盖这些值）
+var damage: float = 5.0              # 攻击力
+var fire_rate: float = 1.0           # 射速（秒）
+var range_radius: float = 120.0      # 射程
+var cost: int = 50                   # 购买价格
+
+@export var show_range_circle: bool = true  # 是否显示射程圈
 
 # --- 升级系统 ---
 var level: int = 1
@@ -15,7 +20,7 @@ var can_shoot: bool = true
 var target: Node2D = null
 var _tree_target: Node2D = null
 var enemy_group: String = "enemy"
-var bullet_scene = preload("res://scenes/bullet.tscn")
+var bullet_scene = preload("res://核心/bullet.tscn")
 
 @onready var sprite = get_node_or_null("AnimatedSprite2D")
 @onready var range_area: Area2D = $RangeArea
@@ -23,6 +28,14 @@ var bullet_scene = preload("res://scenes/bullet.tscn")
 @onready var shoot_timer: Timer = $ShootTimer
 @onready var bullet_spawn: Marker2D = $BulletSpawn
 @onready var level_label: Label = null
+
+# 由 main.gd 在放置时调用，传入 TowerType 数据覆盖默认值
+func init(data: TowerType):
+	tower_type = data
+	damage = data.damage
+	fire_rate = data.fire_rate
+	range_radius = data.range_radius
+	cost = data.cost
 
 # 初始化范围碰撞体、射击计时器、范围检测和等级标签
 func _ready():

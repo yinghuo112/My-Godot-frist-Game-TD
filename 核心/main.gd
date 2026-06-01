@@ -15,7 +15,8 @@ extends Node2D
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 @onready var dialogue_ui: Control = $UI/DialogueUi
 
-var tower_scene = preload("res://scenes/ArrowTower.tscn")
+var tower_scene = preload("res://防御塔/弓箭手塔/ArrowTower.tscn")
+var tower_type: TowerType = null     # 弓箭塔类型数据（可在编辑器拖入 .tres 文件，自带场景路径）
 var tree_scene = preload("res://树/Tree.tscn")
 var floating_text_scene = preload("res://工具/FloatingText.tscn")
 
@@ -43,6 +44,10 @@ func _ready() -> void:
 		dialogue_ui.connect("dialogue_finished", _setup_tree_spawning)
 	else:
 		_setup_tree_spawning()
+
+	# 添加性能调试面板（按 F3 开关）
+	var debug = load("res://调试/debug_overlay.gd").new()
+	add_child(debug)
 
 # 设置树木生成计时器，3秒后开始生成
 func _setup_tree_spawning():
@@ -86,15 +91,18 @@ func _unhandled_input(event: InputEvent) -> void:
 			tower_ring.hide_ring()
 
 
-# 在指定塔槽放置防御塔，花费50金币
+# 在指定塔槽放置防御塔，花费从 TowerType 读取
 func _place_tower(slot: Marker2D) -> void:
-	if not GameManager.can_afford(50):
+	var cost = tower_type.cost if tower_type else 50
+	if not GameManager.can_afford(cost):
 		return
-	var tower = tower_scene.instantiate()
+	var tower = (tower_type.scene if tower_type and tower_type.scene else tower_scene).instantiate()
+	if tower_type:
+		tower.init(tower_type)
 	tower.add_to_group("tower")
 	slot.add_child(tower)
 	tower.position = Vector2.ZERO
-	GameManager.spend_gold(50)
+	GameManager.spend_gold(cost)
 
 # 调试功能：按T键直接生成一个测试怪物
 func _spawn_test_enemy() -> void:

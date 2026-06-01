@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://dwew2eykqysxs"]
+
+[ext_resource type="Script" uid="uid://cxkjkbixl1sdk" path="res://防御塔/tower_base.gd" id="1_gd4b1"]
+[ext_resource type="Texture2D" uid="uid://d2y0kjuwtqjlr" path="res://assets/防御塔/magic_tower.png" id="2_mecsu"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oqtxn"]
+atlas = ExtResource("2_mecsu")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svhtx"]
+atlas = ExtResource("2_mecsu")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gblv5"]
+atlas = ExtResource("2_mecsu")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fc0iq"]
+atlas = ExtResource("2_mecsu")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_eqcnh"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oqtxn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svhtx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gblv5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fc0iq")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xo7f5"]
+
+[node name="magic_tower" type="Node2D" unique_id=2060410192]
+script = ExtResource("1_gd4b1")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1072657926]
+sprite_frames = SubResource("SpriteFrames_eqcnh")
+animation = &"attack"
+
+[node name="RangeArea" type="Area2D" parent="." unique_id=1830428088]
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RangeArea" unique_id=2105987512]
+shape = SubResource("CircleShape2D_xo7f5")
+
+[node name="ShootTimer" type="Timer" parent="." unique_id=942484061]
+
+[node name="BulletSpawn" type="Marker2D" parent="." unique_id=322126159]
+position = Vector2(0, -30)

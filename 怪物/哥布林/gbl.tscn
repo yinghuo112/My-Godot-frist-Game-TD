@@ -1,0 +1,69 @@
+[gd_scene format=3 uid="uid://dv66tjrfyg6cv"]
+
+[ext_resource type="PackedScene" uid="uid://c7ejp7m2bnl4d" path="res://怪物/enemy_base.tscn" id="1_f63yb"]
+[ext_resource type="Texture2D" uid="uid://0c0tmauabsh0" path="res://assets/怪物/哥布林/0001 (复制) (复制).png" id="2_cxsfy"]
+[ext_resource type="Texture2D" uid="uid://81tqq6o86amc" path="res://assets/怪物/哥布林/0002 (复制) (复制).png" id="3_7y8kh"]
+[ext_resource type="Texture2D" uid="uid://dcg3qfh4yrtdq" path="res://assets/怪物/哥布林/0003 (复制) (复制).png" id="4_ksrc6"]
+[ext_resource type="Texture2D" uid="uid://77684d745q8v" path="res://assets/怪物/哥布林/0004 (复制) (复制).png" id="5_wkg71"]
+[ext_resource type="Texture2D" uid="uid://dpcyxxd84wfwk" path="res://assets/怪物/哥布林/0005 (复制) (复制).png" id="6_y422r"]
+[ext_resource type="Texture2D" uid="uid://b8qsk84gh2yhn" path="res://assets/怪物/哥布林/0006 (复制) (复制).png" id="7_kqxlq"]
+[ext_resource type="Texture2D" uid="uid://d0qigyynpclkp" path="res://assets/怪物/哥布林/0007 (复制) (复制).png" id="8_s154v"]
+[ext_resource type="Texture2D" uid="uid://dhqw8uwuu1cil" path="res://assets/怪物/哥布林/0008 (复制) (复制).png" id="9_0u4sb"]
+[ext_resource type="Texture2D" uid="uid://oxvc4t5kvuci" path="res://assets/怪物/哥布林/0009 (复制) (复制).png" id="10_a0wpq"]
+[ext_resource type="Texture2D" uid="uid://blpx2un3qfb6u" path="res://assets/怪物/哥布林/0010 (复制) (复制).png" id="11_5yi2s"]
+[ext_resource type="Texture2D" uid="uid://b8yqw4xg824pm" path="res://assets/怪物/哥布林/0011 (复制) (复制).png" id="12_khoo3"]
+[ext_resource type="Texture2D" uid="uid://neluyn0d13jv" path="res://assets/怪物/哥布林/0012 (复制) (复制).png" id="13_mlxjx"]
+[ext_resource type="Texture2D" uid="uid://b6efkkb3c6no1" path="res://assets/怪物/哥布林/0013 (复制) (复制).png" id="14_bwm21"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_xer20"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_cxsfy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_7y8kh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_ksrc6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_wkg71")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_y422r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_kqxlq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_s154v")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_0u4sb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_a0wpq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_5yi2s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_khoo3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_mlxjx")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_bwm21")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[node name="Gbl" unique_id=2011249988 instance=ExtResource("1_f63yb")]
+
+[node name="AnimatedSprite2D" parent="." index="1" unique_id=1004382448]
+sprite_frames = SubResource("SpriteFrames_xer20")
+frame_progress = 0.048780218
