@@ -9,3 +9,4 @@ class_name TowerType
 @export var range_radius: float = 120.0          # 射程（像素），防御塔的攻击范围半径
 @export var cost: int = 50                       # 购买价格
 @export var scene: PackedScene                   # 塔场景文件（拖入 .tscn）
+@export var bullet_scene: PackedScene            # 弹道场景（null=使用默认子弹）

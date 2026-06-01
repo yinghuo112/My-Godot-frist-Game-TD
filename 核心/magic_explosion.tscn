@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://d2f6h9j1l4p8r"]
+
+[ext_resource type="Script" uid="uid://b5t8g1k4m7q0z" path="res://核心/magic_explosion.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/防御塔/魔法塔/magic_explosion.png" id="2_texture"]
+
+[node name="MagicExplosion" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_texture")
+hframes = 5

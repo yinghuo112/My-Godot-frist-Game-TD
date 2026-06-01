@@ -1,0 +1,21 @@
+错误现象：
+点击开始游戏报错 Parser Error: Could not preload resource file "res://资源与配置/防御塔属性/magic.tres".
+
+原因分析：
+在编辑 .tres / .tscn 文件时，工具将文件中的中文字符编码损坏。
+例如 "防御塔/魔法塔/" 被改写为 "防御�?魔法�?"，导致 Godot 无法解析路径。
+引发连锁反应：main.gd 中 preload() 递归加载 magic.tres → magic_bolt.tscn → 路径含损坏中文字符 → 加载失败。
+
+解决方案：
+1. 删除所有含损坏中文的文件，重新创建（用 Python 或正确编码的工具写入）
+2. 确保文件保存为 UTF-8 编码（无 BOM），中文字符字节正确
+3. 新增资源需要创建对应的 .uid 文件并写入 uid 标识
+4. 所有 ext_resource 引用需同时包含 uid="" 和 path="" 两个字段
+
+涉及文件：
+  核心/magic_bolt.gd、核心/magic_bolt.tscn
+  核心/magic_explosion.gd、核心/magic_explosion.tscn
+  资源与配置/防御塔属性/magic.tres
+
+根因：
+文件编辑工具对多字节 UTF-8 编码支持不完整，导致中文字符被截断或替换。

@@ -1,41 +1,41 @@
 [gd_scene format=3 uid="uid://de5m5ivccvuh2"]
 
-[ext_resource type="PackedScene" uid="uid://d0srg3wgtcit1" path="res://防御塔/tower_base.tscn" id="1_b7lgr"]
-[ext_resource type="Texture2D" uid="uid://bg7rm23q7tre8" path="res://assets/防御塔/弓箭手/111111_1.png" id="2_jc87x"]
-[ext_resource type="Texture2D" uid="uid://mbgv5g1h6204" path="res://assets/防御塔/弓箭手/111111_2.png" id="3_my437"]
-[ext_resource type="Texture2D" uid="uid://cpm7jh1syi3xy" path="res://assets/防御塔/弓箭手/111111_3.png" id="4_iwi30"]
-[ext_resource type="Texture2D" uid="uid://bv7nnxq4chaku" path="res://assets/防御塔/弓箭手/111111_4.png" id="5_rndga"]
-[ext_resource type="Texture2D" uid="uid://dqktd7i0gfsh0" path="res://assets/防御塔/弓箭手/111111_5.png" id="6_c4n66"]
-[ext_resource type="Texture2D" uid="uid://bb33s770com65" path="res://assets/防御塔/弓箭手/111111_6.png" id="7_2noml"]
-[ext_resource type="Texture2D" uid="uid://bhxxlfbnqc77u" path="res://assets/防御塔/弓箭手/111111_7.png" id="8_q8kfo"]
-[ext_resource type="Texture2D" uid="uid://h4si00bps5hy" path="res://assets/防御塔/弓箭手/111111_8.png" id="9_62doo"]
+[ext_resource type="PackedScene" uid="uid://d0srg3wgtcit1" path="res://防御塔/tower_base.tscn" id="1_5tcb5"]
+[ext_resource type="Texture2D" uid="uid://bg7rm23q7tre8" path="res://assets/防御塔/弓箭手/111111_1.png" id="2_0r3pr"]
+[ext_resource type="Texture2D" uid="uid://mbgv5g1h6204" path="res://assets/防御塔/弓箭手/111111_2.png" id="3_gf3to"]
+[ext_resource type="Texture2D" uid="uid://cpm7jh1syi3xy" path="res://assets/防御塔/弓箭手/111111_3.png" id="4_ycyrt"]
+[ext_resource type="Texture2D" uid="uid://bv7nnxq4chaku" path="res://assets/防御塔/弓箭手/111111_4.png" id="5_hbw4x"]
+[ext_resource type="Texture2D" uid="uid://dqktd7i0gfsh0" path="res://assets/防御塔/弓箭手/111111_5.png" id="6_fbhhv"]
+[ext_resource type="Texture2D" uid="uid://bb33s770com65" path="res://assets/防御塔/弓箭手/111111_6.png" id="7_63vmt"]
+[ext_resource type="Texture2D" uid="uid://bhxxlfbnqc77u" path="res://assets/防御塔/弓箭手/111111_7.png" id="8_00mvs"]
+[ext_resource type="Texture2D" uid="uid://h4si00bps5hy" path="res://assets/防御塔/弓箭手/111111_8.png" id="9_vxobc"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_l6fjp"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_jc87x")
+"texture": ExtResource("2_0r3pr")
 }, {
 "duration": 1.0,
-"texture": ExtResource("3_my437")
+"texture": ExtResource("3_gf3to")
 }, {
 "duration": 1.0,
-"texture": ExtResource("4_iwi30")
+"texture": ExtResource("4_ycyrt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("5_rndga")
+"texture": ExtResource("5_hbw4x")
 }, {
 "duration": 1.0,
-"texture": ExtResource("6_c4n66")
+"texture": ExtResource("6_fbhhv")
 }, {
 "duration": 1.0,
-"texture": ExtResource("7_2noml")
+"texture": ExtResource("7_63vmt")
 }, {
 "duration": 1.0,
-"texture": ExtResource("8_q8kfo")
+"texture": ExtResource("8_00mvs")
 }, {
 "duration": 1.0,
-"texture": ExtResource("9_62doo")
+"texture": ExtResource("9_vxobc")
 }],
 "loop": true,
 "name": &"attack",
@@ -46,9 +46,10 @@ animations = [{
 resource_local_to_scene = true
 radius = 120.0
 
-[node name="ArrowTower" unique_id=2060410192 instance=ExtResource("1_b7lgr")]
+[node name="ArrowTower" unique_id=2060410192 instance=ExtResource("1_5tcb5")]
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=741884957]
+scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_l6fjp")
 
 [node name="CollisionShape2D" parent="RangeArea" parent_id_path=PackedInt32Array(1830428088) index="0" unique_id=2105987512]

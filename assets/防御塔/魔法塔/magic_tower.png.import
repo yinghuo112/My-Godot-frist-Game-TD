@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d2y0kjuwtqjlr"
-path="res://.godot/imported/magic_tower.png-2b9fd7a9512fa6956d33861bc88969f3.ctex"
+uid="uid://bn2oa08yj8fuw"
+path="res://.godot/imported/magic_tower.png-f469e1840333e4225bfeb4eebbf771c2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/防御塔/magic_tower.png"
-dest_files=["res://.godot/imported/magic_tower.png-2b9fd7a9512fa6956d33861bc88969f3.ctex"]
+source_file="res://assets/防御塔/魔法塔/magic_tower.png"
+dest_files=["res://.godot/imported/magic_tower.png-f469e1840333e4225bfeb4eebbf771c2.ctex"]
 
 [params]
 

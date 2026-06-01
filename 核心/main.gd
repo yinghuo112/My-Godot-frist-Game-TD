@@ -15,8 +15,14 @@ extends Node2D
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 @onready var dialogue_ui: Control = $UI/DialogueUi
 
-var tower_scene = preload("res://防御塔/弓箭手塔/ArrowTower.tscn")
-var tower_type: TowerType = null     # 弓箭塔类型数据（可在编辑器拖入 .tres 文件，自带场景路径）
+var tower_types: Array[TowerType] = [
+	preload("res://资源与配置/防御塔属性/arrow.tres"),
+	preload("res://资源与配置/防御塔属性/cannon.tres"),
+	preload("res://资源与配置/防御塔属性/magic.tres"),
+]
+var _build_panel: Panel
+var _build_buttons: Array[Button] = []
+var _pending_slot: Marker2D = null
 var tree_scene = preload("res://树/Tree.tscn")
 var floating_text_scene = preload("res://工具/FloatingText.tscn")
 
@@ -40,6 +46,7 @@ func _ready() -> void:
 	_update_lives(20)
 	_update_wave(0)
 	AudioManager.play_music()
+	_init_build_panel()
 	if dialogue_ui and dialogue_ui.visible:
 		dialogue_ui.connect("dialogue_finished", _setup_tree_spawning)
 	else:
@@ -68,14 +75,14 @@ func _input(event: InputEvent) -> void:
 		$Camera2D.zoom = Vector2(1, 1)
 		($Camera2D as Camera2D)._target_zoom = 1.0
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if tower_ring.visible or (dialogue_ui and dialogue_ui.visible):
+		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible):
 			return
 		var click_pos := get_global_mouse_position()
 		for slot in tower_slots.get_children():
 			if slot is Marker2D:
 				if slot.global_position.distance_squared_to(click_pos) < _CLICK_RADIUS_SQ:
 					if slot.get_child_count() == 0:
-						_place_tower(slot)
+						_show_build_panel(slot)
 					else:
 						tower_ring.show_for_tower(slot.get_child(0))
 					get_viewport().set_input_as_handled()
@@ -87,22 +94,69 @@ func _input(event: InputEvent) -> void:
 # 未处理的点击：关闭环形菜单
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		if _build_panel.visible:
+			_hide_build_panel()
 		if tower_ring.visible:
 			tower_ring.hide_ring()
 
 
-# 在指定塔槽放置防御塔，花费从 TowerType 读取
-func _place_tower(slot: Marker2D) -> void:
-	var cost = tower_type.cost if tower_type else 50
-	if not GameManager.can_afford(cost):
+# 在指定塔槽放置指定类型的防御塔
+func _place_tower(slot: Marker2D, tt: TowerType) -> void:
+	if not GameManager.can_afford(tt.cost):
 		return
-	var tower = (tower_type.scene if tower_type and tower_type.scene else tower_scene).instantiate()
-	if tower_type:
-		tower.init(tower_type)
+	var tower = tt.scene.instantiate()
+	tower.init(tt)
 	tower.add_to_group("tower")
 	slot.add_child(tower)
 	tower.position = Vector2.ZERO
-	GameManager.spend_gold(cost)
+	GameManager.spend_gold(tt.cost)
+
+# 初始化建造面板（3个塔按钮）
+func _init_build_panel():
+	_build_panel = Panel.new()
+	_build_panel.name = "TowerBuildPanel"
+	_build_panel.visible = false
+	_build_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	$UI.add_child(_build_panel)
+	var vbox = VBoxContainer.new()
+	vbox.name = "BtnBox"
+	vbox.size = Vector2(140, 0)
+	_build_panel.add_child(vbox)
+	for i in tower_types.size():
+		var btn = Button.new()
+		var tt = tower_types[i]
+		btn.custom_minimum_size = Vector2(130, 34)
+		btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		btn.text = "%s (%dg)" % [tt.display_name, tt.cost]
+		btn.pressed.connect(_on_build_selected.bind(i))
+		vbox.add_child(btn)
+		_build_buttons.append(btn)
+	_build_panel.size = Vector2(150, 34 * tower_types.size() + 12)
+
+# 在塔槽位置显示建造面板
+func _show_build_panel(slot: Marker2D):
+	if _pending_slot:
+		return
+	_pending_slot = slot
+	var camera = get_viewport().get_camera_2d()
+	var center = (slot.global_position - camera.global_position) * camera.zoom
+	center += get_viewport().get_visible_rect().size / 2
+	_build_panel.position = center - Vector2(65, 40)
+	for i in tower_types.size():
+		_build_buttons[i].disabled = not GameManager.can_afford(tower_types[i].cost)
+	_build_panel.show()
+
+# 关闭建造面板
+func _hide_build_panel():
+	_build_panel.hide()
+	_pending_slot = null
+
+# 建造面板选择回调
+func _on_build_selected(idx: int):
+	var slot = _pending_slot
+	_hide_build_panel()
+	if slot and is_instance_valid(slot) and slot.get_child_count() == 0:
+		_place_tower(slot, tower_types[idx])
 
 # 调试功能：按T键直接生成一个测试怪物
 func _spawn_test_enemy() -> void:

@@ -36,6 +36,8 @@ func init(data: TowerType):
 	fire_rate = data.fire_rate
 	range_radius = data.range_radius
 	cost = data.cost
+	if data.bullet_scene:
+		bullet_scene = data.bullet_scene
 
 # 初始化范围碰撞体、射击计时器、范围检测和等级标签
 func _ready():
@@ -48,6 +50,12 @@ func _ready():
 	range_area.area_entered.connect(_on_area_entered)
 	range_area.area_exited.connect(_on_area_exited)
 	range_area.collision_mask |= 2
+
+	if sprite and sprite.sprite_frames.has_animation("attack"):
+		sprite.sprite_frames.set_animation_loop("attack", false)
+		sprite.animation_finished.connect(_on_attack_anim_finished)
+		sprite.frame = 0
+		sprite.stop()
 
 	level_label = Label.new()
 	level_label.name = "LevelLabel"
@@ -138,12 +146,14 @@ func _find_next_target():
 		target = found_tree
 	_tree_target = found_tree if found_tree else null
 
-# 射击冷却结束，标记可射击；若目标已丢失则停止动画
+# 射击冷却结束，标记可射击
 func _on_shoot_timer_timeout():
-	if not target or not is_instance_valid(target):
-		if sprite:
-			sprite.stop()
 	can_shoot = true
+
+# 攻击动画播放完成后复位到第0帧
+func _on_attack_anim_finished():
+	sprite.frame = 0
+	sprite.stop()
 
 # 绘制范围指示圈
 func _draw():

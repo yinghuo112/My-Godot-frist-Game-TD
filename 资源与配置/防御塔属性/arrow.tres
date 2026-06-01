@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="TowerType" format=3 uid="uid://6jgq0knh4sxw"]
+
+[ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://资源与配置/tower_type.gd" id="1_jhvrw"]
+[ext_resource type="PackedScene" uid="uid://de5m5ivccvuh2" path="res://防御塔/弓箭手塔/ArrowTower.tscn" id="2_arrow"]
+
+[resource]
+script = ExtResource("1_jhvrw")
+display_name = "Arrow"
+scene = ExtResource("2_arrow")
+metadata/_custom_type_script = "uid://chxc0a8vjbkuo"
