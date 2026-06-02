@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://resource/tower_type.gd" id="1_jhvrw"]
 [ext_resource type="PackedScene" uid="uid://de5m5ivccvuh2" path="res://Tower/弓箭手塔/ArrowTower.tscn" id="2_arrow"]
+[ext_resource type="Resource" path="res://SkillSystem/books/弓箭手技能书.tres" id="3_skillbook"]
 
 [resource]
 script = ExtResource("1_jhvrw")
@@ -16,4 +17,6 @@ crit_chance = 0.15
 crit_multiplier = 2.0
 hit_chance = 0.98
 description = "基础弓箭塔。远程物理攻击，高命中率，适合稳定输出。"
+skill_book = ExtResource("3_skillbook")
+skill_categories = ["通用", "弹道"]
 metadata/_custom_type_script = "uid://chxc0a8vjbkuo"

@@ -6,6 +6,7 @@ extends Area2D
 var target: Node2D = null           # 追踪的目标怪物
 var velocity: Vector2 = Vector2.ZERO  # 当前速度向量
 var _has_hit: bool = false          # 防止重复命中
+var source_tower: Node2D = null     # 来源塔（技能回调用）
 
 # 战斗属性（由 tower_base._shoot() 传入）
 var _crit_chance: float = 0.0
@@ -21,13 +22,15 @@ func _ready():
 # 初始化：设置目标、伤害和战斗属性
 func initialize(p_target: Node2D, p_damage: float,
 		p_crit_chance: float = 0.0, p_crit_mult: float = 1.0,
-		p_hit_chance: float = 1.0, p_attack_type: int = 0) -> void:
+		p_hit_chance: float = 1.0, p_attack_type: int = 0,
+		p_source_tower: Node2D = null) -> void:
 	target = p_target
 	damage = p_damage
 	_crit_chance = p_crit_chance
 	_crit_multiplier = p_crit_mult
 	_hit_chance = p_hit_chance
 	_attack_type = p_attack_type
+	source_tower = p_source_tower
 	if is_instance_valid(target):
 		look_at(target.global_position)
 
@@ -73,28 +76,42 @@ func _calculate_final_damage(target_node: Node2D) -> Array:
 
 	return [maxf(final_damage, 1.0), is_crit]
 
-# 命中目标：计算最终伤害并调用敌人的受伤函数
+func _apply_damage(enemy: Node2D) -> void:
+	if not enemy.has_method("take_damage"):
+		return
+	var result = _calculate_final_damage(enemy)
+	var dmg = result[0]
+	var crit = result[1]
+	if dmg > 0:
+		enemy.take_damage(dmg, crit)
+	if not is_instance_valid(source_tower) or not source_tower.has_method("get_skill_level"):
+		return
+	var tt = source_tower.get("tower_type")
+	if not tt:
+		return
+	var sb = tt.get("skill_book")
+	if not sb:
+		return
+	var unlocked = source_tower.get("skill_unlocked_indices") if "skill_unlocked_indices" in source_tower else []
+	for idx in unlocked:
+		if idx < 0 or idx >= sb.skills.size():
+			continue
+		var skill = sb.skills[idx]
+		var lv = source_tower.get_skill_level(skill)
+		if lv > 0 and skill.has_method("on_hit"):
+			skill.on_hit(source_tower, self, enemy, dmg, crit, lv)
+
 func _hit() -> void:
 	if _has_hit:
 		return
 	_has_hit = true
-	if is_instance_valid(target) and target.has_method("take_damage"):
-		var result = _calculate_final_damage(target)
-		var final_damage = result[0]
-		if final_damage > 0:
-			target.take_damage(final_damage, result[1])
+	_apply_damage(target)
 	queue_free()
 
-# Area2D 碰撞回调：直接与敌方 Area2D 接触时触发
 func _on_area_entered(area: Area2D) -> void:
 	if _has_hit:
 		return
 	if area.is_in_group("enemy"):
-		var enemy = area.get_parent()
-		if enemy.has_method("take_damage"):
-			var result = _calculate_final_damage(enemy)
-			var final_damage = result[0]
-			if final_damage > 0:
-				enemy.take_damage(final_damage, result[1])
 		_has_hit = true
+		_apply_damage(area.get_parent())
 		queue_free()

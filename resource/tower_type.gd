@@ -17,3 +17,10 @@ enum AttackType { PHYSICAL, MAGIC }
 @export var crit_multiplier: float = 2.0         # 暴击倍率
 @export var hit_chance: float = 0.95             # 命中率
 @export var description: String = ""              # 技能描述（支持 BBCode）
+@export var skill_book: Resource                   # 技能书
+@export var skill_categories: Array = []           # 技能分类标签
+
+func can_equip_skill(skill) -> bool:
+	if not skill_categories.is_empty() and skill.has_method("can_equip"):
+		return skill.can_equip(skill_categories)
+	return true

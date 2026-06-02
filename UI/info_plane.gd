@@ -7,6 +7,7 @@ var _tween: Tween = null
 var _is_open: bool = false
 
 signal closed()
+signal skill_book_requested(tower)
 
 @onready var close_btn: Button = %CloseBtn
 @onready var icon_rect: TextureRect = %IconTextureRect
@@ -16,11 +17,14 @@ signal closed()
 @onready var desc_label: RichTextLabel = %DescLabel
 @onready var upgrade_btn: Button = %UpgradeBtn
 @onready var sell_btn: Button = %SellBtn
+@onready var skill_btn: Button = %SkillBtn
 
 func _ready() -> void:
 	close_btn.pressed.connect(_close)
 	upgrade_btn.pressed.connect(_on_upgrade)
 	sell_btn.pressed.connect(_on_sell)
+	if skill_btn:
+		skill_btn.pressed.connect(_on_skill_click)
 
 func show_for_tower(tower: Node2D) -> void:
 	if _tween and _tween.is_valid():
@@ -59,7 +63,7 @@ func _populate(tower: Node2D) -> void:
 	if not tower.has_method("init") or not tower.has_method("get_current_damage"):
 		return
 
-	var tt: TowerType = tower.tower_type if "tower_type" in tower else null
+	var tt = tower.tower_type if "tower_type" in tower else null
 	if not tt:
 		return
 
@@ -88,6 +92,13 @@ func _populate(tower: Node2D) -> void:
 
 	upgrade_btn.disabled = not tower.can_upgrade() if tower.has_method("can_upgrade") else true
 	sell_btn.disabled = false
+	if skill_btn:
+		skill_btn.visible = tt.get("skill_book") != null
+
+func _on_skill_click() -> void:
+	if is_instance_valid(_target_tower):
+		skill_book_requested.emit(_target_tower)
+		_close()
 
 func _on_upgrade() -> void:
 	if not is_instance_valid(_target_tower) or not _target_tower.has_method("do_upgrade"):

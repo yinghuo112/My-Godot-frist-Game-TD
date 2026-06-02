@@ -15,6 +15,7 @@ extends Node2D
 @onready var tile_map_layer: TileMapLayer = $TileMapLayer
 @onready var dialogue_ui: Control = $UI/DialogueUi
 @onready var info_plane: PanelContainer = $UI/InfoPlane
+@onready var skill_book_plane: PanelContainer = $UI/SkillBookPlane
 
 var tower_types: Array[TowerType] = [
 	preload("res://resource/Tower_constor/arrow.tres"),
@@ -55,6 +56,8 @@ func _ready() -> void:
 
 	tower_ring.show_info_requested.connect(_on_tower_info_requested)
 	info_plane.closed.connect(_on_info_plane_closed)
+	info_plane.skill_book_requested.connect(_on_skill_book_requested)
+	skill_book_plane.closed.connect(_on_skill_book_plane_closed)
 
 	# 添加性能调试面板（按 F3 开关）
 	var debug = load("res://调试/debug_overlay.gd").new()
@@ -79,7 +82,7 @@ func _input(event: InputEvent) -> void:
 		$Camera2D.zoom = Vector2(1, 1)
 		($Camera2D as Camera2D)._target_zoom = 1.0
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible) or info_plane.visible:
+		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible) or info_plane.visible or skill_book_plane.visible:
 			return
 		var click_pos := get_global_mouse_position()
 		for slot in tower_slots.get_children():
@@ -102,6 +105,12 @@ func _on_tower_info_requested(tower: Node2D) -> void:
 func _on_info_plane_closed() -> void:
 	pass
 
+func _on_skill_book_requested(tower: Node2D) -> void:
+	skill_book_plane.show_for_tower(tower)
+
+func _on_skill_book_plane_closed() -> void:
+	pass
+
 # 未处理的点击：关闭环形菜单和 InfoPlane
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -111,6 +120,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			tower_ring.hide_ring()
 		if info_plane.visible:
 			info_plane.close()
+		if skill_book_plane.visible:
+			skill_book_plane.close()
 
 
 # 在指定塔槽放置指定类型的防御塔

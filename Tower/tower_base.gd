@@ -16,6 +16,13 @@ var cost: int = 50                   # 购买价格
 var level: int = 1
 var max_level: int = 3
 
+# --- 技能系统 ---
+var skill_points: int = 0
+var skill_unlocked_indices: Array = []
+var skill_states: Dictionary = {}
+var _last_skills: Array = []
+var _tick_accum: float = 0.0
+
 var can_shoot: bool = true
 var target: Node2D = null
 var _tree_target: Node2D = null
@@ -40,6 +47,12 @@ func init(data: TowerType):
 	cost = data.cost
 	if data.bullet_scene:
 		bullet_scene = data.bullet_scene
+	var sb = data.get("skill_book")
+	if sb and sb.skills.size() > 0:
+		skill_unlocked_indices.append(0)
+		var root_skill = sb.skills[0]
+		skill_states[root_skill.resource_path] = {"level": 1, "proficiency": 0}
+		_last_skills = _get_active_skills()
 
 # 初始化范围碰撞体、射击计时器、范围检测和等级标签
 func _ready():
@@ -81,6 +94,13 @@ func _process(delta):
 			_shoot()
 			can_shoot = false
 			shoot_timer.start()
+	_tick_accum += delta
+	if _tick_accum >= 0.5:
+		var tick_delta = _tick_accum
+		_tick_accum = 0.0
+		for s in _last_skills:
+			if s and s.has_method("on_tower_tick"):
+				s.on_tower_tick(self, tick_delta, get_skill_level(s))
 
 # 播放攻击动画，生成子弹并发射
 func _shoot():
@@ -92,7 +112,12 @@ func _shoot():
 	bullet.global_position = bullet_spawn.global_position
 	bullet.initialize(target, get_current_damage(),
 		tower_type.crit_chance, tower_type.crit_multiplier,
-		tower_type.hit_chance, tower_type.attack_type)
+		tower_type.hit_chance, tower_type.attack_type, self)
+
+	_last_skills = _get_active_skills()
+	for s in _last_skills:
+		if s and s.has_method("on_pre_shot"):
+			s.on_pre_shot(self, bullet, target, get_skill_level(s))
 
 	var td_root = get_tree().root.get_node_or_null("TowerDefense")
 	if td_root:
@@ -198,6 +223,7 @@ func do_upgrade() -> bool:
 	if not GameManager.spend_gold(c):
 		return false
 	level += 1
+	skill_points += 1
 	if range_shape and range_shape.shape is CircleShape2D:
 		range_shape.shape.radius = get_current_range()
 	shoot_timer.wait_time = get_current_fire_rate()
@@ -206,6 +232,27 @@ func do_upgrade() -> bool:
 	if _range_indicator:
 		_range_indicator.set_range(get_current_range())
 	return true
+
+func get_skill_level(skill) -> int:
+	if not skill:
+		return 0
+	var path = skill.resource_path
+	if path in skill_states:
+		return skill_states[path].get("level", 0)
+	return 0
+
+func _get_active_skills() -> Array:
+	var sb = tower_type.get("skill_book") if tower_type else null
+	if not sb:
+		return []
+	var result = []
+	for idx in skill_unlocked_indices:
+		if idx < 0 or idx >= sb.skills.size():
+			continue
+		var skill = sb.skills[idx]
+		if get_skill_level(skill) > 0:
+			result.append(skill)
+	return result
 
 # 计算当前等级伤害：基础值 × 1.5^(等级-1)
 func get_current_damage() -> float:
