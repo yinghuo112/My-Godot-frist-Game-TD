@@ -1,0 +1,81 @@
+=========================
+塔防战斗属性数据信息
+=========================
+
+一、TowerType（塔类型）字段
+
+字段名            类型    默认值    说明
+─────────────────────────────────────────────
+display_name      String  "Tower"   显示名字
+damage            float   5.0       攻击力
+fire_rate         float   1.0       射速（秒）
+range_radius      float   120.0     射程（像素）
+cost              int     50        购买价格
+scene             PackedScene       塔场景文件
+bullet_scene      PackedScene      弹道场景(null=默认子弹)
+attack_type       enum    PHYSICAL  攻击类型: 0=物理, 1=魔法
+crit_chance       float   0.1       暴击率
+crit_multiplier   float   2.0       暴击倍率
+hit_chance        float   0.95      命中率
+
+
+二、EnemyType（怪物类型）字段
+
+字段名             类型    默认值    说明
+──────────────────────────────────────────────
+display_name       String  "Monster" 显示名字
+max_hp             float   10.0      最大生命
+speed              float   150.0     移动速度
+gold_reward        int     10        击杀奖励金币
+lane_width         float   40.0      变道宽度
+lane_change_speed  float   120.0     超车速度
+scene              PackedScene       怪物场景文件
+armor_physical     float   0.0       物理减伤(0~1)
+armor_magic        float   0.0       魔法减伤(0~1)
+dodge_chance       float   0.0       闪避率(0~1)
+
+
+三、伤害计算公式（核心/bullet.gd）
+
+  1. 命中判定
+     effective_hit = clamp(hit_chance - dodge_chance, 0.0, 1.0)
+     if randf() > effective_hit → MISS（不造成伤害）
+
+  2. 暴击判定
+     if randf() < crit_chance → damage *= crit_multiplier
+
+  3. 抗性减伤
+     attack_type == PHYSICAL → armor = armor_physical
+     attack_type == MAGIC    → armor = armor_magic
+     damage *= clamp(1.0 - armor, 0.0, 1.0)
+
+  4. 保底伤害
+     final_damage = maxf(damage, 1.0)
+
+
+四、升级成长公式（TowerBase）
+
+  current_damage     = damage * 1.5^(level-1)
+  current_fire_rate  = fire_rate * 0.85^(level-1)
+  current_range      = range_radius * 4.0^(level-1)
+
+  暴击/命中/攻击类型不随等级成长。
+
+
+五、各塔数值配置
+
+塔名     攻击类型  暴击率  暴击倍率  命中率  伤害  射速  射程  价格
+────────────────────────────────────────────────────────────────
+Arrow    物理      15%     2.0       98%     8    0.8s  150   50
+Cannon   物理      5%      2.0       90%     30   2.0s  60    80
+Magic    魔法      10%     2.0       100%    30   1.2s  100   70
+
+
+六、各怪物数值配置
+
+怪物名        HP    速度     金币  物抗   魔抗   闪避
+─────────────────────────────────────────────────────
+哥布林        30    120      15    0%     0%     0%
+红皮小怪      20    200      12    5%     0%     10%
+
+注: 未配置 EnemyType 的怪物使用脚本默认值(HP=10, 速度=150, 无抗性无闪避)

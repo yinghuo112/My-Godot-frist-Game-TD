@@ -22,6 +22,8 @@ var _tree_target: Node2D = null
 var enemy_group: String = "enemy"
 var bullet_scene = preload("res://核心/bullet.tscn")
 
+var _range_indicator: TowerRangeIndicator
+
 @onready var sprite = get_node_or_null("AnimatedSprite2D")
 @onready var range_area: Area2D = $RangeArea
 @onready var range_shape: CollisionShape2D = $RangeArea/CollisionShape2D
@@ -65,6 +67,11 @@ func _ready():
 	level_label.add_theme_font_size_override("font_size", 10)
 	level_label.position = Vector2(-10, -40)
 	add_child(level_label)
+
+	_range_indicator = TowerRangeIndicator.new()
+	_range_indicator.set_range(get_current_range())
+	_range_indicator.visible = show_range_circle
+	add_child(_range_indicator)
 
 # 每帧扫描目标并开火
 func _process(delta):
@@ -157,11 +164,6 @@ func _on_attack_anim_finished():
 	sprite.frame = 0
 	sprite.stop()
 
-# 绘制范围指示圈
-func _draw():
-	if show_range_circle:
-		draw_circle(Vector2.ZERO, get_current_range(), Color(1, 1, 1, 0.15))
-
 # --- 升级接口（供 TowerActionRing 调用）---
 # 检查是否可以继续升级
 func can_upgrade() -> bool:
@@ -201,7 +203,8 @@ func do_upgrade() -> bool:
 	shoot_timer.wait_time = get_current_fire_rate()
 	if level_label:
 		level_label.text = "Lv." + str(level)
-	queue_redraw()
+	if _range_indicator:
+		_range_indicator.set_range(get_current_range())
 	return true
 
 # 计算当前等级伤害：基础值 × 1.5^(等级-1)
