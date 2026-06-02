@@ -29,6 +29,8 @@ var overtake_target: Node2D = null
 @onready var health_bar: ProgressBar = $ProgressBar
 @onready var ray_cast: RayCast2D = $RayCast2D
 
+var _floating_text_scene = preload("res://工具/FloatingText.tscn")
+
 # 由 GameManager 在生成时调用，传入 EnemyType 数据覆盖默认值
 func init(data: EnemyType):
 	enemy_type = data
@@ -93,11 +95,35 @@ func _physics_process(delta: float) -> void:
 		reach_end()
 
 # 承受伤害：减少血量，更新血条，血量归零时死亡
-func take_damage(amount: float) -> void:
+func take_damage(amount: float, is_crit: bool = false) -> void:
 	current_hp = maxf(current_hp - amount, 0)
 	_update_health_bar()
+
+	_spawn_damage_text(amount, is_crit)
+
 	if current_hp <= 0:
 		die()
+
+# 在怪物头顶生成伤害飘字
+func _spawn_damage_text(amount: float, is_crit: bool) -> void:
+	var main = get_tree().root.get_node_or_null("TowerDefense/Main")
+	if not main:
+		return
+	var camera = get_viewport().get_camera_2d()
+	if not camera:
+		return
+	var viewport_size = get_viewport().get_visible_rect().size
+	var screen_pos = viewport_size / 2 + (global_position - camera.global_position) * camera.zoom
+	var ft = _floating_text_scene.instantiate()
+	ft.text = str(amount)
+	if is_crit:
+		ft.add_theme_color_override("font_color", Color(1, 0.2, 0.1))
+	else:
+		ft.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+	ft.position = screen_pos - Vector2(50, 20)
+	var dirs = [Vector2(0, -40), Vector2(0, 40), Vector2(-40, 0), Vector2(40, 0)]
+	ft.float_direction = dirs[randi() % dirs.size()]
+	main.add_child(ft)
 
 # 获取闪避率（供子弹伤害计算调用）
 func get_dodge_chance() -> float:
