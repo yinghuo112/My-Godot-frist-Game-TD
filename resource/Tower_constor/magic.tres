@@ -17,4 +17,5 @@ attack_type = 1
 crit_chance = 0.10
 crit_multiplier = 2.0
 hit_chance = 1.0
+description = "魔法塔。魔法攻击无视部分抗性，追踪弹道[color=yellow]必中[/color]，克制高闪避敌人。"
 metadata/_custom_type_script = "uid://chxc0a8vjbkuo"

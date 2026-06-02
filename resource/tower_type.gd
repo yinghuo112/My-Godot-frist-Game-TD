@@ -16,3 +16,4 @@ enum AttackType { PHYSICAL, MAGIC }
 @export var crit_chance: float = 0.1             # 暴击率
 @export var crit_multiplier: float = 2.0         # 暴击倍率
 @export var hit_chance: float = 0.95             # 命中率
+@export var description: String = ""              # 技能描述（支持 BBCode）

@@ -1,7 +1,7 @@
 extends Control
 
 # 环形菜单：点击塔后在周围弹出的操作按钮（升级 / 出售 / 信息）
-# 所有弹窗信息统一使用 InfoPopupPanel 子节点
+# 信息详情用 InfoPlane（右侧滑入面板），升级/出售用本地 InfoPopupPanel
 
 const RADIUS: float = 75.0
 var floating_text_scene = preload("res://工具/FloatingText.tscn")
@@ -9,6 +9,8 @@ var floating_text_scene = preload("res://工具/FloatingText.tscn")
 var target_tower: Node2D = null
 var _confirm_action: Callable = Callable()
 var _popup_mode: String = ""
+
+signal show_info_requested(tower)
 
 @onready var btn_upgrade: Button = $BtnUpgrade
 @onready var btn_sell: Button = $BtnSell
@@ -114,25 +116,11 @@ func _on_sell_click():
 	_popup_mode = "sell"
 	info_popup.show()
 
-# 点击信息按钮：显示当前塔的属性
+# 点击信息按钮：发射信号让 InfoPlane 从右侧滑入
 func _on_info_click():
 	if not is_instance_valid(target_tower):
 		return
-	if info_popup.visible and _popup_mode == "info":
-		info_popup.hide()
-		_popup_mode = ""
-		return
-	var pos = btn_info.position + Vector2(btn_info.size.x + 8, -10)
-	var lv = target_tower.level
-	var dmg = target_tower.get_current_damage()
-	var fr = target_tower.get_current_fire_rate()
-	var rng = target_tower.get_current_range()
-	popup_label.text = "Lv." + str(lv) + "\n伤害: %.1f\n射速: %.2fs\n射程: %.0f" % [dmg, fr, rng]
-	confirm_btn.hide()
-	cancel_btn.hide()
-	info_popup.position = pos
-	_popup_mode = "info"
-	info_popup.show()
+	show_info_requested.emit(target_tower)
 
 # ==================== 确认 / 取消 ====================
 

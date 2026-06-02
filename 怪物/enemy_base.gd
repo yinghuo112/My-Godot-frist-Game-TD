@@ -106,23 +106,23 @@ func take_damage(amount: float, is_crit: bool = false) -> void:
 
 # 在怪物头顶生成伤害飘字
 func _spawn_damage_text(amount: float, is_crit: bool) -> void:
-	var main = get_tree().root.get_node_or_null("TowerDefense/Main")
+	var main = get_tree().current_scene
 	if not main:
 		return
-	var camera = get_viewport().get_camera_2d()
-	if not camera:
-		return
-	var viewport_size = get_viewport().get_visible_rect().size
-	var screen_pos = viewport_size / 2 + (global_position - camera.global_position) * camera.zoom
+
 	var ft = _floating_text_scene.instantiate()
 	ft.text = str(amount)
+
 	if is_crit:
 		ft.add_theme_color_override("font_color", Color(1, 0.2, 0.1))
 	else:
-		ft.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
-	ft.position = screen_pos - Vector2(50, 20)
-	var dirs = [Vector2(0, -40), Vector2(0, 40), Vector2(-40, 0), Vector2(40, 0)]
+		ft.add_theme_color_override("font_color", Color(0.8, 0.8, 0.8))
+
+	ft.position = global_position - Vector2(100, 40)
+
+	var dirs = [Vector2(0, -40), Vector2(-30, -40), Vector2(30, -40)]
 	ft.float_direction = dirs[randi() % dirs.size()]
+
 	main.add_child(ft)
 
 # 获取闪避率（供子弹伤害计算调用）

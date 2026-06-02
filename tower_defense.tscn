@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://cpfuaeo4uvigo" path="res://场景/SettingsPanel.tscn" id="5_7k3j9"]
 [ext_resource type="PackedScene" uid="uid://m76ufcttltpb" path="res://Tower/TowerActionRing.tscn" id="6_6t6t6"]
 [ext_resource type="PackedScene" uid="uid://dh1yua7d4vc4l" path="res://UI/DialogueUI.tscn" id="7_i3l6g"]
+[ext_resource type="PackedScene" path="res://UI/InfoPlane.tscn" id="8_info"]
 [ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rqaol"]
@@ -181,4 +182,7 @@ visible = false
 [node name="DialogueUi" parent="UI" unique_id=1636842548 instance=ExtResource("7_i3l6g")]
 
 [node name="TowerActionRing" parent="UI" unique_id=1827179157 instance=ExtResource("6_6t6t6")]
+visible = false
+
+[node name="InfoPlane" parent="UI" unique_id=1827179158 instance=ExtResource("8_info")]
 visible = false
