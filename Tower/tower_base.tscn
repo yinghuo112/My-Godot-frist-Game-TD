@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://d0srg3wgtcit1"]
 
-[ext_resource type="Script" uid="uid://cxkjkbixl1sdk" path="res://防御塔/tower_base.gd" id="1_l18nm"]
+[ext_resource type="Script" uid="uid://cxkjkbixl1sdk" path="res://Tower/tower_base.gd" id="1_l18nm"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_oirtp"]
 animations = [{

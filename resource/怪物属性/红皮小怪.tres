@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="EnemyType" format=3 uid="uid://6ni8h5vjf0hv"]
 
 [ext_resource type="PackedScene" uid="uid://m4j734tvluom" path="res://怪物/红皮小怪/红皮怪.tscn" id="1_kdop0"]
-[ext_resource type="Script" uid="uid://c67ocaxkc0vfl" path="res://资源与配置/enemy_type.gd" id="2_78k4j"]
+[ext_resource type="Script" uid="uid://c67ocaxkc0vfl" path="res://resource/enemy_type.gd" id="2_78k4j"]
 
 [resource]
 script = ExtResource("2_78k4j")

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://m76ufcttltpb"]
 
-[ext_resource type="Script" uid="uid://dkojt2bdqbnci" path="res://防御塔/tower_action_ring.gd" id="1"]
+[ext_resource type="Script" uid="uid://dkojt2bdqbnci" path="res://Tower/tower_action_ring.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="Style_info"]
 bg_color = Color(0.08, 0.08, 0.15, 0.92)

@@ -19,3 +19,23 @@
 
 根因：
 文件编辑工具对多字节 UTF-8 编码支持不完整，导致中文字符被截断或替换。
+
+
+===== 2026-06-02 路径重组后 magic.tres 加载失败 =====
+
+错误现象：
+Parser Error: Could not preload resource file "res://resource/Tower_constor/magic.tres".
+
+原因分析：
+与第一次错误相同，中文字符编码损坏导致 `res://assets/防御塔/魔法塔/magic_tower.png` 中 `魔法塔/` 段被截断丢失，
+路径变成 `res://assets/防御塔/magic_tower.png`。连锁：main.gd preload magic.tres → 加载 magic_tower.tscn → 贴图路径损坏 → 报错。
+
+解决方案：
+在 magic_tower.tscn 中补回完整的 ext_resource path：
+  uid="uid://d4m3p0l8t2c6b" path="res://assets/防御塔/魔法塔/magic_tower.png"
+然后 reimport 刷新缓存。
+
+经验教训：
+- 只要路径含中文，工具编辑就可能损坏编码；优先用 uid 引用而非 path
+- 遇 preload 失败时，链式排查 ext_resource 路径是否有中文字符被吞
+- 如果无法解决直接告诉用户修改中文路径

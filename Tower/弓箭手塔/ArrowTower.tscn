@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://de5m5ivccvuh2"]
 
-[ext_resource type="PackedScene" uid="uid://d0srg3wgtcit1" path="res://防御塔/tower_base.tscn" id="1_5tcb5"]
+[ext_resource type="PackedScene" uid="uid://d0srg3wgtcit1" path="res://Tower/tower_base.tscn" id="1_5tcb5"]
 [ext_resource type="Texture2D" uid="uid://bg7rm23q7tre8" path="res://assets/防御塔/弓箭手/111111_1.png" id="2_0r3pr"]
 [ext_resource type="Texture2D" uid="uid://mbgv5g1h6204" path="res://assets/防御塔/弓箭手/111111_2.png" id="3_gf3to"]
 [ext_resource type="Texture2D" uid="uid://cpm7jh1syi3xy" path="res://assets/防御塔/弓箭手/111111_3.png" id="4_ycyrt"]

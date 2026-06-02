@@ -6,9 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://07sie8ex2xn3" path="res://怪物/green_monster.tscn" id="3_8fgb4"]
 [ext_resource type="Texture2D" uid="uid://bip40iu65e5a2" path="res://assets/tiles/wall.png" id="4_4xjh4"]
 [ext_resource type="PackedScene" uid="uid://cpfuaeo4uvigo" path="res://场景/SettingsPanel.tscn" id="5_7k3j9"]
-[ext_resource type="PackedScene" uid="uid://m76ufcttltpb" path="res://防御塔/TowerActionRing.tscn" id="6_6t6t6"]
-[ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
+[ext_resource type="PackedScene" uid="uid://m76ufcttltpb" path="res://Tower/TowerActionRing.tscn" id="6_6t6t6"]
 [ext_resource type="PackedScene" uid="uid://dh1yua7d4vc4l" path="res://UI/DialogueUI.tscn" id="7_i3l6g"]
+[ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rqaol"]
 texture = ExtResource("2_l7pho")
@@ -99,8 +99,6 @@ script = ExtResource("131_fsg3x")
 
 [node name="TowerSlots" type="Node2D" parent="." unique_id=1907941790]
 
-[node name="TreeContainer" type="Node2D" parent="." unique_id=1415092192]
-
 [node name="Slot1" type="Marker2D" parent="TowerSlots" unique_id=2130101613]
 position = Vector2(1007, 83)
 
@@ -115,6 +113,8 @@ position = Vector2(223, 275)
 
 [node name="Slot5" type="Marker2D" parent="TowerSlots" unique_id=770919734]
 position = Vector2(991, 286)
+
+[node name="TreeContainer" type="Node2D" parent="." unique_id=1415092192]
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=604907210]
 

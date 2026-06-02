@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TowerType" format=3 uid="uid://d3jvtu6i145mv"]
+
+[ext_resource type="PackedScene" uid="uid://dwew2eykqysxs" path="res://Tower/magic_tower/magic_tower.tscn" id="1_ep0b0"]
+[ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://resource/tower_type.gd" id="2_xhu2c"]
+[ext_resource type="PackedScene" uid="uid://d4m3p0l8t2c6b" path="res://核心/magic_bolt.tscn" id="3_bolt"]
+
+[resource]
+script = ExtResource("2_xhu2c")
+display_name = "Magic"
+damage = 30.0
+fire_rate = 1.2
+range_radius = 100.0
+scene = ExtResource("1_ep0b0")
+bullet_scene = ExtResource("3_bolt")
+metadata/_custom_type_script = "uid://chxc0a8vjbkuo"

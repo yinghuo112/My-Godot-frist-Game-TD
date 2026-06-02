@@ -16,9 +16,9 @@ extends Node2D
 @onready var dialogue_ui: Control = $UI/DialogueUi
 
 var tower_types: Array[TowerType] = [
-	preload("res://资源与配置/防御塔属性/arrow.tres"),
-	preload("res://资源与配置/防御塔属性/cannon.tres"),
-	preload("res://资源与配置/防御塔属性/magic.tres"),
+	preload("res://resource/Tower_constor/arrow.tres"),
+	preload("res://resource/Tower_constor/cannon.tres"),
+	preload("res://resource/Tower_constor/magic.tres"),
 ]
 var _build_panel: Panel
 var _build_buttons: Array[Button] = []

@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dwew2eykqysxs"]
 
-[ext_resource type="PackedScene" uid="uid://d0srg3wgtcit1" path="res://防御塔/tower_base.tscn" id="1_b7lgr"]
-[ext_resource type="Texture2D" uid="uid://d2y0kjuwtqjlr" path="res://assets/防御塔/magic_tower.png" id="2_mecsu"]
+[ext_resource type="PackedScene" uid="uid://d0srg3wgtcit1" path="res://Tower/tower_base.tscn" id="1_b7lgr"]
+[ext_resource type="Texture2D" path="res://assets/防御塔/魔法塔/magic_tower.png" id="2_mecsu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_oqtxn"]
 atlas = ExtResource("2_mecsu")
@@ -41,5 +41,5 @@ animations = [{
 
 [node name="magic_tower" unique_id=2060410192 instance=ExtResource("1_b7lgr")]
 
-[node name="AnimatedSprite2D" parent="." index="0"]
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=741884957]
 sprite_frames = SubResource("SpriteFrames_eqcnh")
