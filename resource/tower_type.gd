@@ -3,6 +3,8 @@
 extends Resource
 class_name TowerType
 
+enum AttackType { PHYSICAL, MAGIC }
+
 @export var display_name: String = "Tower"       # 显示名字
 @export var damage: float = 5.0                  # 攻击力
 @export var fire_rate: float = 1.0               # 射速（秒），每次攻击的冷却时间
@@ -10,3 +12,7 @@ class_name TowerType
 @export var cost: int = 50                       # 购买价格
 @export var scene: PackedScene                   # 塔场景文件（拖入 .tscn）
 @export var bullet_scene: PackedScene            # 弹道场景（null=使用默认子弹）
+@export var attack_type: AttackType = AttackType.PHYSICAL  # 攻击类型
+@export var crit_chance: float = 0.1             # 暴击率
+@export var crit_multiplier: float = 2.0         # 暴击倍率
+@export var hit_chance: float = 0.95             # 命中率

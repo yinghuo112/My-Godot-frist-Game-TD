@@ -6,5 +6,10 @@
 [resource]
 script = ExtResource("2_78k4j")
 display_name = "红皮小怪"
+max_hp = 20.0
 speed = 200.0
+gold_reward = 12
 scene = ExtResource("1_kdop0")
+armor_physical = 0.05
+armor_magic = 0.0
+dodge_chance = 0.1

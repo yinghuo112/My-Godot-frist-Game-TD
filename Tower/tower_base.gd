@@ -83,7 +83,9 @@ func _shoot():
 	AudioManager.play_shoot()
 	var bullet = bullet_scene.instantiate()
 	bullet.global_position = bullet_spawn.global_position
-	bullet.initialize(target, get_current_damage())
+	bullet.initialize(target, get_current_damage(),
+		tower_type.crit_chance, tower_type.crit_multiplier,
+		tower_type.hit_chance, tower_type.attack_type)
 
 	var td_root = get_tree().root.get_node_or_null("TowerDefense")
 	if td_root:

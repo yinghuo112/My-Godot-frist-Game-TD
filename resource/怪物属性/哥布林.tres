@@ -6,4 +6,10 @@
 [resource]
 script = ExtResource("1_vqlgh")
 display_name = "哥布林"
+max_hp = 30.0
+speed = 120.0
+gold_reward = 15
 scene = ExtResource("1_7hjkl")
+armor_physical = 0.0
+armor_magic = 0.0
+dodge_chance = 0.0

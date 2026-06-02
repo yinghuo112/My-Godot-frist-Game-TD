@@ -99,6 +99,19 @@ func take_damage(amount: float) -> void:
 	if current_hp <= 0:
 		die()
 
+# 获取闪避率（供子弹伤害计算调用）
+func get_dodge_chance() -> float:
+	return enemy_type.dodge_chance if enemy_type else 0.0
+
+# 根据攻击类型获取对应抗性（供子弹伤害计算调用）
+func get_armor(attack_type: int) -> float:
+	if not enemy_type:
+		return 0.0
+	match attack_type:
+		0: return enemy_type.armor_physical  # PHYSICAL
+		1: return enemy_type.armor_magic     # MAGIC
+		_: return 0.0
+
 # 到达终点：发射信号并销毁
 func reach_end():
 	reached_end.emit()
