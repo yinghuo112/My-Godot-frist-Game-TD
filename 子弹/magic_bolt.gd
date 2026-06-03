@@ -1,4 +1,4 @@
-extends "res://核心/bullet.gd"
+extends "res://子弹/bullet.gd"
 
 @onready var bolt_sprite: Sprite2D = $Sprite2D
 
@@ -19,20 +19,23 @@ func _process(delta):
 
 # 命中：伤害 + 爆炸特效
 func _hit():
-	if is_instance_valid(target) and target.has_method("take_damage"):
-		target.take_damage(damage)
+	if _has_hit:
+		return
+	_has_hit = true
 	_spawn_explosion()
-	queue_free()
+	_apply_damage(target)
+	_release()
 
 func _on_area_entered(area):
+	if _has_hit:
+		return
 	if area.is_in_group("enemy"):
-		var enemy = area.get_parent()
-		if enemy.has_method("take_damage"):
-			enemy.take_damage(damage)
+		_has_hit = true
 		_spawn_explosion()
-		queue_free()
+		_apply_damage(area.get_parent())
+		_release()
 
 func _spawn_explosion():
-	var explosion = preload("res://核心/magic_explosion.tscn").instantiate()
+	var explosion = preload("res://子弹/magic_explosion.tscn").instantiate()
 	explosion.global_position = global_position
 	get_parent().add_child(explosion)

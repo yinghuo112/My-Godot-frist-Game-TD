@@ -1,11 +1,14 @@
 extends Area2D
 
+signal used_up(bullet)
+
 @export var speed: float = 600.0    # 子弹飞行速度
 @export var damage: int = 10        # 子弹伤害值
 
 var target: Node2D = null           # 追踪的目标怪物
 var velocity: Vector2 = Vector2.ZERO  # 当前速度向量
 var _has_hit: bool = false          # 防止重复命中
+var _pool_managed: bool = false     # 是否由对象池管理（true=信号回收，false=queue_free）
 var source_tower: Node2D = null     # 来源塔（技能回调用）
 
 # 战斗属性（由 tower_base._shoot() 传入）
@@ -47,7 +50,7 @@ func _physics_process(delta: float) -> void:
 		if velocity == Vector2.ZERO:
 			velocity = Vector2.RIGHT.rotated(rotation) * speed
 		if global_position.distance_to(Vector2.ZERO) > 3000:
-			queue_free()
+			_release()
 			return
 	global_position += velocity * delta
 
@@ -106,7 +109,7 @@ func _hit() -> void:
 		return
 	_has_hit = true
 	_apply_damage(target)
-	queue_free()
+	_release()
 
 func _on_area_entered(area: Area2D) -> void:
 	if _has_hit:
@@ -114,4 +117,10 @@ func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("enemy"):
 		_has_hit = true
 		_apply_damage(area.get_parent())
+		_release()
+
+func _release() -> void:
+	if _pool_managed:
+		used_up.emit(self)
+	else:
 		queue_free()

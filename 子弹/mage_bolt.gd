@@ -1,4 +1,4 @@
-extends "res://核心/bullet.gd"
+extends "res://子弹/bullet.gd"
 
 @onready var bolt_sprite: Sprite2D = $Sprite2D
 
@@ -20,19 +20,24 @@ func _process(delta):
 func _hit():
 	if _has_hit:
 		return
-	super._hit()
+	_has_hit = true
 	_spawn_effects()
+	_apply_damage(target)
+	_release()
 
 func _on_area_entered(area):
 	if _has_hit:
 		return
-	super._on_area_entered(area)
-	_spawn_effects()
+	if area.is_in_group("enemy"):
+		_has_hit = true
+		_spawn_effects()
+		_apply_damage(area.get_parent())
+		_release()
 
 func _spawn_effects():
-	var explosion = preload("res://核心/mage_explosion.tscn").instantiate()
+	var explosion = preload("res://子弹/mage_explosion.tscn").instantiate()
 	explosion.global_position = global_position
 	get_parent().add_child(explosion)
-	var sparkle = preload("res://核心/mage_sparkle.tscn").instantiate()
+	var sparkle = preload("res://子弹/mage_sparkle.tscn").instantiate()
 	sparkle.global_position = global_position
 	get_parent().add_child(sparkle)

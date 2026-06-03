@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d4m3p0l8t2c6b"]
 
-[ext_resource type="PackedScene" uid="uid://dltmulxy4cnmr" path="res://核心/bullet.tscn" id="1_bullet"]
-[ext_resource type="Script" uid="uid://c9k7n2x5v1q4w" path="res://核心/magic_bolt.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://dltmulxy4cnmr" path="res://子弹/bullet.tscn" id="1_bullet"]
+[ext_resource type="Script" uid="uid://c9k7n2x5v1q4w" path="res://子弹/magic_bolt.gd" id="2_script"]
 [ext_resource type="Texture2D" path="res://assets/防御塔/魔法塔/magic_bolt.png" id="3_texture"]
 
 [node name="MagicBolt" instance=ExtResource("1_bullet")]

@@ -19,7 +19,7 @@ func on_hit(tower: Node2D, bullet: Node2D, target: Node2D,
 	_damage_nearby(target, bullet.global_position, radius, splash_dmg)
 
 func _spawn_explosion(pos: Vector2, radius: float, tower: Node2D) -> void:
-	var scene = load("res://核心/magic_explosion.tscn")
+	var scene = load("res://子弹/magic_explosion.tscn")
 	if not scene:
 		return
 	var explosion = scene.instantiate()

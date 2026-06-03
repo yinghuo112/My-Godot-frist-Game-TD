@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dwew2eykqysxs" path="res://Tower/magic_tower/magic_tower.tscn" id="1_ep0b0"]
 [ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://resource/tower_type.gd" id="2_xhu2c"]
-[ext_resource type="PackedScene" uid="uid://d4m3p0l8t2c6b" path="res://核心/magic_bolt.tscn" id="3_bolt"]
+[ext_resource type="PackedScene" uid="uid://d4m3p0l8t2c6b" path="res://子弹/magic_bolt.tscn" id="3_bolt"]
 [ext_resource type="Resource" path="res://SkillSystem/books/魔法塔技能书.tres" id="4_skillbook"]
 
 [resource]

@@ -27,7 +27,7 @@ var can_shoot: bool = true
 var target: Node2D = null
 var _tree_target: Node2D = null
 var enemy_group: String = "enemy"
-var bullet_scene = preload("res://核心/bullet.tscn")
+var bullet_scene = preload("res://子弹/bullet.tscn")
 
 var _range_indicator: TowerRangeIndicator
 
@@ -106,9 +106,17 @@ func _process(delta):
 func _shoot():
 	if sprite and sprite.sprite_frames.has_animation("attack"):
 		sprite.play("attack")
-	# 播放攻击音效
 	AudioManager.play_shoot()
-	var bullet = bullet_scene.instantiate()
+	var bm = get_node("/root/BulletManager")
+	var bullet: Node2D
+	if bm:
+		bullet = bm.get_bullet(bullet_scene)
+		if not bullet:
+			bullet = bullet_scene.instantiate()
+	else:
+		bullet = bullet_scene.instantiate()
+	if not bullet:
+		bullet = bullet_scene.instantiate()
 	bullet.global_position = bullet_spawn.global_position
 	bullet.initialize(target, get_current_damage(),
 		tower_type.crit_chance, tower_type.crit_multiplier,

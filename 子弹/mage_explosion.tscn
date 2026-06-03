@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" path="res://核心/mage_explosion.gd" id="1_script"]
+[ext_resource type="Script" path="res://子弹/mage_explosion.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://cqh5ky1omt1uo" path="res://assets/mage/mage_explosion.png" id="2_texture"]
 
 [node name="MageExplosion" type="Node2D"]
