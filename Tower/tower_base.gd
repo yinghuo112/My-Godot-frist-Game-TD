@@ -108,15 +108,9 @@ func _shoot():
 		sprite.play("attack")
 	AudioManager.play_shoot()
 	var bm = get_node("/root/BulletManager")
-	var bullet: Node2D
-	if bm:
-		bullet = bm.get_bullet(bullet_scene)
-		if not bullet:
-			bullet = bullet_scene.instantiate()
-	else:
-		bullet = bullet_scene.instantiate()
+	var bullet = bm.get_bullet(bullet_scene) if bm else bullet_scene.instantiate()
 	if not bullet:
-		bullet = bullet_scene.instantiate()
+		return
 	bullet.global_position = bullet_spawn.global_position
 	bullet.initialize(target, get_current_damage(),
 		tower_type.crit_chance, tower_type.crit_multiplier,

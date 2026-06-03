@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyType" format=3]
+
+[ext_resource type="Script" path="res://resource/enemy_type.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://怪物/green_monster.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_script")
+display_name = "Debug Monster"
+max_hp = 99999.0
+speed = 300.0
+gold_reward = 9999
+scene = ExtResource("2_scene")
+armor_physical = 0.95
+armor_magic = 0.95
+dodge_chance = 0.0

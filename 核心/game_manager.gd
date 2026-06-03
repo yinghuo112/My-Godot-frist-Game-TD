@@ -17,6 +17,7 @@ var enemies_on_field: int = 0       # 当前在场上的敌人数
 var is_wave_active: bool = false    # 波次进行中锁定，防止重复点击
 
 var play_area: Rect2                # 游戏地图边界，main.gd 初始化时计算
+var play_area_margin: float = 100.0 # 地图边界余量（像素），play_area 在 TileMap 基础上的外扩值
 var enemy_path: Path2D              # 敌人路径节点
 var timer: Timer                    # 生成定时器
 var _config: WaveConfigData         # 波次配置数据

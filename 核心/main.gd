@@ -185,16 +185,17 @@ func _on_build_selected(idx: int):
 	if slot and is_instance_valid(slot) and slot.get_child_count() == 0:
 		_place_tower(slot, tower_types[idx])
 
-# 调试功能：按T键直接生成一个测试怪物
+# 调试功能：按T键直接生成一个高血量测试怪物
 func _spawn_test_enemy() -> void:
-	print("=== 调试: 直接生成测试小怪 ===")
-	var scene = preload("res://怪物/green_monster.tscn")
-	var enemy = scene.instantiate()
+	print("=== 调试: 生成 Debug Monster ===")
+	var debug_type = preload("res://调试/debug_monster.tres")
+	var enemy = debug_type.scene.instantiate()
+	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
 	enemy.reached_end.connect(_on_test_enemy_reached_end)
 	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
 	path.add_child(enemy)
-	print("测试小怪已生成，路径: EnemyPath")
+	print("Debug Monster 已生成，血量: %.0f, 速度: %.1f" % [debug_type.max_hp, debug_type.speed])
 
 # 从 TileMapLayer 格子计算可玩区域并存入 GameManager.play_area
 func _init_play_area():
@@ -211,15 +212,15 @@ func _init_play_area():
 		max_cell = Vector2i(max(max_cell.x, c.x), max(max_cell.y, c.y))
 	var top_left = tile_map_layer.map_to_local(min_cell) - cell_size / 2.0
 	var bottom_right = tile_map_layer.map_to_local(max_cell) + cell_size / 2.0
-	GameManager.play_area = Rect2(top_left, bottom_right - top_left).grow(100.0)
+	GameManager.play_area = Rect2(top_left, bottom_right - top_left).grow(GameManager.play_area_margin)
 
-# 调试：测试怪物死亡回调
+# 调试：Debug Monster 死亡回调
 func _on_test_enemy_died(enemy):
-	print("测试小怪被击杀，金币奖励: %d" % enemy.gold_reward)
+	print(">>> Debug Monster 被击杀，剩余血量: %.0f / %.0f，金币奖励: %d" % [enemy.current_hp, enemy.max_hp, enemy.gold_reward])
 
-# 调试：测试怪物到达终点回调
+# 调试：Debug Monster 到达终点回调
 func _on_test_enemy_reached_end():
-	print("测试小怪到达终点")
+	print(">>> Debug Monster 到达终点")
 
 # ==================== 树系统 ====================
 

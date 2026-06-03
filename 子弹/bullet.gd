@@ -1,6 +1,6 @@
 extends Area2D
 
-signal used_up(bullet)
+signal used_up(bullet)    # 子弹用尽信号 → 通知 BulletPool 回收
 
 @export var _speed: float = 600.0    # 子弹飞行速度
 @export var _damage: float = 10        # 子弹伤害值
@@ -10,6 +10,8 @@ var velocity: Vector2 = Vector2.ZERO  # 当前速度向量
 var _has_hit: bool = false          # 防止重复命中
 var _pool_managed: bool = false     # 是否由对象池管理（true=信号回收，false=queue_free）
 var source_tower: Node2D = null     # 来源塔（技能回调用）
+
+var _floating_text_scene = preload("res://工具/FloatingText.tscn")  # 伤害/闪避飘字
 
 # 战斗属性（由 tower_base._shoot() 传入）
 var _crit_chance: float = 0.0
@@ -37,7 +39,7 @@ func initialize(p_target: Node2D, p_damage: float,
 	if is_instance_valid(target):
 		look_at(target.global_position)
 
-# 每帧追踪目标飞行或惯性飞行，接近目标时命中
+# 每帧追踪目标飞行或惯性飞行，出界/目标死亡/接近目标时释放
 func _physics_process(delta: float) -> void:
 	if not GameManager.play_area.has_point(global_position):
 		call_deferred("_release")
@@ -87,6 +89,8 @@ func _apply_damage(enemy: Node2D) -> void:
 	var crit = result[1]
 	if dmg > 0:
 		enemy.take_damage(dmg, crit)
+	else:
+		_spawn_miss_text(enemy)
 	if not is_instance_valid(source_tower) or not source_tower.has_method("get_skill_level"):
 		return
 	var tt = source_tower.get("tower_type")
@@ -104,6 +108,19 @@ func _apply_damage(enemy: Node2D) -> void:
 		if lv > 0 and skill.has_method("on_hit"):
 			skill.on_hit(source_tower, self, enemy, dmg, crit, lv)
 
+# 在敌人头上显示 MISS 闪避飘字
+func _spawn_miss_text(enemy: Node2D) -> void:
+	var root = get_tree().current_scene
+	if not root:
+		return
+	var ft = _floating_text_scene.instantiate()
+	ft.text = "MISS"
+	ft.add_theme_color_override("font_color", Color(1, 1, 0.3))
+	ft.position = enemy.global_position - Vector2(100, 40)
+	ft.float_direction = Vector2(0, -50)
+	root.add_child(ft)
+
+# 命中判定成功 → 设锁防止重复 → 应用伤害 → 帧末释放回池
 func _hit() -> void:
 	if _has_hit:
 		return
@@ -111,6 +128,7 @@ func _hit() -> void:
 	_apply_damage(target)
 	call_deferred("_release")
 
+# 碰撞检测命中敌人 → 设锁防止重复 → 应用伤害 → 帧末释放回池
 func _on_area_entered(area: Area2D) -> void:
 	if _has_hit:
 		return
@@ -119,6 +137,7 @@ func _on_area_entered(area: Area2D) -> void:
 		_apply_damage(area.get_parent())
 		call_deferred("_release")
 
+# 集中清理：隐藏 → 停止逻辑/碰撞 → 若池管则发射 used_up 信号通知 BulletPool 回收
 func _release() -> void:
 	visible = false
 	set_process(false)
@@ -131,6 +150,7 @@ func _release() -> void:
 	else:
 		queue_free()
 
+# 复用前的重置：清空命中锁 → 恢复可见/逻辑/碰撞
 func reset() -> void:
 	_has_hit = false
 	visible = true
