@@ -1,24 +1,38 @@
-[gd_resource type="Resource" script_class="SkillBook" format=3]
+[gd_resource type="Resource" script_class="SkillBook" format=3 uid="uid://cidxily7lm3db"]
 
-[ext_resource type="Script" path="res://SkillSystem/core/skill_book.gd" id="1_book"]
-[ext_resource type="Script" path="res://SkillSystem/core/skill_base.gd" id="2_base"]
-[ext_resource type="Script" path="res://SkillSystem/skills/fireball_skill.gd" id="3_fire"]
-[ext_resource type="Script" path="res://SkillSystem/skills/poison_skill.gd" id="4_poison"]
-[ext_resource type="Script" path="res://SkillSystem/skills/slow_skill.gd" id="5_slow"]
+[ext_resource type="Script" uid="uid://bkyicdc5mjv5s" path="res://SkillSystem/core/skill_book.gd" id="1_book"]
+[ext_resource type="Script" uid="uid://djexle8apaqmy" path="res://SkillSystem/core/skill_base.gd" id="2_base"]
+[ext_resource type="Script" uid="uid://8n6kncpitabq" path="res://SkillSystem/skills/fireball_skill.gd" id="3_fire"]
+[ext_resource type="Script" uid="uid://84ephp5ykds0" path="res://SkillSystem/skills/poison_skill.gd" id="4_poison"]
+[ext_resource type="Script" uid="uid://dddyd5mibyjp8" path="res://SkillSystem/skills/slow_skill.gd" id="5_slow"]
 
-[sub_resource type="Resource" script_class="SkillBase" id="s_base_shot"]
+[sub_resource type="Resource" id="s_base_shot"]
 script = ExtResource("2_base")
 name = "魔力强化"
 tags = ["通用", "魔法"]
 description = "提高基础魔法攻击力。"
 max_level = 3
-prerequisites = []
-required_tower_level = 1
-gold_cost = 0
-level_table = [{"damage":8.0,"cost_points":1,"cost_prof":0,"special":""},{"damage":16.0,"cost_points":1,"cost_prof":60,"special":""},{"damage":28.0,"cost_points":2,"cost_prof":180,"special":"暴击率+5%"}]
+level_table = [{
+"cost_points": 1,
+"cost_prof": 0,
+"damage": 8.0,
+"special": ""
+}, {
+"cost_points": 1,
+"cost_prof": 60,
+"damage": 16.0,
+"special": ""
+}, {
+"cost_points": 2,
+"cost_prof": 180,
+"damage": 28.0,
+"special": "暴击率+5%"
+}]
 
-[sub_resource type="Resource" script_class="FireballSkill" id="s_fireball"]
+[sub_resource type="Resource" id="s_fireball"]
 script = ExtResource("3_fire")
+splash_radius = 80.0
+splash_damage_ratio = 0.6
 name = "爆裂火球"
 tags = ["元素", "火焰"]
 description = "命中时产生大范围爆炸。"
@@ -26,12 +40,26 @@ max_level = 3
 prerequisites = [0]
 required_tower_level = 2
 gold_cost = 60
-level_table = [{"damage":20.0,"cost_points":1,"cost_prof":0,"special":""},{"damage":35.0,"cost_points":1,"cost_prof":120,"special":"溅射范围+15%"},{"damage":55.0,"cost_points":2,"cost_prof":300,"special":"溅射范围+30%"}]
-splash_radius = 80.0
-splash_damage_ratio = 0.6
+level_table = [{
+"cost_points": 1,
+"cost_prof": 0,
+"damage": 20.0,
+"special": ""
+}, {
+"cost_points": 1,
+"cost_prof": 120,
+"damage": 35.0,
+"special": "溅射范围+15%"
+}, {
+"cost_points": 2,
+"cost_prof": 300,
+"damage": 55.0,
+"special": "溅射范围+30%"
+}]
 
-[sub_resource type="Resource" script_class="PoisonSkill" id="s_poison"]
+[sub_resource type="Resource" id="s_poison"]
 script = ExtResource("4_poison")
+base_duration = 5.0
 name = "腐蚀术"
 tags = ["元素", "毒"]
 description = "敌人持续受到魔法毒素伤害。"
@@ -39,12 +67,26 @@ max_level = 3
 prerequisites = [0]
 required_tower_level = 2
 gold_cost = 50
-level_table = [{"damage":10.0,"cost_points":1,"cost_prof":0,"special":""},{"damage":18.0,"cost_points":1,"cost_prof":100,"special":"持续时间+1s"},{"damage":30.0,"cost_points":2,"cost_prof":250,"special":"持续时间+2s"}]
-tick_interval = 1.0
-base_duration = 5.0
+level_table = [{
+"cost_points": 1,
+"cost_prof": 0,
+"damage": 10.0,
+"special": ""
+}, {
+"cost_points": 1,
+"cost_prof": 100,
+"damage": 18.0,
+"special": "持续时间+1s"
+}, {
+"cost_points": 2,
+"cost_prof": 250,
+"damage": 30.0,
+"special": "持续时间+2s"
+}]
 
-[sub_resource type="Resource" script_class="SlowSkill" id="s_slow"]
+[sub_resource type="Resource" id="s_slow"]
 script = ExtResource("5_slow")
+slow_ratio = 0.5
 name = "冰霜术"
 tags = ["诅咒"]
 description = "降低敌人移动速度。"
@@ -52,9 +94,22 @@ max_level = 3
 prerequisites = [0, 1]
 required_tower_level = 3
 gold_cost = 80
-level_table = [{"damage":0.0,"cost_points":1,"cost_prof":0,"special":""},{"damage":0.0,"cost_points":2,"cost_prof":150,"special":"减速+5%"},{"damage":0.0,"cost_points":3,"cost_prof":350,"special":"减速+10%"}]
-slow_ratio = 0.5
-base_duration = 3.0
+level_table = [{
+"cost_points": 1,
+"cost_prof": 0,
+"damage": 0.0,
+"special": ""
+}, {
+"cost_points": 2,
+"cost_prof": 150,
+"damage": 0.0,
+"special": "减速+5%"
+}, {
+"cost_points": 3,
+"cost_prof": 350,
+"damage": 0.0,
+"special": "减速+10%"
+}]
 
 [resource]
 script = ExtResource("1_book")

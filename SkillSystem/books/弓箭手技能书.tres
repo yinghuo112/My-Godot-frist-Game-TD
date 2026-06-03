@@ -1,22 +1,34 @@
-[gd_resource type="Resource" script_class="SkillBook" format=3]
+[gd_resource type="Resource" script_class="SkillBook" format=3 uid="uid://dwwq0dyu3ct76"]
 
-[ext_resource type="Script" path="res://SkillSystem/core/skill_book.gd" id="1_book"]
-[ext_resource type="Script" path="res://SkillSystem/core/skill_base.gd" id="2_base"]
-[ext_resource type="Script" path="res://SkillSystem/skills/fireball_skill.gd" id="3_fire"]
-[ext_resource type="Script" path="res://SkillSystem/skills/poison_skill.gd" id="4_poison"]
+[ext_resource type="Script" uid="uid://bkyicdc5mjv5s" path="res://SkillSystem/core/skill_book.gd" id="1_book"]
+[ext_resource type="Script" uid="uid://djexle8apaqmy" path="res://SkillSystem/core/skill_base.gd" id="2_base"]
+[ext_resource type="Script" uid="uid://8n6kncpitabq" path="res://SkillSystem/skills/fireball_skill.gd" id="3_fire"]
+[ext_resource type="Script" uid="uid://84ephp5ykds0" path="res://SkillSystem/skills/poison_skill.gd" id="4_poison"]
 
-[sub_resource type="Resource" script_class="SkillBase" id="s_base_shot"]
+[sub_resource type="Resource" id="s_base_shot"]
 script = ExtResource("2_base")
 name = "基础射击"
 tags = ["通用", "弹道"]
 description = "提高基础攻击力。"
 max_level = 3
-prerequisites = []
-required_tower_level = 1
-gold_cost = 0
-level_table = [{"damage":5.0,"cost_points":1,"cost_prof":0,"special":""},{"damage":10.0,"cost_points":1,"cost_prof":50,"special":""},{"damage":18.0,"cost_points":2,"cost_prof":150,"special":"暴击率+5%"}]
+level_table = [{
+"cost_points": 1,
+"cost_prof": 0,
+"damage": 5.0,
+"special": ""
+}, {
+"cost_points": 1,
+"cost_prof": 50,
+"damage": 10.0,
+"special": ""
+}, {
+"cost_points": 2,
+"cost_prof": 150,
+"damage": 18.0,
+"special": "暴击率+5%"
+}]
 
-[sub_resource type="Resource" script_class="FireballSkill" id="s_fireball"]
+[sub_resource type="Resource" id="s_fireball"]
 script = ExtResource("3_fire")
 name = "火球"
 tags = ["元素", "火焰"]
@@ -25,11 +37,24 @@ max_level = 3
 prerequisites = [0]
 required_tower_level = 2
 gold_cost = 50
-level_table = [{"damage":15.0,"cost_points":1,"cost_prof":0,"special":""},{"damage":25.0,"cost_points":1,"cost_prof":100,"special":"溅射范围+15%"},{"damage":40.0,"cost_points":2,"cost_prof":250,"special":"溅射范围+30%"}]
-splash_radius = 60.0
-splash_damage_ratio = 0.5
+level_table = [{
+"cost_points": 1,
+"cost_prof": 0,
+"damage": 15.0,
+"special": ""
+}, {
+"cost_points": 1,
+"cost_prof": 100,
+"damage": 25.0,
+"special": "溅射范围+15%"
+}, {
+"cost_points": 2,
+"cost_prof": 250,
+"damage": 40.0,
+"special": "溅射范围+30%"
+}]
 
-[sub_resource type="Resource" script_class="PoisonSkill" id="s_poison"]
+[sub_resource type="Resource" id="s_poison"]
 script = ExtResource("4_poison")
 name = "淬毒箭"
 tags = ["元素", "毒"]
@@ -38,9 +63,22 @@ max_level = 3
 prerequisites = [0]
 required_tower_level = 2
 gold_cost = 60
-level_table = [{"damage":8.0,"cost_points":1,"cost_prof":0,"special":""},{"damage":14.0,"cost_points":1,"cost_prof":80,"special":"持续时间+1s"},{"damage":22.0,"cost_points":2,"cost_prof":200,"special":"持续时间+2s"}]
-tick_interval = 1.0
-base_duration = 4.0
+level_table = [{
+"cost_points": 1,
+"cost_prof": 0,
+"damage": 8.0,
+"special": ""
+}, {
+"cost_points": 1,
+"cost_prof": 80,
+"damage": 14.0,
+"special": "持续时间+1s"
+}, {
+"cost_points": 2,
+"cost_prof": 200,
+"damage": 22.0,
+"special": "持续时间+2s"
+}]
 
 [resource]
 script = ExtResource("1_book")

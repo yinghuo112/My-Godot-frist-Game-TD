@@ -97,6 +97,8 @@ curve = SubResource("Curve2D_erjqf")
 position = Vector2(-2, 3)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=350862228]
+position = Vector2(672, 341)
+offset = Vector2(0, 100)
 script = ExtResource("131_fsg3x")
 
 [node name="TowerSlots" type="Node2D" parent="." unique_id=1907941790]
@@ -187,6 +189,10 @@ visible = false
 
 [node name="InfoPlane" parent="UI" unique_id=1827179158 instance=ExtResource("8_info")]
 visible = false
+offset_left = 300.0
+grow_vertical = 2
 
-[node name="SkillBookPlane" parent="UI" instance=ExtResource("9_skill")]
+[node name="SkillBookPlane" parent="UI" unique_id=671803291 instance=ExtResource("9_skill")]
 visible = false
+offset_left = 360.0
+grow_vertical = 2

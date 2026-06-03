@@ -82,8 +82,8 @@ func unmark():
 	is_marked = false
 	visual.modulate = Color.WHITE
 
-# 承受伤害：减少血量，更新视觉，血量为零时死亡
-func take_damage(amount: float, is_crit: bool = false):
+# 承受伤害：减少血量，更新视觉，血量为零时死亡,无视暴击
+func take_damage(amount: float, _is_crit: bool = false):
 	current_hp = maxf(current_hp - amount, 0)
 	var hp_ratio = current_hp / max_hp
 	visual.color = Color(

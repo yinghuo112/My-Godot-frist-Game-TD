@@ -64,6 +64,8 @@ func _ready() -> void:
 	var debug = load("res://调试/debug_overlay.gd").new()
 	add_child(debug)
 
+	_init_play_area()
+
 # 设置树木生成计时器，3秒后开始生成
 func _setup_tree_spawning():
 	_tree_spawn_timer = Timer.new()
@@ -193,6 +195,23 @@ func _spawn_test_enemy() -> void:
 	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
 	path.add_child(enemy)
 	print("测试小怪已生成，路径: EnemyPath")
+
+# 从 TileMapLayer 格子计算可玩区域并存入 GameManager.play_area
+func _init_play_area():
+	var cells = tile_map_layer.get_used_cells()
+	if cells.is_empty():
+		GameManager.play_area = Rect2(-1000, -1000, 4000, 4000)
+		return
+	var ts = tile_map_layer.tile_set
+	var cell_size: Vector2 = ts.tile_size
+	var min_cell = cells[0]
+	var max_cell = cells[0]
+	for c in cells:
+		min_cell = Vector2i(min(min_cell.x, c.x), min(min_cell.y, c.y))
+		max_cell = Vector2i(max(max_cell.x, c.x), max(max_cell.y, c.y))
+	var top_left = tile_map_layer.map_to_local(min_cell) - cell_size / 2.0
+	var bottom_right = tile_map_layer.map_to_local(max_cell) + cell_size / 2.0
+	GameManager.play_area = Rect2(top_left, bottom_right - top_left).grow(100.0)
 
 # 调试：测试怪物死亡回调
 func _on_test_enemy_died(enemy):

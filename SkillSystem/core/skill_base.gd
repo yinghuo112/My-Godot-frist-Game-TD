@@ -10,7 +10,7 @@ extends Resource
 @export var gold_cost: int = 0
 @export var level_table: Array = []
 
-func can_equip(tower_tags: Array) -> bool:
+func can_equip(_tower_tags: Array) -> bool:
 	return true
 
 func on_pre_shot(tower: Node2D, bullet: Node2D, target: Node2D, skill_level: int) -> void:

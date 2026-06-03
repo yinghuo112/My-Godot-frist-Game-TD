@@ -3,7 +3,7 @@ extends Area2D
 signal used_up(bullet)
 
 @export var speed: float = 600.0    # 子弹飞行速度
-@export var damage: int = 10        # 子弹伤害值
+@export var damage: float = 10        # 子弹伤害值
 
 var target: Node2D = null           # 追踪的目标怪物
 var velocity: Vector2 = Vector2.ZERO  # 当前速度向量
@@ -39,6 +39,9 @@ func initialize(p_target: Node2D, p_damage: float,
 
 # 每帧追踪目标飞行或惯性飞行，接近目标时命中
 func _physics_process(delta: float) -> void:
+	if not GameManager.play_area.has_point(global_position):
+		_release()
+		return
 	if is_instance_valid(target):
 		var direction = (target.global_position - global_position).normalized()
 		velocity = direction * speed
@@ -49,9 +52,6 @@ func _physics_process(delta: float) -> void:
 	else:
 		if velocity == Vector2.ZERO:
 			velocity = Vector2.RIGHT.rotated(rotation) * speed
-		if global_position.distance_to(Vector2.ZERO) > 3000:
-			_release()
-			return
 	global_position += velocity * delta
 
 # 完整伤害计算：命中 → 暴击 → 抗性

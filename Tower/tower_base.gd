@@ -214,7 +214,7 @@ func get_sell_value() -> int:
 	var total = cost
 	for lv in range(1, level):
 		total += get_upgrade_cost_at(lv)
-	return total / 2
+	return int(float(total) / 2)
 
 # 获取指定等级的升级花费
 func get_upgrade_cost_at(lv: int) -> int:

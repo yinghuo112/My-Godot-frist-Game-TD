@@ -5,8 +5,8 @@ extends Camera2D
 @export var edge_margin: float = 20.0     # 触发滚动的边缘宽度（像素）
 
 # 缩放参数设置
-@export var zoom_min: float = 0.3         # 最小缩放（拉得最远）
-@export var zoom_max: float = 3.0         # 最大缩放（拉得最近）
+@export var zoom_min: float = 0.8         # 最小缩放（拉得最远）
+@export var zoom_max: float = 1.2         # 最大缩放（拉得最近）
 @export var zoom_step: float = 0.1        # 每次滚轮的缩放步进值
 @export var zoom_speed: float = 6.0       # 缩放动画速度（平滑过渡用）
 
@@ -38,7 +38,19 @@ func _process(delta):
 	if move_direction != Vector2.ZERO:
 		position += move_direction.normalized() * scroll_speed * delta
 	
+	_clamp_position(window_size)
+	
 	zoom = zoom.lerp(Vector2(_target_zoom, _target_zoom), zoom_speed * delta)
+
+
+# 将相机位置限制在 play_area 内
+func _clamp_position(window_size: Vector2):
+	if GameManager.play_area.size == Vector2.ZERO:
+		return
+	var half_w = window_size.x / (2.0 * zoom.x)
+	var half_h = window_size.y / (2.0 * zoom.y)
+	position.x = clamp(position.x, GameManager.play_area.position.x + half_w, GameManager.play_area.end.x - half_w)
+	position.y = clamp(position.y, GameManager.play_area.position.y + half_h, GameManager.play_area.end.y - half_h)
 
 
 # 处理鼠标点击拖动和滚轮缩放

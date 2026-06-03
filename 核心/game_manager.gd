@@ -16,6 +16,7 @@ var enemies_to_spawn: int = 0       # 当前波次还未生成的敌人数
 var enemies_on_field: int = 0       # 当前在场上的敌人数
 var is_wave_active: bool = false    # 波次进行中锁定，防止重复点击
 
+var play_area: Rect2                # 游戏地图边界，main.gd 初始化时计算
 var enemy_path: Path2D              # 敌人路径节点
 var timer: Timer                    # 生成定时器
 var _config: WaveConfigData         # 波次配置数据
