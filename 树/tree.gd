@@ -5,9 +5,9 @@ signal died(gold_reward)
 
 enum State { SAPLING, MATURE }
 
-@export var grow_time: float = 15.0
-@export var max_hp: float = 30.0
-@export var gold_reward: int = 15
+@export var _grow_time: float = 15.0
+@export var _max_hp: float = 30.0
+@export var _gold_reward: int = 15
 
 var state: int = State.SAPLING
 var current_hp: float
@@ -23,9 +23,9 @@ var countdown_label: Label = null
 # 初始化树木：设置血量、视觉、生长计时器和碰撞检测
 func _ready():
 	add_to_group("tree_group")
-	current_hp = max_hp
+	current_hp = _max_hp
 	_update_visual()
-	grow_timer.wait_time = grow_time
+	grow_timer.wait_time = _grow_time
 	grow_timer.timeout.connect(_on_grow_timer_timeout)
 	grow_timer.start()
 	area.monitoring = false
@@ -85,7 +85,7 @@ func unmark():
 # 承受伤害：减少血量，更新视觉，血量为零时死亡,无视暴击
 func take_damage(amount: float, _is_crit: bool = false):
 	current_hp = maxf(current_hp - amount, 0)
-	var hp_ratio = current_hp / max_hp
+	var hp_ratio = current_hp / _max_hp
 	visual.color = Color(
 		0.5 + 0.5 * hp_ratio,
 		0.3 * hp_ratio,
@@ -96,5 +96,5 @@ func take_damage(amount: float, _is_crit: bool = false):
 
 # 树木死亡：发射信号并销毁
 func die():
-	died.emit(gold_reward)
+	died.emit(_gold_reward)
 	queue_free()

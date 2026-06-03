@@ -24,7 +24,7 @@ func _hit():
 	_has_hit = true
 	_spawn_explosion()
 	_apply_damage(target)
-	_release()
+	call_deferred("_release")
 
 func _on_area_entered(area):
 	if _has_hit:
@@ -33,7 +33,7 @@ func _on_area_entered(area):
 		_has_hit = true
 		_spawn_explosion()
 		_apply_damage(area.get_parent())
-		_release()
+		call_deferred("_release")
 
 func _spawn_explosion():
 	var explosion = preload("res://子弹/magic_explosion.tscn").instantiate()

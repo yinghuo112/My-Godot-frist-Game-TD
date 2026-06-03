@@ -10,7 +10,7 @@ var fire_rate: float = 1.0           # 射速（秒）
 var range_radius: float = 120.0      # 射程
 var cost: int = 50                   # 购买价格
 
-@export var show_range_circle: bool = true  # 是否显示射程圈
+@export var _show_range_circle: bool = true  # 是否显示射程圈
 
 # --- 升级系统 ---
 var level: int = 1
@@ -83,7 +83,7 @@ func _ready():
 
 	_range_indicator = TowerRangeIndicator.new()
 	_range_indicator.set_range(get_current_range())
-	_range_indicator.visible = show_range_circle
+	_range_indicator.visible = _show_range_circle
 	add_child(_range_indicator)
 
 # 每帧扫描目标并开火

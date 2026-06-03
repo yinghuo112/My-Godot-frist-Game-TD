@@ -16,14 +16,15 @@ func _create_new() -> Node2D:
 		return null
 	var bullet = scene_file.instantiate()
 	bullet._pool_managed = true
-	bullet.visible = false
-	bullet.set_process(false)
-	bullet.set_physics_process(false)
-	if bullet.has_method("set_monitoring"):
-		bullet.set_monitoring(false)
 	if bullet.has_signal("used_up"):
 		bullet.used_up.connect(return_bullet)
 	add_child(bullet)
+	bullet.visible = false
+	bullet.set_process(false)
+	bullet.set_physics_process(false)
+	bullet.set_deferred("monitoring", false)
+	if bullet.has_node("CollisionShape2D"):
+		bullet.get_node("CollisionShape2D").disabled = true
 	_all.append(bullet)
 	_available.append(bullet)
 	return bullet
@@ -36,20 +37,11 @@ func get_bullet() -> Node2D:
 	var bullet = _available.pop_back()
 	if bullet.get_parent():
 		bullet.get_parent().remove_child(bullet)
-	bullet.visible = true
-	bullet.set_process(true)
-	bullet.set_physics_process(true)
-	if bullet.has_method("set_monitoring"):
-		bullet.set_monitoring(true)
+	bullet.reset()
 	return bullet
 
 func return_bullet(bullet: Node2D) -> void:
 	if bullet.get_parent():
 		bullet.get_parent().remove_child(bullet)
 	add_child(bullet)
-	bullet.visible = false
-	bullet.set_process(false)
-	bullet.set_physics_process(false)
-	if bullet.has_method("set_monitoring"):
-		bullet.set_monitoring(false)
 	_available.append(bullet)

@@ -2,8 +2,8 @@ extends Area2D
 
 signal used_up(bullet)
 
-@export var speed: float = 600.0    # 子弹飞行速度
-@export var damage: float = 10        # 子弹伤害值
+@export var _speed: float = 600.0    # 子弹飞行速度
+@export var _damage: float = 10        # 子弹伤害值
 
 var target: Node2D = null           # 追踪的目标怪物
 var velocity: Vector2 = Vector2.ZERO  # 当前速度向量
@@ -28,7 +28,7 @@ func initialize(p_target: Node2D, p_damage: float,
 		p_hit_chance: float = 1.0, p_attack_type: int = 0,
 		p_source_tower: Node2D = null) -> void:
 	target = p_target
-	damage = p_damage
+	_damage = p_damage
 	_crit_chance = p_crit_chance
 	_crit_multiplier = p_crit_mult
 	_hit_chance = p_hit_chance
@@ -40,23 +40,23 @@ func initialize(p_target: Node2D, p_damage: float,
 # 每帧追踪目标飞行或惯性飞行，接近目标时命中
 func _physics_process(delta: float) -> void:
 	if not GameManager.play_area.has_point(global_position):
-		_release()
+		call_deferred("_release")
 		return
 	if is_instance_valid(target):
 		var direction = (target.global_position - global_position).normalized()
-		velocity = direction * speed
+		velocity = direction * _speed
 		look_at(target.global_position)
 		if global_position.distance_to(target.global_position) < 12.0:
 			_hit()
 			return
 	else:
-		if velocity == Vector2.ZERO:
-			velocity = Vector2.RIGHT.rotated(rotation) * speed
+		call_deferred("_release")
+		return
 	global_position += velocity * delta
 
 # 完整伤害计算：命中 → 暴击 → 抗性
 func _calculate_final_damage(target_node: Node2D) -> Array:
-	var final_damage = float(damage)
+	var final_damage = float(_damage)
 	var is_crit = false
 
 	# 1. 命中判定 - 只有 Enemy 有闪避
@@ -109,7 +109,7 @@ func _hit() -> void:
 		return
 	_has_hit = true
 	_apply_damage(target)
-	_release()
+	call_deferred("_release")
 
 func _on_area_entered(area: Area2D) -> void:
 	if _has_hit:
@@ -117,10 +117,25 @@ func _on_area_entered(area: Area2D) -> void:
 	if area.is_in_group("enemy"):
 		_has_hit = true
 		_apply_damage(area.get_parent())
-		_release()
+		call_deferred("_release")
 
 func _release() -> void:
+	visible = false
+	set_process(false)
+	set_physics_process(false)
+	set_deferred("monitoring", false)
+	if has_node("CollisionShape2D"):
+		$CollisionShape2D.set_deferred("disabled", true)
 	if _pool_managed:
 		used_up.emit(self)
 	else:
 		queue_free()
+
+func reset() -> void:
+	_has_hit = false
+	visible = true
+	set_process(true)
+	set_physics_process(true)
+	set_deferred("monitoring", true)
+	if has_node("CollisionShape2D"):
+		$CollisionShape2D.set_deferred("disabled", false)

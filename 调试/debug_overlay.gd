@@ -20,15 +20,15 @@ func _build_ui():
 
 	var items = ["FPS", "Memory", "Nodes", "Physics 2D"]
 
-	for name in items:
+	for labelName in items:
 		var label = Label.new()
-		label.name = name
+		label.name = labelName
 		label.add_theme_color_override("font_color", Color(0, 1, 0))
 		label.add_theme_font_size_override("font_size", 11)
 		label.add_theme_constant_override("outline_size", 1)
 		label.add_theme_color_override("font_outline_color", Color(0, 0, 0, 0.8))
 		vbox.add_child(label)
-		_labels[name] = label
+		_labels[labelName] = label
 
 	var hint = Label.new()
 	hint.text = "[F3] Hide"
@@ -36,7 +36,7 @@ func _build_ui():
 	hint.add_theme_font_size_override("font_size", 9)
 	vbox.add_child(hint)
 
-func _process(delta):
+func _process(_delta):
 	var fps = Performance.get_monitor(Performance.TIME_FPS)
 	_labels["FPS"].text = "FPS: %d" % fps
 

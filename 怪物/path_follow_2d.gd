@@ -1,6 +1,6 @@
 extends PathFollow2D
 
-@export var speed: float = 120.0
+@export var _speed: float = 120.0
 
 var last_position: Vector2
 
@@ -13,7 +13,7 @@ func _ready():
 
 # 每帧沿路径前进，根据移动方向翻转精灵，到达终点时销毁
 func _process(delta):
-	progress += speed * delta
+	progress += _speed * delta
 	var horizontal_movement = global_position.x - last_position.x
 	if horizontal_movement < 0:
 		sprite.flip_h = true

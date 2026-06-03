@@ -8,7 +8,7 @@ func can_equip(tower_tags: Array) -> bool:
 	return "元素" in tower_tags
 
 func on_hit(tower: Node2D, bullet: Node2D, target: Node2D,
-		damage: float, is_crit: bool, skill_level: int) -> void:
+		damage: float, _is_crit: bool, skill_level: int) -> void:
 	var data = get_level_data(skill_level)
 	if data.is_empty():
 		return

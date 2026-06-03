@@ -13,14 +13,14 @@ extends Resource
 func can_equip(_tower_tags: Array) -> bool:
 	return true
 
-func on_pre_shot(tower: Node2D, bullet: Node2D, target: Node2D, skill_level: int) -> void:
+func on_pre_shot(_tower: Node2D, _bullet: Node2D, _target: Node2D, _skill_level: int) -> void:
 	pass
 
-func on_hit(tower: Node2D, bullet: Node2D, target: Node2D,
-		damage: float, is_crit: bool, skill_level: int) -> void:
+func on_hit(_tower: Node2D, _bullet: Node2D, _target: Node2D,
+		_damage: float, _is_crit: bool, _skill_level: int) -> void:
 	pass
 
-func on_tower_tick(tower: Node2D, delta: float, skill_level: int) -> void:
+func on_tower_tick(_tower: Node2D, _delta: float, _skill_level: int) -> void:
 	pass
 
 func get_level_data(level: int) -> Dictionary:

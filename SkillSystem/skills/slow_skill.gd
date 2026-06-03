@@ -7,8 +7,8 @@ extends SkillBase
 func can_equip(tower_tags: Array) -> bool:
 	return "诅咒" in tower_tags
 
-func on_hit(tower: Node2D, bullet: Node2D, target: Node2D,
-		damage: float, is_crit: bool, skill_level: int) -> void:
+func on_hit(_tower: Node2D, _bullet: Node2D, target: Node2D,
+		_damage: float, _is_crit: bool, skill_level: int) -> void:
 	var data = get_level_data(skill_level)
 	if data.is_empty() or not target.has_method("take_damage"):
 		return

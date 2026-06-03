@@ -70,7 +70,6 @@ func _populate(tower: Node2D) -> void:
 	name_label.text = tt.display_name
 	level_label.text = "Lv." + str(tower.level)
 
-	var lv = tower.level
 	var dmg = tower.get_current_damage()
 	var fr = tower.get_current_fire_rate()
 	var rng = tower.get_current_range()
