@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TowerType" format=3]
+
+[ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://resource/tower_type.gd" id="1_type"]
+[ext_resource type="PackedScene" path="res://Tower/mage_tower/mage_tower.tscn" id="2_scene"]
+[ext_resource type="PackedScene" path="res://核心/mage_bolt.tscn" id="3_bolt"]
+[ext_resource type="Resource" path="res://SkillSystem/books/魔法塔技能书.tres" id="4_skillbook"]
+
+[resource]
+script = ExtResource("1_type")
+display_name = "Mage"
+damage = 22.0
+fire_rate = 1.1
+range_radius = 110.0
+cost = 75
+scene = ExtResource("2_scene")
+bullet_scene = ExtResource("3_bolt")
+attack_type = 1
+crit_chance = 0.12
+crit_multiplier = 2.0
+hit_chance = 1.0
+description = "法师塔。魔法追踪弹道[color=yellow]必中[/color]，多重帧动画与华丽特效，克制高闪避敌人。"
+skill_book = ExtResource("4_skillbook")
+skill_categories = ["魔法", "元素", "远程"]

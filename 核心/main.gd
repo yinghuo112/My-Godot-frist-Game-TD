@@ -21,6 +21,7 @@ var tower_types: Array[TowerType] = [
 	preload("res://resource/Tower_constor/arrow.tres"),
 	preload("res://resource/Tower_constor/cannon.tres"),
 	preload("res://resource/Tower_constor/magic.tres"),
+	preload("res://resource/Tower_constor/mage_tower.tres"),
 ]
 var _build_panel: Panel
 var _build_buttons: Array[Button] = []

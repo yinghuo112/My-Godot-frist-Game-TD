@@ -1,0 +1,22 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://核心/mage_sparkle.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://b3pddso1rsbiv" path="res://assets/mage/mage_sparkle.png" id="2_texture"]
+
+[node name="MageSparkle" type="GPUParticles2D"]
+script = ExtResource("1_script")
+emitting = false
+amount = 8
+one_shot = true
+explosiveness = 1.0
+lifetime = 0.6
+spread = 180.0
+fixed_fps = 10
+texture = ExtResource("2_texture")
+hframes = 5
+
+[node name="CleanupTimer" type="Timer" parent="."]
+one_shot = true
+wait_time = 1.1
+
+[connection signal="timeout" from="CleanupTimer" to="." method="_on_cleanup_timer_timeout"]
