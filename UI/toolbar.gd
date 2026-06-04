@@ -38,6 +38,8 @@ func set_lives(value: int):
 
 func set_wave(current: int, total: int):
 	%WaveLabel.text = "WAVE %d/%d" % [current, total]
+	%WaveProgressBar.max_value = total
+	%WaveProgressBar.value = current
 
 func set_start_btn_disabled(disabled: bool):
 	%StartWaveBtn.disabled = disabled
