@@ -1,5 +1,9 @@
 [gd_scene format=3]
 [ext_resource type="Script" path="res://UI/toolbar.gd" id="1_toolbar"]
+[ext_resource type="Texture2D" uid="uid://dahpk6ahjalb" path="res://assets/UI/HUD-金币.png" id="2_gold"]
+[ext_resource type="Texture2D" uid="uid://csv8wtayhi4uy" path="res://assets/UI/HP.png" id="3_hp"]
+[ext_resource type="Texture2D" uid="uid://dcbgjj2ovj1yp" path="res://assets/UI/wave.png" id="4_wave"]
+[ext_resource type="Texture2D" uid="uid://bpv3vxvoot4mb" path="res://assets/UI/set.png" id="5_set"]
 
 [node name="Toolbar" type="Control"]
 anchors_preset = 3
@@ -31,27 +35,64 @@ theme_override_constants/separation = 4
 
 [node name="LeftGroup" type="HBoxContainer" parent="MainHBox"]
 size_flags_horizontal = 0
+theme_override_constants/separation = 6
 
-[node name="GoldLabel" type="Label" parent="MainHBox/LeftGroup"]
+[node name="GoldGroup" type="HBoxContainer" parent="MainHBox/LeftGroup"]
+size_flags_horizontal = 0
+theme_override_constants/separation = 3
+
+[node name="GoldIcon" type="TextureRect" parent="MainHBox/LeftGroup/GoldGroup"]
+layout_mode = 2
+size_flags_vertical = 0
+custom_minimum_size = Vector2(12, 12)
+expand_mode = 0
+texture = ExtResource("2_gold")
+mouse_filter = 2
+
+[node name="GoldLabel" type="Label" parent="MainHBox/LeftGroup/GoldGroup"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(100, 0)
-text = "Gold: 1000"
-theme_override_font_sizes/font_size = 14
+text = "1000"
+theme_override_colors/font_color = Color(1, 0.84, 0, 1)
+theme_override_font_sizes/font_size = 15
 
-[node name="LivesLabel" type="Label" parent="MainHBox/LeftGroup"]
+[node name="HPGroup" type="HBoxContainer" parent="MainHBox/LeftGroup"]
+size_flags_horizontal = 0
+theme_override_constants/separation = 3
+
+[node name="HPIcon" type="TextureRect" parent="MainHBox/LeftGroup/HPGroup"]
+layout_mode = 2
+size_flags_vertical = 0
+custom_minimum_size = Vector2(12, 12)
+expand_mode = 0
+texture = ExtResource("3_hp")
+mouse_filter = 2
+
+[node name="LivesLabel" type="Label" parent="MainHBox/LeftGroup/HPGroup"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(70, 0)
-text = "Lives: 20"
-theme_override_font_sizes/font_size = 14
+text = "20"
+theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 15
 
-[node name="WaveLabel" type="Label" parent="MainHBox/LeftGroup"]
+[node name="WaveGroup" type="HBoxContainer" parent="MainHBox/LeftGroup"]
+size_flags_horizontal = 0
+theme_override_constants/separation = 3
+
+[node name="WaveIcon" type="TextureRect" parent="MainHBox/LeftGroup/WaveGroup"]
+layout_mode = 2
+size_flags_vertical = 0
+custom_minimum_size = Vector2(12, 12)
+expand_mode = 0
+texture = ExtResource("4_wave")
+mouse_filter = 2
+
+[node name="WaveLabel" type="Label" parent="MainHBox/LeftGroup/WaveGroup"]
 unique_name_in_owner = true
 layout_mode = 2
-custom_minimum_size = Vector2(80, 0)
-text = "Wave: 0"
-theme_override_font_sizes/font_size = 14
+text = "0"
+theme_override_colors/font_color = Color(0.3, 0.6, 1, 1)
+theme_override_font_sizes/font_size = 15
 
 [node name="SpacerL" type="Control" parent="MainHBox"]
 size_flags_horizontal = 3
@@ -106,7 +147,7 @@ theme_override_font_sizes/font_size = 14
 unique_name_in_owner = true
 layout_mode = 2
 flat = true
-text = "设置"
+icon = ExtResource("5_set")
 theme_override_font_sizes/font_size = 14
 
 [node name="DebugBtn" type="Button" parent="MainHBox/RightGroup"]

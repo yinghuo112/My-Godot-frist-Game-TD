@@ -1,9 +1,6 @@
 extends Node2D
 
-@onready var gold_label: Label = $UI/Toolbar.gold_label
-@onready var lives_label: Label = $UI/Toolbar.lives_label
-@onready var wave_label: Label = $UI/Toolbar.wave_label
-@onready var start_btn: Button = $UI/Toolbar.start_btn
+@onready var toolbar: Control = $UI/Toolbar
 @onready var settings_panel: Control = $UI/SettingsPanel
 @onready var game_over_bg: ColorRect = $UI/GameOverBG
 @onready var game_over_label: Label = $UI/GameOverLabel
@@ -36,10 +33,10 @@ var _tree_spawn_timer: Timer
 
 # 初始化游戏状态，连接信号
 func _ready() -> void:
+	toolbar.wave_start_requested.connect(_on_start_wave)
+	toolbar.settings_requested.connect(_on_settings)
+	toolbar.debug_requested.connect(_spawn_test_enemy)
 	GameManager.reset()
-	start_btn.pressed.connect(_on_start_wave)
-	$UI/Toolbar.settings_pressed.connect(_on_settings)
-	$UI/Toolbar.debug_pressed.connect(_spawn_test_enemy)
 	GameManager.gold_changed.connect(_update_gold)
 	GameManager.lives_changed.connect(_update_lives)
 	GameManager.wave_started.connect(_on_wave_started)
@@ -311,24 +308,24 @@ func _on_settings() -> void:
 
 # 开始下一波敌人
 func _on_start_wave() -> void:
-	start_btn.disabled = true
-	start_btn.text = "In Progress..."
+	toolbar.set_start_btn_disabled(true)
+	toolbar.set_start_btn_text("In Progress...")
 	GameManager.start_wave()
 
 
 # 更新金币 UI 显示
 func _update_gold(amount: int) -> void:
-	gold_label.text = "Gold: %d" % amount
+	toolbar.set_gold(amount)
 
 
 # 更新生命值 UI 显示
 func _update_lives(amount: int) -> void:
-	lives_label.text = "Lives: %d" % amount
+	toolbar.set_lives(amount)
 
 
-# 更新波次 UI 显示
+# 更新波次 UI 显示（当前波次/总波次）
 func _update_wave(wave: int) -> void:
-	wave_label.text = "Wave: %d" % wave
+	toolbar.set_wave(wave, GameManager.total_waves)
 
 
 # 波次开始时更新 UI 并播放音效
@@ -340,8 +337,8 @@ func _on_wave_started(wave_number: int, count: int, spawn_interval: float) -> vo
 
 # 波次结束后恢复按钮
 func _on_wave_done() -> void:
-	start_btn.disabled = false
-	start_btn.text = "Start Wave"
+	toolbar.set_start_btn_disabled(false)
+	toolbar.set_start_btn_text("Start Wave")
 	wave_config_label.text = ""
 
 
@@ -349,5 +346,5 @@ func _on_wave_done() -> void:
 func _on_game_over() -> void:
 	game_over_bg.visible = true
 	game_over_label.visible = true
-	start_btn.visible = false
+	toolbar.set_start_btn_visible(false)
 	AudioManager.play_gameover()

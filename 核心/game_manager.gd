@@ -16,6 +16,7 @@ var enemies_to_spawn: int = 0       # 当前波次还未生成的敌人数
 var enemies_on_field: int = 0       # 当前在场上的敌人数
 var is_wave_active: bool = false    # 波次进行中锁定，防止重复点击
 
+var total_waves: int = 0            # 总波次数，从配置加载后赋值
 var play_area: Rect2                # 游戏地图边界，main.gd 初始化时计算
 var play_area_margin: float = 100.0 # 地图边界余量（像素），play_area 在 TileMap 基础上的外扩值
 var enemy_path: Path2D              # 敌人路径节点
@@ -70,6 +71,7 @@ func _load_config() -> WaveConfigData:
 	if ResourceLoader.exists("res://resource/wave_config.tres"):
 		var data: WaveConfigData = load("res://resource/wave_config.tres")
 		if data and data.waves.size() > 0:
+			total_waves = data.waves.size()
 			print("波次配置加载成功: %d 个波次" % data.waves.size())
 			return data
 		print("配置文件存在但数据无效，使用默认配置")
