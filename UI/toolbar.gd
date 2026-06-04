@@ -38,7 +38,7 @@ func set_lives(value: int):
 	%LivesLabel.text = "%d" % value
 
 func set_wave(current: int, total: int):
-	%WaveLabel.text = "%d/%d" % [current, total]
+	%WaveLabel.text = "WAVE %d/%d" % [current, total]
 
 func set_start_btn_disabled(disabled: bool):
 	%StartWaveBtn.disabled = disabled

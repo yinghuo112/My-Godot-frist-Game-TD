@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://8n6kncpitabq" path="res://SkillSystem/skills/fireball_skill.gd" id="3_fire"]
 [ext_resource type="Script" uid="uid://84ephp5ykds0" path="res://SkillSystem/skills/poison_skill.gd" id="4_poison"]
 [ext_resource type="Script" uid="uid://dddyd5mibyjp8" path="res://SkillSystem/skills/slow_skill.gd" id="5_slow"]
-[ext_resource type="Script" path="res://SkillSystem/skills/stun_skill.gd" id="6_stun"]
+[ext_resource type="Script" uid="uid://btl8fy0aj1fnh" path="res://SkillSystem/skills/stun_skill.gd" id="6_stun"]
 
 [sub_resource type="Resource" id="s_base_shot"]
 script = ExtResource("2_base")
@@ -114,7 +114,6 @@ level_table = [{
 
 [sub_resource type="Resource" id="s_stun"]
 script = ExtResource("6_stun")
-base_duration = 2.0
 name = "雷电术"
 tags = ["雷电", "诅咒"]
 description = "眩晕敌人，使其无法行动。"

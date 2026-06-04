@@ -1,158 +1,178 @@
-[gd_scene format=3]
-[ext_resource type="Script" path="res://UI/toolbar.gd" id="1_toolbar"]
+[gd_scene format=3 uid="uid://bqyv1ckhua0c6"]
+
+[ext_resource type="Script" uid="uid://diktl657e4f73" path="res://UI/toolbar.gd" id="1_toolbar"]
 [ext_resource type="Texture2D" uid="uid://dahpk6ahjalb" path="res://assets/UI/HUD-金币.png" id="2_gold"]
 [ext_resource type="Texture2D" uid="uid://csv8wtayhi4uy" path="res://assets/UI/HP.png" id="3_hp"]
 [ext_resource type="Texture2D" uid="uid://dcbgjj2ovj1yp" path="res://assets/UI/wave.png" id="4_wave"]
 [ext_resource type="Texture2D" uid="uid://bpv3vxvoot4mb" path="res://assets/UI/set.png" id="5_set"]
 
-[node name="Toolbar" type="Control"]
-anchors_preset = 3
-anchor_left = 0.0
-anchor_top = 0.0
+[sub_resource type="StyleBoxFlat" id="panel_bg"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.12, 0.12, 0.18, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[node name="Toolbar" type="Control" unique_id=802611951]
+layout_mode = 3
+anchors_preset = 10
 anchor_right = 1.0
-anchor_bottom = 0.0
 offset_bottom = 44.0
 script = ExtResource("1_toolbar")
 
-[node name="Bg" type="ColorRect" parent="."]
-anchors_preset = 15
-anchor_left = 0.0
-anchor_top = 0.0
+[node name="Bg" type="ColorRect" parent="." unique_id=794850383]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-color = Color(0, 0, 0, 0.6)
 mouse_filter = 2
+color = Color(0.08, 0.08, 0.12, 0.95)
 
-[node name="MainHBox" type="HBoxContainer" parent="."]
-anchors_preset = 15
-anchor_left = 0.0
-anchor_top = 0.0
+[node name="MainHBox" type="HBoxContainer" parent="." unique_id=561681272]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 8.0
 offset_right = -8.0
 theme_override_constants/separation = 4
 
-[node name="LeftGroup" type="HBoxContainer" parent="MainHBox"]
+[node name="LeftGroup" type="HBoxContainer" parent="MainHBox" unique_id=130645924]
+layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 6
 
-[node name="GoldGroup" type="HBoxContainer" parent="MainHBox/LeftGroup"]
-size_flags_horizontal = 0
+[node name="GoldPanel" type="PanelContainer" parent="MainHBox/LeftGroup" unique_id=1334082808]
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_bg")
+
+[node name="GoldGroup" type="HBoxContainer" parent="MainHBox/LeftGroup/GoldPanel" unique_id=1427843404]
+layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="GoldIcon" type="TextureRect" parent="MainHBox/LeftGroup/GoldGroup"]
+[node name="GoldIcon" type="TextureRect" parent="MainHBox/LeftGroup/GoldPanel/GoldGroup" unique_id=1099362325]
+custom_minimum_size = Vector2(12, 12)
 layout_mode = 2
 size_flags_vertical = 0
-custom_minimum_size = Vector2(12, 12)
-expand_mode = 0
-texture = ExtResource("2_gold")
 mouse_filter = 2
+texture = ExtResource("2_gold")
 
-[node name="GoldLabel" type="Label" parent="MainHBox/LeftGroup/GoldGroup"]
+[node name="GoldLabel" type="Label" parent="MainHBox/LeftGroup/GoldPanel/GoldGroup" unique_id=478840686]
 unique_name_in_owner = true
 layout_mode = 2
-text = "1000"
 theme_override_colors/font_color = Color(1, 0.84, 0, 1)
 theme_override_font_sizes/font_size = 15
+text = "1000"
 
-[node name="HPGroup" type="HBoxContainer" parent="MainHBox/LeftGroup"]
-size_flags_horizontal = 0
+[node name="HPPanel" type="PanelContainer" parent="MainHBox/LeftGroup" unique_id=517021270]
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_bg")
+
+[node name="HPGroup" type="HBoxContainer" parent="MainHBox/LeftGroup/HPPanel" unique_id=1887909098]
+layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="HPIcon" type="TextureRect" parent="MainHBox/LeftGroup/HPGroup"]
+[node name="HPIcon" type="TextureRect" parent="MainHBox/LeftGroup/HPPanel/HPGroup" unique_id=1506859201]
+custom_minimum_size = Vector2(12, 12)
 layout_mode = 2
 size_flags_vertical = 0
-custom_minimum_size = Vector2(12, 12)
-expand_mode = 0
-texture = ExtResource("3_hp")
 mouse_filter = 2
+texture = ExtResource("3_hp")
 
-[node name="LivesLabel" type="Label" parent="MainHBox/LeftGroup/HPGroup"]
+[node name="LivesLabel" type="Label" parent="MainHBox/LeftGroup/HPPanel/HPGroup" unique_id=322078240]
 unique_name_in_owner = true
 layout_mode = 2
-text = "20"
 theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
 theme_override_font_sizes/font_size = 15
+text = "20"
 
-[node name="WaveGroup" type="HBoxContainer" parent="MainHBox/LeftGroup"]
-size_flags_horizontal = 0
+[node name="WavePanel" type="PanelContainer" parent="MainHBox/LeftGroup" unique_id=1290344941]
+layout_mode = 2
+theme_override_styles/panel = SubResource("panel_bg")
+
+[node name="WaveGroup" type="HBoxContainer" parent="MainHBox/LeftGroup/WavePanel" unique_id=627323534]
+layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="WaveIcon" type="TextureRect" parent="MainHBox/LeftGroup/WaveGroup"]
+[node name="WaveIcon" type="TextureRect" parent="MainHBox/LeftGroup/WavePanel/WaveGroup" unique_id=1412928369]
+custom_minimum_size = Vector2(12, 12)
 layout_mode = 2
 size_flags_vertical = 0
-custom_minimum_size = Vector2(12, 12)
-expand_mode = 0
-texture = ExtResource("4_wave")
 mouse_filter = 2
+texture = ExtResource("4_wave")
 
-[node name="WaveLabel" type="Label" parent="MainHBox/LeftGroup/WaveGroup"]
+[node name="WaveLabel" type="Label" parent="MainHBox/LeftGroup/WavePanel/WaveGroup" unique_id=981465431]
 unique_name_in_owner = true
 layout_mode = 2
-text = "0"
 theme_override_colors/font_color = Color(0.3, 0.6, 1, 1)
 theme_override_font_sizes/font_size = 15
+text = "0"
 
-[node name="SpacerL" type="Control" parent="MainHBox"]
+[node name="SpacerL" type="Control" parent="MainHBox" unique_id=982101915]
+layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="CenterGroup" type="HBoxContainer" parent="MainHBox"]
+[node name="CenterGroup" type="HBoxContainer" parent="MainHBox" unique_id=560983587]
+layout_mode = 2
 size_flags_horizontal = 0
 
-[node name="StartWaveBtn" type="Button" parent="MainHBox/CenterGroup"]
+[node name="StartWaveBtn" type="Button" parent="MainHBox/CenterGroup" unique_id=2019651067]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Start Wave"
 theme_override_font_sizes/font_size = 14
+text = "Start Wave"
 
-[node name="SpacerR" type="Control" parent="MainHBox"]
+[node name="SpacerR" type="Control" parent="MainHBox" unique_id=1885545408]
+layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
 
-[node name="RightGroup" type="HBoxContainer" parent="MainHBox"]
+[node name="RightGroup" type="HBoxContainer" parent="MainHBox" unique_id=1768524375]
+layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 2
 
-[node name="Speed1xBtn" type="Button" parent="MainHBox/RightGroup"]
+[node name="Speed1xBtn" type="Button" parent="MainHBox/RightGroup" unique_id=2049737955]
 unique_name_in_owner = true
 layout_mode = 2
-flat = true
+theme_override_font_sizes/font_size = 14
 text = "1×"
-theme_override_font_sizes/font_size = 14
+flat = true
 
-[node name="Speed2xBtn" type="Button" parent="MainHBox/RightGroup"]
+[node name="Speed2xBtn" type="Button" parent="MainHBox/RightGroup" unique_id=1995417834]
 unique_name_in_owner = true
 layout_mode = 2
-flat = true
+theme_override_font_sizes/font_size = 14
 text = "2×"
-theme_override_font_sizes/font_size = 14
+flat = true
 
-[node name="Speed4xBtn" type="Button" parent="MainHBox/RightGroup"]
+[node name="Speed4xBtn" type="Button" parent="MainHBox/RightGroup" unique_id=391439284]
 unique_name_in_owner = true
 layout_mode = 2
-flat = true
+theme_override_font_sizes/font_size = 14
 text = "4×"
-theme_override_font_sizes/font_size = 14
+flat = true
 
-[node name="PauseBtn" type="Button" parent="MainHBox/RightGroup"]
+[node name="PauseBtn" type="Button" parent="MainHBox/RightGroup" unique_id=1489067193]
 unique_name_in_owner = true
 layout_mode = 2
-flat = true
+theme_override_font_sizes/font_size = 14
 text = "‖"
-theme_override_font_sizes/font_size = 14
+flat = true
 
-[node name="SettingsBtn" type="Button" parent="MainHBox/RightGroup"]
+[node name="SettingsBtn" type="Button" parent="MainHBox/RightGroup" unique_id=1442138647]
 unique_name_in_owner = true
 layout_mode = 2
-flat = true
+theme_override_font_sizes/font_size = 14
 icon = ExtResource("5_set")
-theme_override_font_sizes/font_size = 14
+flat = true
 
-[node name="DebugBtn" type="Button" parent="MainHBox/RightGroup"]
+[node name="DebugBtn" type="Button" parent="MainHBox/RightGroup" unique_id=2142618879]
 unique_name_in_owner = true
 layout_mode = 2
-flat = true
-text = "调试"
 theme_override_font_sizes/font_size = 14
+text = "调试"
+flat = true

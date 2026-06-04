@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://dwew2eykqysxs" path="res://Tower/magic_tower/magic_tower.tscn" id="1_ep0b0"]
 [ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://resource/tower_type.gd" id="2_xhu2c"]
 [ext_resource type="PackedScene" uid="uid://d4m3p0l8t2c6b" path="res://子弹/magic_bolt.tscn" id="3_bolt"]
-[ext_resource type="Resource" path="res://SkillSystem/books/魔法塔技能书.tres" id="4_skillbook"]
+[ext_resource type="Resource" uid="uid://cidxily7lm3db" path="res://SkillSystem/books/魔法塔技能书.tres" id="4_skillbook"]
 
 [resource]
 script = ExtResource("2_xhu2c")
@@ -15,8 +15,6 @@ cost = 70
 scene = ExtResource("1_ep0b0")
 bullet_scene = ExtResource("3_bolt")
 attack_type = 1
-crit_chance = 0.10
-crit_multiplier = 2.0
 hit_chance = 1.0
 description = "魔法塔。魔法攻击无视部分抗性，追踪弹道[color=yellow]必中[/color]，克制高闪避敌人。"
 skill_book = ExtResource("4_skillbook")

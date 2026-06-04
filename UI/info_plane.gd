@@ -1,15 +1,12 @@
-extends PanelContainer
+# ===== 塔信息面板 =====
+# 继承 ui_panel_base，展示选中塔的属性/技能/升级/出售
+# 入口：show_for_tower(tower) → 调用 show_panel() 滑入
 
-const PANEL_WIDTH: float = 300.0
+extends "res://UI/ui_panel_base.gd"
 
-var _target_tower: Node2D = null
-var _tween: Tween = null
-var _is_open: bool = false
-
-signal closed()
+# 额外信号：打开技能书
 signal skill_book_requested(tower)
 
-@onready var close_btn: Button = %CloseBtn
 @onready var icon_rect: TextureRect = %IconTextureRect
 @onready var name_label: Label = %TowerNameLabel
 @onready var level_label: Label = %LevelLabel
@@ -20,45 +17,22 @@ signal skill_book_requested(tower)
 @onready var skill_btn: Button = %SkillBtn
 
 func _ready() -> void:
-	close_btn.pressed.connect(_close)
+	# 连接基类关闭按钮
+	_connect_close_btn(%CloseBtn)
+	# 连接业务按钮
 	upgrade_btn.pressed.connect(_on_upgrade)
 	sell_btn.pressed.connect(_on_sell)
 	if skill_btn:
 		skill_btn.pressed.connect(_on_skill_click)
+	hide_instantly()
 
+# 打开面板，展示指定塔的信息
 func show_for_tower(tower: Node2D) -> void:
-	if _tween and _tween.is_valid():
-		_tween.kill()
 	_target_tower = tower
 	_populate(tower)
-	visible = true
-	_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	_tween.tween_property(self, "offset_left", 0.0, 0.3)
-	_is_open = true
+	show_panel()
 
-func _close() -> void:
-	if not _is_open:
-		return
-	if _tween and _tween.is_valid():
-		_tween.kill()
-	_tween = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
-	_tween.tween_property(self, "offset_left", PANEL_WIDTH + 20.0, 0.25)
-	_tween.tween_callback(func():
-		visible = false
-		_is_open = false
-		closed.emit()
-	)
-
-func close() -> void:
-	_close()
-
-func hide_instantly() -> void:
-	if _tween and _tween.is_valid():
-		_tween.kill()
-	offset_left = PANEL_WIDTH + 20.0
-	visible = false
-	_is_open = false
-
+# 填充塔属性到面板（虚函数实现）
 func _populate(tower: Node2D) -> void:
 	if not tower.has_method("init") or not tower.has_method("get_current_damage"):
 		return
@@ -94,11 +68,16 @@ func _populate(tower: Node2D) -> void:
 	if skill_btn:
 		skill_btn.visible = tt.get("skill_book") != null
 
+
+# ===== 业务逻辑 =====
+
+# 点击技能按钮 → 打开技能书面板
 func _on_skill_click() -> void:
 	if is_instance_valid(_target_tower):
 		skill_book_requested.emit(_target_tower)
-		_close()
+		close()
 
+# 升级塔
 func _on_upgrade() -> void:
 	if not is_instance_valid(_target_tower) or not _target_tower.has_method("do_upgrade"):
 		return
@@ -106,37 +85,37 @@ func _on_upgrade() -> void:
 		return
 	_populate(_target_tower)
 
+# 出售塔
 func _on_sell() -> void:
 	if not is_instance_valid(_target_tower) or not _target_tower.has_method("get_sell_value"):
 		return
 	var value = _target_tower.get_sell_value()
 	GameManager.add_gold(value)
 	_target_tower.queue_free()
-	_close()
+	close()
 
-func _input(event: InputEvent) -> void:
-	if _is_open and event is InputEventKey:
-		if event.pressed and event.keycode == KEY_ESCAPE:
-			_close()
-			get_viewport().set_input_as_handled()
-
-func set_stat(label: String, value: String) -> void:
+# 在属性网格中添加一行统计
+func set_stat(label_text: String, value_text: String) -> void:
 	var key = Label.new()
-	key.text = label
+	key.text = label_text
 	var val = Label.new()
-	val.text = value
+	val.text = value_text
 	attr_grid.add_child(key)
 	attr_grid.add_child(val)
 
+# 设置描述文本
 func set_description(text: String) -> void:
 	desc_label.text = text
 
+# 设置升级回调
 func set_upgrade_callback(callable: Callable) -> void:
 	upgrade_btn.pressed.connect(callable)
 
+# 设置出售回调
 func set_sell_callback(callable: Callable) -> void:
 	sell_btn.pressed.connect(callable)
 
+# 清空属性网格
 func clear_stats() -> void:
 	for c in attr_grid.get_children():
 		c.queue_free()
