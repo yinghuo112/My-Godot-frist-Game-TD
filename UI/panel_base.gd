@@ -1,5 +1,5 @@
-class_name PanelBase
 extends PanelContainer
+class_name PanelBase
 
 
 # 面板宽度（像素），用于计算滑出偏移量，子类可覆盖
@@ -37,7 +37,7 @@ func show_panel() -> void:
 	visible = true
 	_is_open = true
 	# 滑入动画：从右侧偏移到原位（匀速）
-	_tween = create_tween().set_ease(Tween.EASE_LINEAR).set_trans(Tween.TRANS_LINEAR)
+	_tween = create_tween().set_trans(Tween.TRANS_LINEAR)
 	_tween.tween_property(self, "offset_left", 0.0, 0.3)
 
 # 关闭面板并滑出隐藏（带动画）

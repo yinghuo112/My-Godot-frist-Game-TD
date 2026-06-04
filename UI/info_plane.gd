@@ -1,8 +1,8 @@
-# ===== 塔信息面板 =====
-# 继承 ui_panel_base，展示选中塔的属性/技能/升级/出售
-# 入口：show_for_tower(tower) → 调用 show_panel() 滑入
-
 extends PanelBase
+
+# ===== 塔信息面板 =====
+# 展示选中塔的属性/技能/升级/出售
+# 入口：show_for_tower(tower) → 调用 show_panel() 滑入
 
 # 额外信号：打开技能书
 signal skill_book_requested(tower)
