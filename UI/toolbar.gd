@@ -45,15 +45,15 @@ func set_start_btn_disabled(disabled: bool):
 func set_start_btn_text(text: String):
 	%StartWaveBtn.text = text
 
-func set_start_btn_visible(is_visible: bool):
-	%StartWaveBtn.visible = is_visible
+func set_start_btn_visible(visible_state: bool):
+	%StartWaveBtn.visible = visible_state
 
 # ===== 速度控制 =====
 
-func _on_speed(scale: float):
-	_current_speed = scale
+func _on_speed(speed: float):
+	_current_speed = speed
 	_paused = false
-	Engine.time_scale = scale
+	Engine.time_scale = speed
 	_update_speed_buttons()
 
 func _on_pause():
