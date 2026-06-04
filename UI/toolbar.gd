@@ -18,7 +18,6 @@ func _ready():
 	Engine.time_scale = 1.0
 	_setup_buttons()
 	_update_speed_buttons()
-	_setup_label_styles()
 
 func _setup_buttons():
 	%StartWaveBtn.pressed.connect(wave_start_requested.emit)
@@ -68,18 +67,3 @@ func _update_speed_buttons():
 	for i in range(btns.size()):
 		btns[i].disabled = (_current_speed == speeds[i] and not _paused)
 	%PauseBtn.disabled = _paused
-
-# ===== 标签样式 =====
-
-func _setup_label_styles():
-	if not ClassDB.class_exists("LabelSettings"):
-		return
-	var bold_font = SystemFont.new()
-	bold_font.font_names = ["Open Sans", "Arial", "sans-serif"]
-	bold_font.font_weight = 700
-	for name in ["GoldLabel", "LivesLabel", "WaveLabel"]:
-		var label: Label = get_node("%" + name)
-		var ls = LabelSettings.new()
-		ls.font_size = 15
-		ls.font = bold_font
-		label.label_settings = ls

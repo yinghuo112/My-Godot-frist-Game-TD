@@ -6,6 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://dcbgjj2ovj1yp" path="res://assets/UI/wave.png" id="4_wave"]
 [ext_resource type="Texture2D" uid="uid://bpv3vxvoot4mb" path="res://assets/UI/set.png" id="5_set"]
 
+[sub_resource type="SystemFont" id="bold_font"]
+font_names = ["Open Sans", "Arial", "sans-serif"]
+font_weight = 700
+
 [sub_resource type="StyleBoxFlat" id="panel_bg"]
 content_margin_left = 4.0
 content_margin_top = 2.0
@@ -65,6 +69,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.84, 0, 1)
 theme_override_font_sizes/font_size = 15
+theme_override_fonts/font = SubResource("bold_font")
 text = "1000"
 
 [node name="HPPanel" type="PanelContainer" parent="MainHBox/LeftGroup" unique_id=517021270]
@@ -87,6 +92,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
 theme_override_font_sizes/font_size = 15
+theme_override_fonts/font = SubResource("bold_font")
 text = "20"
 
 [node name="WavePanel" type="PanelContainer" parent="MainHBox/LeftGroup" unique_id=1290344941]
@@ -120,6 +126,7 @@ offset_right = 26.0
 offset_bottom = 10.0
 theme_override_colors/font_color = Color(0.3, 0.6, 1, 1)
 theme_override_font_sizes/font_size = 15
+theme_override_fonts/font = SubResource("bold_font")
 text = "0"
 
 [node name="SpacerL" type="Control" parent="MainHBox" unique_id=982101915]
