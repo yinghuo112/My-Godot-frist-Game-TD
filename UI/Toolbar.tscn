@@ -113,42 +113,38 @@ text = "20"
 layout_mode = 2
 theme_override_styles/panel = SubResource("panel_bg")
 
-[node name="WaveGroup" type="HBoxContainer" parent="MainHBox/LeftGroup/WavePanel" unique_id=627323534]
+[node name="WaveVBox" type="VBoxContainer" parent="MainHBox/LeftGroup/WavePanel" unique_id=561681273]
+layout_mode = 2
+theme_override_constants/separation = 1
+
+[node name="WaveTop" type="HBoxContainer" parent="MainHBox/LeftGroup/WavePanel/WaveVBox" unique_id=130645925]
 layout_mode = 2
 theme_override_constants/separation = 3
 
-[node name="WaveIcon" type="TextureRect" parent="MainHBox/LeftGroup/WavePanel/WaveGroup" unique_id=1412928369]
+[node name="WaveIcon" type="TextureRect" parent="MainHBox/LeftGroup/WavePanel/WaveVBox/WaveTop" unique_id=1412928369]
 custom_minimum_size = Vector2(12, 12)
 layout_mode = 2
 size_flags_vertical = 0
 mouse_filter = 2
 texture = ExtResource("4_wave")
 
-[node name="WaveProgressBar" type="ProgressBar" parent="MainHBox/LeftGroup/WavePanel/WaveGroup" unique_id=1532611932]
+[node name="WaveLabel" type="Label" parent="MainHBox/LeftGroup/WavePanel/WaveVBox/WaveTop" unique_id=981465431]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.3, 0.6, 1, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_fonts/font = SubResource("bold_font")
+text = "WAVE 0/0"
+
+[node name="WaveProgressBar" type="ProgressBar" parent="MainHBox/LeftGroup/WavePanel/WaveVBox" unique_id=1532611932]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(80, 0)
 max_value = 100
 value = 0
 show_percentage = false
 theme_override_styles/background = SubResource("progress_bg")
 theme_override_styles/fill = SubResource("progress_fill")
-
-[node name="WaveLabel" type="Label" parent="MainHBox/LeftGroup/WavePanel/WaveGroup/WaveProgressBar" unique_id=981465431]
-unique_name_in_owner = true
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_colors/font_color = Color(0.3, 0.6, 1, 1)
-theme_override_font_sizes/font_size = 13
-theme_override_fonts/font = SubResource("bold_font")
-horizontal_alignment = 1
-vertical_alignment = 1
-text = "WAVE 0/0"
 
 [node name="SpacerL" type="Control" parent="MainHBox" unique_id=982101915]
 layout_mode = 2
