@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" path="res://UI/InfoPlane.tscn" id="8_info"]
 [ext_resource type="PackedScene" path="res://SkillSystem/ui/SkillBookPlane.tscn" id="9_skill"]
 [ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
+[ext_resource type="PackedScene" path="res://UI/Toolbar.tscn" id="10_toolbar"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rqaol"]
 texture = ExtResource("2_l7pho")
@@ -122,37 +123,7 @@ position = Vector2(991, 286)
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=604907210]
 
-[node name="HUD_BG" type="ColorRect" parent="UI" unique_id=2146947520]
-offset_top = 3.0
-offset_right = 390.0
-offset_bottom = 53.0
-color = Color(0, 0, 0, 0.6)
-
-[node name="HUD" type="HBoxContainer" parent="UI" unique_id=943518492]
-offset_left = 15.0
-offset_top = 12.0
-offset_right = 325.0
-offset_bottom = 38.0
-
-[node name="GoldLabel" type="Label" parent="UI/HUD" unique_id=1169994924]
-layout_mode = 2
-text = "Gold: 100"
-
-[node name="LivesLabel" type="Label" parent="UI/HUD" unique_id=941294497]
-layout_mode = 2
-text = "Lives: 20"
-
-[node name="WaveLabel" type="Label" parent="UI/HUD" unique_id=2001307429]
-layout_mode = 2
-text = "Wave: 1"
-
-[node name="StartWaveBtn" type="Button" parent="UI/HUD" unique_id=271683862]
-layout_mode = 2
-text = "Start Wave"
-
-[node name="SettingsBtn" type="Button" parent="UI/HUD" unique_id=364084437]
-layout_mode = 2
-text = "设置"
+[node name="Toolbar" parent="UI" instance=ExtResource("10_toolbar")]
 
 [node name="WaveConfigLabel" type="Label" parent="UI" unique_id=860749863]
 offset_left = 15.0

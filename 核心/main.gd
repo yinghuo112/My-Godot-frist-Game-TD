@@ -1,10 +1,9 @@
 extends Node2D
 
-@onready var gold_label: Label = $UI/HUD/GoldLabel
-@onready var lives_label: Label = $UI/HUD/LivesLabel
-@onready var wave_label: Label = $UI/HUD/WaveLabel
-@onready var start_btn: Button = $UI/HUD/StartWaveBtn
-@onready var settings_btn: Button = $UI/HUD/SettingsBtn
+@onready var gold_label: Label = $UI/Toolbar.gold_label
+@onready var lives_label: Label = $UI/Toolbar.lives_label
+@onready var wave_label: Label = $UI/Toolbar.wave_label
+@onready var start_btn: Button = $UI/Toolbar.start_btn
 @onready var settings_panel: Control = $UI/SettingsPanel
 @onready var game_over_bg: ColorRect = $UI/GameOverBG
 @onready var game_over_label: Label = $UI/GameOverLabel
@@ -39,7 +38,8 @@ var _tree_spawn_timer: Timer
 func _ready() -> void:
 	GameManager.reset()
 	start_btn.pressed.connect(_on_start_wave)
-	settings_btn.pressed.connect(_on_settings)
+	$UI/Toolbar.settings_pressed.connect(_on_settings)
+	$UI/Toolbar.debug_pressed.connect(_spawn_test_enemy)
 	GameManager.gold_changed.connect(_update_gold)
 	GameManager.lives_changed.connect(_update_lives)
 	GameManager.wave_started.connect(_on_wave_started)
