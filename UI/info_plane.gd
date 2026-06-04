@@ -2,7 +2,7 @@
 # 继承 ui_panel_base，展示选中塔的属性/技能/升级/出售
 # 入口：show_for_tower(tower) → 调用 show_panel() 滑入
 
-extends "res://UI/ui_panel_base.gd"
+extends PanelBase
 
 # 额外信号：打开技能书
 signal skill_book_requested(tower)

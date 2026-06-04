@@ -3,7 +3,7 @@
 # 入口：show_for_tower(tower) → 调用 show_panel() 滑入
 # 覆盖 _get_panel_width() 返回 340（比信息面板更宽）
 
-extends "res://UI/ui_panel_base.gd"
+extends PanelBase
 
 const SKILL_PANEL_WIDTH: float = 340.0
 

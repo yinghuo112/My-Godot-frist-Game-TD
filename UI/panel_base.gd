@@ -1,14 +1,6 @@
-# ===== UI 面板基类 =====
-# 所有从右侧滑入/滑出的面板都继承此基类
-# 提供：滑入动画、关闭按钮连接、Escape 键关闭、隐藏方法、状态管理
-#
-# 子类只需：
-# 1. 实现 _populate(target) 虚函数填充内容
-# 2. 在 _ready() 中调用 _connect_close_btn() 连接关闭按钮
-# 3. 按需覆盖 _get_panel_width() 返回面板宽度（默认 300）
-# 4. 按需覆盖 _on_close_extra() 添加关闭时额外逻辑
-
+class_name PanelBase
 extends PanelContainer
+
 
 # 面板宽度（像素），用于计算滑出偏移量，子类可覆盖
 const PANEL_WIDTH: float = 300.0
@@ -44,8 +36,8 @@ func show_panel() -> void:
 		_tween.kill()
 	visible = true
 	_is_open = true
-	# 滑入动画：从右侧偏移到原位
-	_tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	# 滑入动画：从右侧偏移到原位（匀速）
+	_tween = create_tween().set_ease(Tween.EASE_LINEAR).set_trans(Tween.TRANS_LINEAR)
 	_tween.tween_property(self, "offset_left", 0.0, 0.3)
 
 # 关闭面板并滑出隐藏（带动画）
