@@ -22,7 +22,6 @@ func _get_panel_width() -> float:
 
 # 打开面板，展示指定塔的技能树
 func show_for_tower(tower: Node2D) -> void:
-	_target_tower = tower
 	_populate(tower)
 	show_panel()
 

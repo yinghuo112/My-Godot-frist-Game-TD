@@ -4,6 +4,8 @@ extends PanelBase
 # 展示选中塔的属性/技能/升级/出售
 # 入口：show_for_tower(tower) → 调用 show_panel() 滑入
 
+var _target_tower: Node2D = null
+
 # 额外信号：打开技能书
 signal skill_book_requested(tower)
 

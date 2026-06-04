@@ -8,9 +8,6 @@ const PANEL_WIDTH: float = 300.0
 # 信号：面板关闭时发出，外部可监听做清理
 signal closed()
 
-# 当前操作的目标塔
-var _target_tower: Node2D = null
-
 # 滑入/滑出动画控制器
 var _tween: Tween = null
 

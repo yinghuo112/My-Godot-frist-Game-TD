@@ -45,8 +45,8 @@ func set_start_btn_disabled(disabled: bool):
 func set_start_btn_text(text: String):
 	%StartWaveBtn.text = text
 
-func set_start_btn_visible(visible: bool):
-	%StartWaveBtn.visible = visible
+func set_start_btn_visible(is_visible: bool):
+	%StartWaveBtn.visible = is_visible
 
 # ===== 速度控制 =====
 
