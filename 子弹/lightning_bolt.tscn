@@ -1,10 +1,9 @@
 [gd_scene format=3 uid="uid://cr3in8mtv2ja1"]
 
-[ext_resource type="PackedScene" path="res://子弹/bullet.tscn" id="1_bullet"]
-[ext_resource type="Script" path="res://子弹/lightning_bolt.gd" id="2_script"]
+[ext_resource type="PackedScene" uid="uid://dltmulxy4cnmr" path="res://子弹/bullet.tscn" id="1_bullet"]
+[ext_resource type="Script" uid="uid://curx1tuxuwilj" path="res://子弹/lightning_bolt.gd" id="2_script"]
 
-[node name="LightningBolt" instance=ExtResource("1_bullet")]
+[node name="LightningBolt" unique_id=1182375537 instance=ExtResource("1_bullet")]
 script = ExtResource("2_script")
 
-[node name="Sprite2D" parent="." index="1"]
-visible = false
+[node name="Timer" type="Timer" parent="." index="2" unique_id=1371126007]

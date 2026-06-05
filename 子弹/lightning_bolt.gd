@@ -3,6 +3,8 @@
 # 特效：双 Line2D（主层+发光层）+ 多段锯齿抖动 + 火花粒子
 extends "res://子弹/bullet.gd"
 
+const SPARK_SCENE = preload("res://子弹/lightning_sparkle.tscn")
+
 # ===== 链跳跃参数（由 mage_tower._shoot() 传入）=====
 var 发射点: Vector2 = Vector2.ZERO          # 塔炮口世界坐标
 var 跳跃衰减: float = 0.8                   # 每次跳跃伤害乘此系数
@@ -163,10 +165,7 @@ func _update_lines() -> void:
 
 # ===== 在指定世界坐标生成火花粒子 =====
 func _spawn_sparks(pos: Vector2) -> void:
-	var sparkle_scene = preload("res://子弹/mage_sparkle.tscn")
-	if not sparkle_scene:
-		return
-	var p = sparkle_scene.instantiate()
+	var p = SPARK_SCENE.instantiate()
 	p.global_position = pos
 	get_parent().add_child(p)
 
