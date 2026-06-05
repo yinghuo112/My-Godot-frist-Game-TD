@@ -174,7 +174,6 @@ func _spawn_sparks(pos: Vector2) -> void:
 	var tex = preload("res://assets/mage/mage_sparkle.png")
 	if tex:
 		p.texture = tex
-		p.hframes = 5
 
 	var mat = ParticleProcessMaterial.new()
 	mat.direction = Vector3.UP
