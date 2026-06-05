@@ -163,30 +163,12 @@ func _update_lines() -> void:
 
 # ===== 在指定世界坐标生成火花粒子 =====
 func _spawn_sparks(pos: Vector2) -> void:
-	var p = GPUParticles2D.new()
-	p.one_shot = true
-	p.amount = 8
-	p.lifetime = 0.4
-	p.explosiveness = 1.0
-	p.fixed_fps = 10
+	var sparkle_scene = preload("res://子弹/mage_sparkle.tscn")
+	if not sparkle_scene:
+		return
+	var p = sparkle_scene.instantiate()
 	p.global_position = pos
-
-	var tex = preload("res://assets/mage/mage_sparkle.png")
-	if tex:
-		p.texture = tex
-
-	var mat = ParticleProcessMaterial.new()
-	mat.direction = Vector3.UP
-	mat.spread = 180
-	mat.initial_velocity_min = 30
-	mat.initial_velocity_max = 80
-	p.process_material = mat
-
 	get_parent().add_child(p)
-	p.emitting = true
-	await get_tree().create_timer(0.6).timeout
-	if is_instance_valid(p):
-		p.queue_free()
 
 
 # ===== 清理：释放前删除视觉节点 =====
