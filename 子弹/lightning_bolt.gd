@@ -139,8 +139,8 @@ func _update_lines() -> void:
 		add_child(主线条)
 
 		发光线条 = Line2D.new()
-		发光线条.width = 8
-		发光线条.default_color = Color(0.852, 0.096, 0.817, 0.25)
+		发光线条.width = 6
+		发光线条.default_color = Color(0.094, 0.447, 0.85, 0.302)
 		var mat = CanvasItemMaterial.new()
 		mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 		发光线条.material = mat
@@ -167,7 +167,7 @@ func _spawn_sparks(pos: Vector2) -> void:
 	p.one_shot = true
 	p.amount = 10
 	p.lifetime = 0.3
-	p.position = pos
+	p.global_position = pos
 
 	var mat = ParticleProcessMaterial.new()
 	mat.direction = Vector3.UP
