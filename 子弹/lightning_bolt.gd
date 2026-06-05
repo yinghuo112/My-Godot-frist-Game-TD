@@ -7,7 +7,7 @@ extends "res://子弹/bullet.gd"
 var 发射点: Vector2 = Vector2.ZERO          # 塔炮口世界坐标
 var 跳跃衰减: float = 0.8                   # 每次跳跃伤害乘此系数
 var 跳跃范围: float = 150.0                 # 搜索下一个目标的半径
-var 最大跳跃次数: int = 3                    # 最多跳几次
+var 最大跳跃次数: int = 7                   # 最多跳几次
 
 # ===== 运行时状态 =====
 var 已命中列表: Array = []                   # 已电过的敌人（避免重复跳跃）
@@ -50,7 +50,7 @@ func _physics_process(_delta: float) -> void:
 	set_physics_process(false)
 
 	路径点 = [发射点]
-	_do_chain(target, 最大跳跃次数)
+	_do_chain(target, 最大跳跃次数 + 1)
 	_update_lines()
 	for p in 路径点:
 		if p != 发射点:
@@ -73,35 +73,39 @@ func _process(delta: float) -> void:
 
 
 # ===== 递归链跳跃 + 伤害 =====
-func _do_chain(enemy: Node2D, 剩余跳: int) -> void:
-	if not is_instance_valid(enemy) or 剩余跳 <= 0:
+# 剩余击次 = 剩余总命中数（含当前目标）
+func _do_chain(enemy: Node2D, 剩余击次: int) -> void:
+	if not is_instance_valid(enemy) or 剩余击次 <= 0:
 		return
 	已命中列表.append(enemy)
 	_apply_damage(enemy)
 	路径点.append(enemy.global_position)
-	if 剩余跳 <= 1:
+	if 剩余击次 <= 1:
 		return
 	var next = _find_next_target(enemy)
 	if next == null:
 		return
-	_do_chain(next, 剩余跳 - 1)
+	_do_chain(next, 剩余击次 - 1)
 
 
 # ===== 搜索跳跃范围内最近的未命中敌人 =====
 func _find_next_target(from_enemy: Node2D) -> Node2D:
-	var enemies = get_tree().get_nodes_in_group("enemy")
+	var nodes = get_tree().get_nodes_in_group("enemy")
 	var pos = from_enemy.global_position
 	var best = null
 	var best_dist = 跳跃范围 + 1.0
-	for e in enemies:
-		if not is_instance_valid(e):
+	for n in nodes:
+		if not is_instance_valid(n):
 			continue
-		if e in 已命中列表:
+		var enemy = n.get_parent() if n is Area2D else n
+		if not enemy.has_method("take_damage"):
 			continue
-		var d = e.global_position.distance_to(pos)
+		if enemy in 已命中列表:
+			continue
+		var d = enemy.global_position.distance_to(pos)
 		if d <= 跳跃范围 and d < best_dist:
 			best_dist = d
-			best = e
+			best = enemy
 	return best
 
 
@@ -136,7 +140,7 @@ func _update_lines() -> void:
 
 		发光线条 = Line2D.new()
 		发光线条.width = 8
-		发光线条.default_color = Color(0.2, 0.5, 1.0, 0.25)
+		发光线条.default_color = Color(0.852, 0.096, 0.817, 0.25)
 		var mat = CanvasItemMaterial.new()
 		mat.blend_mode = CanvasItemMaterial.BLEND_MODE_ADD
 		发光线条.material = mat
