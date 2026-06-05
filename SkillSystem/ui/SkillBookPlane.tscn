@@ -1,18 +1,17 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://SkillSystem/ui/skill_book_plane.gd" id="1_book"]
-[ext_resource type="Texture2D" uid="uid://b7e8seomuhtq6" path="res://assets/UI/ui_frame.png" id="2_frame"]
 
-[sub_resource type="StyleBoxTexture" id="bg_dark"]
-texture = ExtResource("2_frame")
-patch_margin_left = 125
-patch_margin_top = 125
-patch_margin_right = 125
-patch_margin_bottom = 125
+[sub_resource type="StyleBoxFlat" id="bg_dark"]
 content_margin_left = 12.0
 content_margin_top = 12.0
 content_margin_right = 12.0
 content_margin_bottom = 12.0
+bg_color = Color(0.1, 0.1, 0.12, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="btn_close"]
 bg_color = Color(0.3, 0.15, 0.15, 1.0)
