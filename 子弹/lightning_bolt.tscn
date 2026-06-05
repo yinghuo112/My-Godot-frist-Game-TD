@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cr3in8mtv2ja1"]
+
+[ext_resource type="Script" uid="uid://curx1tuxuwilj" path="res://子弹/lightning_bolt.gd" id="1_lb7sd"]
+
+[node name="LightningBolt" type="Area2D"]
+script = ExtResource("1_lb7sd")

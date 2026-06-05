@@ -19,6 +19,9 @@ enum AttackType { PHYSICAL, MAGIC }
 @export var description: String = ""              # 技能描述（支持 BBCode）
 @export var skill_book: Resource                   # 技能书
 @export var skill_categories: Array = []           # 技能分类标签
+@export var chain_jumps: int = 0                   # 链式跳跃次数（0=无连锁）
+@export var chain_falloff: float = 1.0             # 跳跃伤害衰减系数
+@export var chain_range: float = 0.0               # 跳跃搜索范围（像素）
 
 func can_equip_skill(skill) -> bool:
 	if not skill_categories.is_empty() and skill.has_method("can_equip"):
