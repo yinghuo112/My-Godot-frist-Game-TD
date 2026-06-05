@@ -20,6 +20,7 @@ var tower_types: Array[TowerType] = [
 	preload("res://resource/Tower_constor/mage_tower.tres"),
 ]
 var _build_panel: Panel
+var _debug_overlay: CanvasLayer
 var _build_buttons: Array[Button] = []
 var _pending_slot: Marker2D = null
 var tree_scene = preload("res://树/Tree.tscn")
@@ -58,8 +59,9 @@ func _ready() -> void:
 	skill_book_plane.closed.connect(_on_skill_book_plane_closed)
 
 	# 添加性能调试面板（按 F3 开关）
-	var debug = load("res://调试/debug_overlay.gd").new()
-	add_child(debug)
+	_debug_overlay = load("res://调试/debug_overlay.gd").new()
+	_debug_overlay.name = "DebugOverlay"
+	add_child(_debug_overlay)
 
 	_init_play_area()
 
@@ -73,8 +75,11 @@ func _setup_tree_spawning():
 	_tree_spawn_timer.start(3.0)
 
 
-# 输入处理：按键T生成测试敌人，左键点击塔槽或树木
+# 输入处理：F3开关调试面板，T生成测试敌人，G重置相机，左键点击塔槽或树木
 func _input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
+		if _debug_overlay and _debug_overlay.has_method("toggle"):
+			_debug_overlay.toggle()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
 		_spawn_test_enemy()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_G:

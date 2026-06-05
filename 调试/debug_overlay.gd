@@ -49,10 +49,9 @@ func _process(_delta):
 	var phys = Performance.get_monitor(Performance.PHYSICS_2D_ACTIVE_OBJECTS)
 	_labels["Physics 2D"].text = "Physics 2D: %d" % phys
 
-func _input(event):
-	if event is InputEventKey and event.pressed and event.scancode == KEY_F3:
-		_is_visible = not _is_visible
-		visible = _is_visible
-		var hint = $DebugOverlay.get_child(-1)
-		if hint is Label:
-			hint.text = "[F3] Show" if not _is_visible else "[F3] Hide"
+func toggle():
+	_is_visible = not _is_visible
+	visible = _is_visible
+	var hint = $DebugOverlay.get_child(-1)
+	if hint is Label:
+		hint.text = "[F3] Show" if not _is_visible else "[F3] Hide"
