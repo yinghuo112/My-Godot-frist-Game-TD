@@ -1,17 +1,18 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://UI/info_plane.gd" id="1_r7jkc"]
+[ext_resource type="Texture2D" uid="uid://b7e8seomuhtq6" path="res://assets/UI/ui_frame.png" id="2_frame"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3hs5n"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxFlat_3hs5n"]
+texture = ExtResource("2_frame")
+patch_margin_left = 125
+patch_margin_top = 125
+patch_margin_right = 125
+patch_margin_bottom = 125
 content_margin_left = 15.0
 content_margin_top = 15.0
 content_margin_right = 15.0
 content_margin_bottom = 15.0
-bg_color = Color(0.12, 0.12, 0.14, 0.95)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kzq1"]
 bg_color = Color(0.2, 0.2, 0.25, 1.0)
