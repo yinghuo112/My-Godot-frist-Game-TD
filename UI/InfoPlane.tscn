@@ -1,147 +1,190 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://2v2qfgwom1yw"]
 
-[ext_resource type="Script" path="res://UI/info_plane.gd" id="1_r7jkc"]
-[ext_resource type="Texture2D" uid="uid://b7e8seomuhtq6" path="res://assets/UI/ui_frame.png" id="2_frame"]
+[ext_resource type="Texture2D" uid="uid://kuf0ctw1e711" path="res://assets/UI/info_UI.png" id="1_8x4wp"]
+[ext_resource type="Script" uid="uid://dr37cy67pkufj" path="res://UI/info_plane.gd" id="1_r7jkc"]
+[ext_resource type="Texture2D" uid="uid://ca26uq0jo40xp" path="res://assets/UI/stone_btn.png" id="3_dy0i4"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxFlat_3hs5n"]
-texture = ExtResource("2_frame")
-patch_margin_left = 125
-patch_margin_top = 125
-patch_margin_right = 125
-patch_margin_bottom = 125
 content_margin_left = 15.0
 content_margin_top = 15.0
 content_margin_right = 15.0
 content_margin_bottom = 15.0
+texture = ExtResource("1_8x4wp")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kzq1"]
-bg_color = Color(0.2, 0.2, 0.25, 1.0)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ebp6"]
+atlas = ExtResource("3_dy0i4")
+region = Rect2(0, 0, 16, 16)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4nmt2"]
-bg_color = Color(0.25, 0.18, 0.18, 1.0)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_11pgh"]
+texture = SubResource("AtlasTexture_3ebp6")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close"]
-bg_color = Color(0.3, 0.15, 0.15, 1.0)
+bg_color = Color(0.3, 0.15, 0.15, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="InfoPlane" type="PanelContainer"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_dy0i4"]
+atlas = ExtResource("3_dy0i4")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kmolv"]
+content_margin_left = 8.0
+content_margin_top = 4.0
+content_margin_right = 8.0
+content_margin_bottom = 4.0
+texture = SubResource("AtlasTexture_dy0i4")
+texture_margin_left = 4.0
+texture_margin_top = 4.0
+texture_margin_right = 4.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_11pgh"]
+atlas = ExtResource("3_dy0i4")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qhyk8"]
+texture = SubResource("AtlasTexture_11pgh")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kmolv"]
+atlas = ExtResource("3_dy0i4")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fqknj"]
+texture = SubResource("AtlasTexture_kmolv")
+texture_margin_left = 8.0
+texture_margin_top = 4.0
+texture_margin_right = 8.0
+texture_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4nmt2"]
+bg_color = Color(0.25, 0.18, 0.18, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kzq1"]
+bg_color = Color(0.2, 0.2, 0.25, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="InfoPlane" type="PanelContainer" unique_id=1697516606]
+texture_filter = 1
 custom_minimum_size = Vector2(300, 0)
-layout_mode = 3
 anchors_preset = 11
 anchor_left = 1.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 300
+offset_left = 300.0
 grow_horizontal = 0
+grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_3hs5n")
 script = ExtResource("1_r7jkc")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=933784708]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1485713714]
 layout_mode = 2
 
-[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=877813282]
 layout_mode = 2
 
-[node name="IconTextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HeaderHBox"]
+[node name="IconTextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/HeaderHBox" unique_id=951400532]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(48, 48)
 layout_mode = 2
 size_flags_horizontal = 0
 stretch_mode = 2
 
-[node name="NameLevelVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HeaderHBox"]
+[node name="NameLevelVBox" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HeaderHBox" unique_id=434793452]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="TowerNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderHBox/NameLevelVBox"]
+[node name="TowerNameLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderHBox/NameLevelVBox" unique_id=245945236]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_color = Color(0.23137255, 0.15686275, 0.09411765, 1)
 theme_override_font_sizes/font_size = 18
 text = "TowerName"
 
-[node name="LevelLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderHBox/NameLevelVBox"]
+[node name="LevelLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderHBox/NameLevelVBox" unique_id=1937319474]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.6, 0.6, 0.6, 1)
 theme_override_font_sizes/font_size = 14
 text = "Lv.1"
 
-[node name="CloseBtn" type="Button" parent="MarginContainer/VBoxContainer/HeaderHBox"]
+[node name="CloseBtn" type="Button" parent="MarginContainer/VBoxContainer/HeaderHBox" unique_id=871050102]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_styles/normal = SubResource("StyleBoxFlat_close")
-theme_override_styles/hover = SubResource("StyleBoxFlat_close")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_close")
 theme_override_colors/font_color = Color(1, 0.6, 0.6, 1)
 theme_override_font_sizes/font_size = 16
-text = "X"
+theme_override_styles/normal = SubResource("StyleBoxTexture_11pgh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_close")
+theme_override_styles/hover = SubResource("StyleBoxFlat_close")
+text = "关闭"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1666959743]
 layout_mode = 2
 
-[node name="AttrGrid" type="GridContainer" parent="MarginContainer/VBoxContainer"]
+[node name="AttrGrid" type="GridContainer" parent="MarginContainer/VBoxContainer" unique_id=1073947663]
 unique_name_in_owner = true
+layout_mode = 2
 columns = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1760208838]
 layout_mode = 2
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="DescLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer"]
+[node name="DescLabel" type="RichTextLabel" parent="MarginContainer/VBoxContainer" unique_id=1362969637]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.7, 0.7, 0.7, 1)
 bbcode_enabled = true
 autowrap_mode = 2
-theme_override_colors/default_color = Color(0.7, 0.7, 0.7, 1)
 
-[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=227406973]
 layout_mode = 2
 
-[node name="ButtonHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ButtonHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=351358934]
 layout_mode = 2
 
-[node name="UpgradeBtn" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBox"]
+[node name="UpgradeBtn" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBox" unique_id=1555181644]
 unique_name_in_owner = true
+texture_filter = 1
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_styles/normal = SubResource("StyleBoxFlat_8kzq1")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8kzq1")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_8kzq1")
+theme_override_styles/normal = SubResource("StyleBoxTexture_kmolv")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_qhyk8")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fqknj")
 text = "升级"
 
-[node name="SellBtn" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBox"]
+[node name="SellBtn" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBox" unique_id=1169420786]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
-theme_override_styles/normal = SubResource("StyleBoxFlat_4nmt2")
-theme_override_styles/hover = SubResource("StyleBoxFlat_4nmt2")
+theme_override_styles/normal = SubResource("StyleBoxTexture_kmolv")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_4nmt2")
+theme_override_styles/hover = SubResource("StyleBoxFlat_4nmt2")
 text = "出售"
 
-[node name="SkillBtn" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBox"]
+[node name="SkillBtn" type="Button" parent="MarginContainer/VBoxContainer/ButtonHBox" unique_id=1260758534]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
 theme_override_styles/normal = SubResource("StyleBoxFlat_8kzq1")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8kzq1")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_8kzq1")
+theme_override_styles/hover = SubResource("StyleBoxFlat_8kzq1")
 text = "技能"
