@@ -16,7 +16,7 @@ func _shoot():
 	bullet.global_position = bullet_spawn.global_position
 	if bullet.has_method("初始化"):
 		bullet.初始化(bullet_spawn.global_position, target, get_current_damage(),
-			tower_type.chain_jumps, tower_type.chain_falloff, tower_type.chain_range)
+			tower_type.chain_jumps, tower_type.chain_falloff, tower_type.chain_range, self)
 	else:
 		bullet.initialize(target, get_current_damage(),
 			tower_type.crit_chance, tower_type.crit_multiplier,
