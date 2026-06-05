@@ -172,6 +172,13 @@ layout_mode = 2
 size_flags_horizontal = 0
 theme_override_constants/separation = 2
 
+[node name="Speed05xBtn" type="Button" parent="MainHBox/RightGroup" unique_id=2049737954]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "0.5×"
+flat = true
+
 [node name="Speed1xBtn" type="Button" parent="MainHBox/RightGroup" unique_id=2049737955]
 unique_name_in_owner = true
 layout_mode = 2

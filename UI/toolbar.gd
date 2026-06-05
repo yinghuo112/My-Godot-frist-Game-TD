@@ -21,6 +21,7 @@ func _ready():
 
 func _setup_buttons():
 	%StartWaveBtn.pressed.connect(wave_start_requested.emit)
+	%Speed05xBtn.pressed.connect(_on_speed.bind(0.5))
 	%Speed1xBtn.pressed.connect(_on_speed.bind(1.0))
 	%Speed2xBtn.pressed.connect(_on_speed.bind(2.0))
 	%Speed4xBtn.pressed.connect(_on_speed.bind(4.0))
@@ -64,8 +65,8 @@ func _on_pause():
 	_update_speed_buttons()
 
 func _update_speed_buttons():
-	var btns = [%Speed1xBtn, %Speed2xBtn, %Speed4xBtn]
-	var speeds = [1.0, 2.0, 4.0]
+	var btns = [%Speed05xBtn, %Speed1xBtn, %Speed2xBtn, %Speed4xBtn]
+	var speeds = [0.5, 1.0, 2.0, 4.0]
 	for i in range(btns.size()):
 		btns[i].disabled = (_current_speed == speeds[i] and not _paused)
 	%PauseBtn.disabled = _paused
