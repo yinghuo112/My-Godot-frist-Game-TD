@@ -1,6 +1,8 @@
 class_name StunSkill
 extends SkillBase
 
+const _STUN_CONTROLLER = preload("res://SkillSystem/skills/stun_controller.gd")
+
 # ===== 雷电术 - 眩晕技能 =====
 # 命中时：给敌人挂 StunController → 速度置 0 + 变黄 + 头顶粒子
 # 多重命中：刷新剩余时间（取最大值）
@@ -28,7 +30,7 @@ func _get_or_create_stun(target: Node2D) -> Node:
 	if not target.has_node("StunController"):
 		var ctrl = Node.new()
 		ctrl.name = "StunController"
-		ctrl.set_script(preload("res://SkillSystem/skills/stun_controller.gd"))
+		ctrl.set_script(_STUN_CONTROLLER)
 		target.add_child(ctrl)
 		return ctrl
 	return target.get_node("StunController")

@@ -69,13 +69,6 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8kzq1"]
-bg_color = Color(0.2, 0.2, 0.25, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-
 [node name="InfoPlane" type="PanelContainer" unique_id=1697516606]
 texture_filter = 1
 custom_minimum_size = Vector2(300, 0)

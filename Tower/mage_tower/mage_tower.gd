@@ -9,25 +9,23 @@ func _shoot():
 	if sprite and sprite.sprite_frames.has_animation("attack"):
 		sprite.play("attack")
 	AudioManager.play_shoot()
-	var bm = get_node("/root/BulletManager")
-	var bullet = bm.get_bullet(bullet_scene) if bm else bullet_scene.instantiate()
+	var bullet = _bullet_manager.get_bullet(bullet_scene) if _bullet_manager else bullet_scene.instantiate()
 	if not bullet:
 		return
 	bullet.global_position = bullet_spawn.global_position
 	if bullet.has_method("初始化"):
-		bullet.初始化(bullet_spawn.global_position, target, get_current_damage(),
+		bullet.初始化(bullet_spawn.global_position, target, _cached_damage,
 			tower_type.chain_jumps, tower_type.chain_falloff, tower_type.chain_range, self)
 	else:
-		bullet.initialize(target, get_current_damage(),
+		bullet.initialize(target, _cached_damage,
 			tower_type.crit_chance, tower_type.crit_multiplier,
 			tower_type.hit_chance, tower_type.attack_type, self)
 	_last_skills = _get_active_skills()
 	for s in _last_skills:
 		if s and s.has_method("on_pre_shot"):
 			s.on_pre_shot(self, bullet, target, get_skill_level(s))
-	var td_root = get_tree().root.get_node_or_null("TowerDefense")
-	if td_root:
-		td_root.add_child(bullet)
+	if _tower_defense_root:
+		_tower_defense_root.add_child(bullet)
 	else:
 		get_parent().add_child(bullet)
 

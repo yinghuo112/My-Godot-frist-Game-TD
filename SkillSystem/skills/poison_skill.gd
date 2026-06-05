@@ -1,6 +1,8 @@
 class_name PoisonSkill
 extends SkillBase
 
+const _POISON_CONTROLLER = preload("res://SkillSystem/skills/poison_controller.gd")
+
 @export var tick_interval: float = 1.0
 @export var base_duration: float = 4.0
 
@@ -22,7 +24,7 @@ func _get_or_create_poison(target: Node2D) -> Node:
 	if not target.has_node("PoisonController"):
 		var ctrl = Node.new()
 		ctrl.name = "PoisonController"
-		ctrl.set_script(preload("res://SkillSystem/skills/poison_controller.gd"))
+		ctrl.set_script(_POISON_CONTROLLER)
 		target.add_child(ctrl)
 		return ctrl
 	return target.get_node("PoisonController")

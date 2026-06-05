@@ -25,6 +25,8 @@ var _build_buttons: Array[Button] = []
 var _pending_slot: Marker2D = null
 var tree_scene = preload("res://树/Tree.tscn")
 var floating_text_scene = preload("res://工具/FloatingText.tscn")
+const _DEBUG_OVERLAY_SCRIPT = preload("res://调试/debug_overlay.gd")
+const _DEBUG_MONSTER_TYPE = preload("res://调试/debug_monster.tres")
 
 const _CLICK_RADIUS_SQ: float = 20.0 * 20.0
 const _TREE_CLICK_RADIUS_SQ: float = 25.0 * 25.0
@@ -59,7 +61,7 @@ func _ready() -> void:
 	skill_book_plane.closed.connect(_on_skill_book_plane_closed)
 
 	# 添加性能调试面板（按 F3 开关）
-	_debug_overlay = load("res://调试/debug_overlay.gd").new()
+	_debug_overlay = _DEBUG_OVERLAY_SCRIPT.new()
 	_debug_overlay.name = "DebugOverlay"
 	add_child(_debug_overlay)
 
@@ -190,7 +192,7 @@ func _on_build_selected(idx: int):
 # 调试功能：按T键直接生成一个高血量测试怪物
 func _spawn_test_enemy() -> void:
 	print("=== 调试: 生成 Debug Monster ===")
-	var debug_type = preload("res://调试/debug_monster.tres")
+	var debug_type = _DEBUG_MONSTER_TYPE
 	var enemy = debug_type.scene.instantiate()
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)

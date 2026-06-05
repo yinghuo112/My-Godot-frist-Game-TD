@@ -1,6 +1,8 @@
 class_name FireballSkill
 extends SkillBase
 
+const _MAGIC_EXPLOSION = preload("res://子弹/magic_explosion.tscn")
+
 @export var splash_radius: float = 60.0
 @export var splash_damage_ratio: float = 0.5
 
@@ -19,10 +21,7 @@ func on_hit(tower: Node2D, bullet: Node2D, target: Node2D,
 	_damage_nearby(target, bullet.global_position, radius, splash_dmg)
 
 func _spawn_explosion(pos: Vector2, radius: float, tower: Node2D) -> void:
-	var scene = load("res://子弹/magic_explosion.tscn")
-	if not scene:
-		return
-	var explosion = scene.instantiate()
+	var explosion = _MAGIC_EXPLOSION.instantiate()
 	explosion.global_position = pos
 	explosion.scale = Vector2(radius / 30.0, radius / 30.0)
 	var root = tower.get_tree().current_scene

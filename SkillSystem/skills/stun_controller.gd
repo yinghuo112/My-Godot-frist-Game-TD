@@ -6,6 +6,8 @@
 
 extends Node
 
+const _MAGE_SPARKLE = preload("res://子弹/mage_sparkle.tscn")
+
 var _remaining_time: float = 0.0       # 剩余眩晕秒数
 var _original_speed: float = -1.0       # 眩晕前的 speed（可能是减速后的值）
 var _target: Node2D = null             # 被眩晕的敌人节点
@@ -44,8 +46,7 @@ func _restore() -> void:
 func _spawn_sparkle() -> void:
 	if not _target:
 		return
-	var scene = preload("res://子弹/mage_sparkle.tscn")
-	_sparkle = scene.instantiate()
+	_sparkle = _MAGE_SPARKLE.instantiate()
 	_sparkle.global_position = _target.global_position
 	var root = _target.get_tree().current_scene if _target.get_tree() else null
 	if root:

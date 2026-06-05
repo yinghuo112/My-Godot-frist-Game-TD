@@ -1,5 +1,8 @@
 extends "res://子弹/bullet.gd"
 
+const _MAGE_EXPLOSION = preload("res://子弹/mage_explosion.tscn")
+const _MAGE_SPARKLE = preload("res://子弹/mage_sparkle.tscn")
+
 @onready var bolt_sprite: Sprite2D = $Sprite2D
 
 var _anim_timer: float = 0.0
@@ -35,9 +38,9 @@ func _on_area_entered(area):
 		call_deferred("_release")
 
 func _spawn_effects():
-	var explosion = preload("res://子弹/mage_explosion.tscn").instantiate()
+	var explosion = _MAGE_EXPLOSION.instantiate()
 	explosion.global_position = global_position
 	get_parent().add_child(explosion)
-	var sparkle = preload("res://子弹/mage_sparkle.tscn").instantiate()
+	var sparkle = _MAGE_SPARKLE.instantiate()
 	sparkle.global_position = global_position
 	get_parent().add_child(sparkle)

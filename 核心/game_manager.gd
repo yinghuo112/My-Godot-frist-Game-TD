@@ -20,9 +20,11 @@ var total_waves: int = 0            # 总波次数，从配置加载后赋值
 var play_area: Rect2                # 游戏地图边界，main.gd 初始化时计算
 var play_area_margin: float = 100.0 # 地图边界余量（像素），play_area 在 TileMap 基础上的外扩值
 var enemy_path: Path2D              # 敌人路径节点
+var enemy_path_cached: Path2D = null
 var timer: Timer                    # 生成定时器
 var _config: WaveConfigData         # 波次配置数据
 var _current_entry: WaveEntry       # 当前波次配置条目
+const _GREEN_MONSTER = preload("res://怪物/green_monster.tscn")
 
 # 初始化生成计时器和波次配置
 func _ready():
@@ -57,7 +59,9 @@ func start_wave():
 	enemies_to_spawn = _current_entry.count
 	enemies_on_field = 0
 	timer.wait_time = _current_entry.spawn_interval
-	enemy_path = get_tree().root.get_node("TowerDefense/EnemyPath")
+	if not enemy_path_cached:
+		enemy_path_cached = get_tree().root.get_node("TowerDefense/EnemyPath")
+	enemy_path = enemy_path_cached
 	timer.one_shot = false
 	timer.start()
 
@@ -78,7 +82,7 @@ func _load_config() -> WaveConfigData:
 	else:
 		print("配置文件不存在，使用默认配置")
 	var entry = WaveEntry.new()
-	entry.enemy_scene = preload("res://怪物/green_monster.tscn")
+	entry.enemy_scene = _GREEN_MONSTER
 	entry.count = 12
 	entry.spawn_interval = 0.5
 	var fallback = WaveConfigData.new()
@@ -96,7 +100,7 @@ func _get_wave_entry(wave_number: int) -> WaveEntry:
 # 创建默认波次配置条目作为后备
 func _fallback_entry() -> WaveEntry:
 	var entry = WaveEntry.new()
-	entry.enemy_scene = preload("res://怪物/green_monster.tscn")
+	entry.enemy_scene = _GREEN_MONSTER
 	entry.count = 12
 	entry.spawn_interval = 0.5
 	return entry

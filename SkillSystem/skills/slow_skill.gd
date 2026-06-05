@@ -1,6 +1,8 @@
 class_name SlowSkill
 extends SkillBase
 
+const _SLOW_CONTROLLER = preload("res://SkillSystem/skills/slow_controller.gd")
+
 @export var slow_ratio: float = 0.4
 @export var base_duration: float = 3.0
 
@@ -22,7 +24,7 @@ func _get_or_create_slow(target: Node2D) -> Node:
 	if not target.has_node("SlowController"):
 		var ctrl = Node.new()
 		ctrl.name = "SlowController"
-		ctrl.set_script(preload("res://SkillSystem/skills/slow_controller.gd"))
+		ctrl.set_script(_SLOW_CONTROLLER)
 		target.add_child(ctrl)
 		return ctrl
 	return target.get_node("SlowController")

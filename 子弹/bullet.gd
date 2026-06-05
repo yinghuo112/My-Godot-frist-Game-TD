@@ -13,6 +13,9 @@ var source_tower: Node2D = null     # 来源塔（技能回调用）
 
 var _floating_text_scene = preload("res://工具/FloatingText.tscn")  # 伤害/闪避飘字
 
+var _main_scene: Node = null
+@onready var _collision_shape: CollisionShape2D = $CollisionShape2D
+
 # 战斗属性（由 tower_base._shoot() 传入）
 var _crit_chance: float = 0.0
 var _crit_multiplier: float = 1.0
@@ -21,6 +24,7 @@ var _attack_type: int = 0  # TowerType.AttackType.PHYSICAL
 
 # 初始化子弹碰撞掩码和命中信号
 func _ready():
+	_main_scene = get_tree().current_scene
 	collision_mask |= 2
 	area_entered.connect(_on_area_entered)
 
@@ -110,7 +114,7 @@ func _apply_damage(enemy: Node2D) -> void:
 
 # 在敌人头上显示 MISS 闪避飘字
 func _spawn_miss_text(enemy: Node2D) -> void:
-	var root = get_tree().current_scene
+	var root = _main_scene
 	if not root:
 		return
 	var ft = _floating_text_scene.instantiate()
@@ -143,8 +147,7 @@ func _release() -> void:
 	set_process(false)
 	set_physics_process(false)
 	set_deferred("monitoring", false)
-	if has_node("CollisionShape2D"):
-		$CollisionShape2D.set_deferred("disabled", true)
+	_collision_shape.set_deferred("disabled", true)
 	if _pool_managed:
 		used_up.emit(self)
 	else:
@@ -157,5 +160,4 @@ func reset() -> void:
 	set_process(true)
 	set_physics_process(true)
 	set_deferred("monitoring", true)
-	if has_node("CollisionShape2D"):
-		$CollisionShape2D.set_deferred("disabled", false)
+	_collision_shape.set_deferred("disabled", false)

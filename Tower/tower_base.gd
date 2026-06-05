@@ -31,12 +31,26 @@ var bullet_scene = preload("res://子弹/bullet.tscn")
 
 var _range_indicator: TowerRangeIndicator
 
+# ===== #1 / #3: signal-driven target + cached refs + cached stats =====
+var _enemies_in_range: Array = []
+var _tree_search_timer: float = 0.0
+var _cached_damage: float
+var _cached_range: float
+var _cached_fire_rate: float
+
+@onready var _bullet_manager = get_node("/root/BulletManager")
+@onready var _tower_defense_root = get_tree().root.get_node("TowerDefense")
 @onready var sprite = get_node_or_null("AnimatedSprite2D")
 @onready var range_area: Area2D = $RangeArea
 @onready var range_shape: CollisionShape2D = $RangeArea/CollisionShape2D
 @onready var shoot_timer: Timer = $ShootTimer
 @onready var bullet_spawn: Marker2D = $BulletSpawn
 @onready var level_label: Label = null
+
+func _refresh_cached_stats():
+	_cached_damage = get_current_damage()
+	_cached_range = get_current_range()
+	_cached_fire_rate = get_current_fire_rate()
 
 # 由 main.gd 在放置时调用，传入 TowerType 数据覆盖默认值
 func init(data: TowerType):
@@ -56,11 +70,12 @@ func init(data: TowerType):
 
 # 初始化范围碰撞体、射击计时器、范围检测和等级标签
 func _ready():
+	_refresh_cached_stats()
 	range_shape.position = Vector2.ZERO
 	if range_shape and range_shape.shape is CircleShape2D:
-		range_shape.shape.radius = range_radius
+		range_shape.shape.radius = _cached_range
 
-	shoot_timer.wait_time = fire_rate
+	shoot_timer.wait_time = _cached_fire_rate
 	shoot_timer.timeout.connect(_on_shoot_timer_timeout)
 	range_area.area_entered.connect(_on_area_entered)
 	range_area.area_exited.connect(_on_area_exited)
@@ -86,14 +101,18 @@ func _ready():
 	_range_indicator.visible = _show_range_circle
 	add_child(_range_indicator)
 
-# 每帧扫描目标并开火
+# 每帧射击逻辑 + 懒搜索树木目标 + 技能 tick
 func _process(delta):
-	_find_next_target()
 	if target and is_instance_valid(target):
 		if can_shoot:
 			_shoot()
 			can_shoot = false
 			shoot_timer.start()
+	if target == null or not is_instance_valid(target):
+		_tree_search_timer += delta
+		if _tree_search_timer >= 0.5:
+			_tree_search_timer = 0.0
+			_find_tree_target()
 	_tick_accum += delta
 	if _tick_accum >= 0.5:
 		var tick_delta = _tick_accum
@@ -107,12 +126,11 @@ func _shoot():
 	if sprite and sprite.sprite_frames.has_animation("attack"):
 		sprite.play("attack")
 	AudioManager.play_shoot()
-	var bm = get_node("/root/BulletManager")
-	var bullet = bm.get_bullet(bullet_scene) if bm else bullet_scene.instantiate()
+	var bullet = _bullet_manager.get_bullet(bullet_scene) if _bullet_manager else bullet_scene.instantiate()
 	if not bullet:
 		return
 	bullet.global_position = bullet_spawn.global_position
-	bullet.initialize(target, get_current_damage(),
+	bullet.initialize(target, _cached_damage,
 		tower_type.crit_chance, tower_type.crit_multiplier,
 		tower_type.hit_chance, tower_type.attack_type, self)
 
@@ -121,11 +139,38 @@ func _shoot():
 		if s and s.has_method("on_pre_shot"):
 			s.on_pre_shot(self, bullet, target, get_skill_level(s))
 
-	var td_root = get_tree().root.get_node_or_null("TowerDefense")
-	if td_root:
-		td_root.add_child(bullet)
+	if _tower_defense_root:
+		_tower_defense_root.add_child(bullet)
 	else:
 		get_parent().add_child(bullet)
+
+# ------ 目标管理：信号驱动（优先敌人列表，其次树木）------
+
+func _pick_target():
+	_enemies_in_range = _enemies_in_range.filter(func(e): return is_instance_valid(e))
+	if _enemies_in_range.size() > 0:
+		target = _enemies_in_range[0]
+	elif _tree_target and is_instance_valid(_tree_target):
+		target = _tree_target
+	else:
+		target = null
+
+func _find_tree_target():
+	if _tree_target and is_instance_valid(_tree_target):
+		return
+	var best = null
+	var best_d2 = INF
+	var range_sq = _cached_range * _cached_range
+	for t in get_tree().get_nodes_in_group("tree_group"):
+		if not is_instance_valid(t) or t.state < t.State.MATURE:
+			continue
+		var d2 = global_position.distance_squared_to(t.global_position)
+		if d2 < range_sq and d2 < best_d2:
+			best_d2 = d2
+			best = t
+	if best:
+		_tree_target = best
+		_pick_target()
 
 # 敌人或树进入范围时加入目标列表
 func _on_area_entered(area):
@@ -133,54 +178,25 @@ func _on_area_entered(area):
 		var parent = area.get_parent()
 		if parent is GameTree:
 			_tree_target = parent
-			if not target:
+			if not target or not is_instance_valid(target):
 				target = _tree_target
-		elif not target or (target and is_instance_valid(target) and target is GameTree):
-			target = parent
+		elif parent not in _enemies_in_range:
+			_enemies_in_range.append(parent)
+			_pick_target()
 
 # 敌人或树离开范围时重新选择目标
 func _on_area_exited(area):
 	var parent = area.get_parent()
 	if parent == target:
-		target = null
 		if parent is GameTree:
 			_tree_target = null
-		_find_next_target()
+		else:
+			_enemies_in_range.erase(parent)
+		_pick_target()
 	elif parent == _tree_target:
 		_tree_target = null
-
-# 在范围内寻找下一个最优目标（优先敌人，其次树）
-func _find_next_target():
-	var best_distance = INF
-	var found_enemy = null
-	var found_tree = null
-
-	var areas = range_area.get_overlapping_areas()
-	var range_sq = get_current_range() * get_current_range()
-	for a in areas:
-		if not a.is_in_group(enemy_group) or not is_instance_valid(a.get_parent()):
-			continue
-		var p = a.get_parent()
-		if p is GameTree:
-			if not found_tree:
-				found_tree = p
-		elif not found_enemy:
-			found_enemy = p
-
-	if not found_tree:
-		for tree in get_tree().get_nodes_in_group("tree_group"):
-			if not is_instance_valid(tree) or tree.state < tree.State.MATURE:
-				continue
-			var d2 = global_position.distance_squared_to(tree.global_position)
-			if d2 < range_sq and d2 < best_distance:
-				best_distance = d2
-				found_tree = tree
-
-	if found_enemy:
-		target = found_enemy
-	elif found_tree:
-		target = found_tree
-	_tree_target = found_tree if found_tree else null
+	elif parent in _enemies_in_range:
+		_enemies_in_range.erase(parent)
 
 # 射击冷却结束，标记可射击
 func _on_shoot_timer_timeout():
@@ -226,13 +242,14 @@ func do_upgrade() -> bool:
 		return false
 	level += 1
 	skill_points += 1
+	_refresh_cached_stats()
 	if range_shape and range_shape.shape is CircleShape2D:
-		range_shape.shape.radius = get_current_range()
-	shoot_timer.wait_time = get_current_fire_rate()
+		range_shape.shape.radius = _cached_range
+	shoot_timer.wait_time = _cached_fire_rate
 	if level_label:
 		level_label.text = "Lv." + str(level)
 	if _range_indicator:
-		_range_indicator.set_range(get_current_range())
+		_range_indicator.set_range(_cached_range)
 	return true
 
 func get_skill_level(skill) -> int:
