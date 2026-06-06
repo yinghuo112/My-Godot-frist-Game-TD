@@ -14,6 +14,7 @@ var source_tower: Node2D = null     # 来源塔（技能回调用）
 var _floating_text_scene = preload("res://工具/FloatingText.tscn")  # 伤害/闪避飘字
 
 var _main_scene: Node = null
+var _cached_skills: Array = []
 @onready var _collision_shape: CollisionShape2D = $CollisionShape2D
 
 # 战斗属性（由 tower_base._shoot() 传入）
@@ -32,7 +33,7 @@ func _ready():
 func initialize(p_target: Node2D, p_damage: float,
 		p_crit_chance: float = 0.0, p_crit_mult: float = 1.0,
 		p_hit_chance: float = 1.0, p_attack_type: int = 0,
-		p_source_tower: Node2D = null) -> void:
+		p_source_tower: Node2D = null, p_cached_skills: Array = []) -> void:
 	target = p_target
 	_damage = p_damage
 	_crit_chance = p_crit_chance
@@ -40,6 +41,7 @@ func initialize(p_target: Node2D, p_damage: float,
 	_hit_chance = p_hit_chance
 	_attack_type = p_attack_type
 	source_tower = p_source_tower
+	_cached_skills = p_cached_skills
 	if is_instance_valid(target):
 		look_at(target.global_position)
 
@@ -52,7 +54,7 @@ func _physics_process(delta: float) -> void:
 		var direction = (target.global_position - global_position).normalized()
 		velocity = direction * _speed
 		look_at(target.global_position)
-		if global_position.distance_to(target.global_position) < 12.0:
+		if global_position.distance_squared_to(target.global_position) < 144.0:
 			_hit()
 			return
 	else:
@@ -97,20 +99,11 @@ func _apply_damage(enemy: Node2D) -> void:
 		_spawn_miss_text(enemy)
 	if not is_instance_valid(source_tower) or not source_tower.has_method("get_skill_level"):
 		return
-	var tt = source_tower.get("tower_type")
-	if not tt:
-		return
-	var sb = tt.get("skill_book")
-	if not sb:
-		return
-	var unlocked = source_tower.get("skill_unlocked_indices") if "skill_unlocked_indices" in source_tower else []
-	for idx in unlocked:
-		if idx < 0 or idx >= sb.skills.size():
-			continue
-		var skill = sb.skills[idx]
-		var lv = source_tower.get_skill_level(skill)
-		if lv > 0 and skill.has_method("on_hit"):
-			skill.on_hit(source_tower, self, enemy, dmg, crit, lv)
+	for s in _cached_skills:
+		if s and s.has_method("on_hit"):
+			var lv = source_tower.get_skill_level(s)
+			if lv > 0:
+				s.on_hit(source_tower, self, enemy, dmg, crit, lv)
 
 # 在敌人头上显示 MISS 闪避飘字
 func _spawn_miss_text(enemy: Node2D) -> void:

@@ -10,9 +10,12 @@ const _FIRE_EXPLOSION = preload("res://子弹/fireball_explosion.tscn")
 @onready var _trail: GPUParticles2D = $GPUParticles2D
 
 var _pulse: float = 0.0
+var _splash_shape: CircleShape2D
 
 func _ready():
 	super()
+	_splash_shape = CircleShape2D.new()
+	_splash_shape.radius = splash_radius
 	if _trail:
 		_trail.emitting = true
 
@@ -56,9 +59,7 @@ func _splash_damage(hit_enemy: Node2D, pos: Vector2):
 	if not space:
 		return
 	var query = PhysicsShapeQueryParameters2D.new()
-	var circle = CircleShape2D.new()
-	circle.radius = splash_radius
-	query.set_shape(circle)
+	query.set_shape(_splash_shape)
 	query.transform = Transform2D(0, pos)
 	query.collision_mask = 2
 	var results = space.intersect_shape(query)

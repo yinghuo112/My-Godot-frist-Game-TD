@@ -30,6 +30,8 @@ var overtake_target: Node2D = null
 @onready var ray_cast: RayCast2D = $RayCast2D
 
 var _floating_text_scene = preload("res://工具/FloatingText.tscn")
+var _frame_skip: int = 0
+var _main_scene: Node = null
 
 # 由 GameManager 在生成时调用，传入 EnemyType 数据覆盖默认值
 func init(data: EnemyType):
@@ -44,14 +46,20 @@ func init(data: EnemyType):
 # 初始化怪物：设置血量、播放行走动画
 func _ready():
 	current_hp = max_hp
+	_main_scene = get_tree().current_scene
 	if sprite:
 		sprite.play("walk")
 	_update_health_bar()
 
 # 每帧沿路径前进，检测前方障碍并执行超车逻辑
 func _physics_process(delta: float) -> void:
+	_frame_skip += 1
+	var can_ray = _frame_skip >= 5
+	if can_ray:
+		_frame_skip = 0
+
 	if not is_overtaking:
-		if ray_cast.is_colliding():
+		if can_ray and ray_cast.is_colliding():
 			var collider = ray_cast.get_collider()
 			if collider and collider.owner and collider.is_in_group("enemy"):
 				var front_monster = collider.owner
@@ -86,7 +94,7 @@ func _physics_process(delta: float) -> void:
 		sprite.flip_h = false
 
 	var move_dir = global_position - _last_pos
-	if move_dir.length_squared() > 0:
+	if can_ray and move_dir.length_squared() > 0:
 		ray_cast.target_position = move_dir.normalized() * 50
 
 	_last_pos = global_position
@@ -106,7 +114,7 @@ func take_damage(amount: float, is_crit: bool = false) -> void:
 
 # 在怪物头顶生成伤害飘字
 func _spawn_damage_text(amount: float, is_crit: bool) -> void:
-	var main = get_tree().current_scene
+	var main = _main_scene
 	if not main:
 		return
 

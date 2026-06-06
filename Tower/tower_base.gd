@@ -130,11 +130,12 @@ func _shoot():
 	if not bullet:
 		return
 	bullet.global_position = bullet_spawn.global_position
+	_last_skills = _get_active_skills()
 	bullet.initialize(target, _cached_damage,
 		tower_type.crit_chance, tower_type.crit_multiplier,
-		tower_type.hit_chance, tower_type.attack_type, self)
+		tower_type.hit_chance, tower_type.attack_type, self,
+		_last_skills)
 
-	_last_skills = _get_active_skills()
 	for s in _last_skills:
 		if s and s.has_method("on_pre_shot"):
 			s.on_pre_shot(self, bullet, target, get_skill_level(s))

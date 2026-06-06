@@ -13,14 +13,14 @@ func _shoot():
 	if not bullet:
 		return
 	bullet.global_position = bullet_spawn.global_position
+	_last_skills = _get_active_skills()
 	if bullet.has_method("初始化"):
 		bullet.初始化(bullet_spawn.global_position, target, _cached_damage,
-			tower_type.chain_jumps, tower_type.chain_falloff, tower_type.chain_range, self)
+			tower_type.chain_jumps, tower_type.chain_falloff, tower_type.chain_range, self, _last_skills)
 	else:
 		bullet.initialize(target, _cached_damage,
 			tower_type.crit_chance, tower_type.crit_multiplier,
-			tower_type.hit_chance, tower_type.attack_type, self)
-	_last_skills = _get_active_skills()
+			tower_type.hit_chance, tower_type.attack_type, self, _last_skills)
 	for s in _last_skills:
 		if s and s.has_method("on_pre_shot"):
 			s.on_pre_shot(self, bullet, target, get_skill_level(s))

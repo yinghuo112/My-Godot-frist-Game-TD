@@ -43,13 +43,14 @@ func _ready():
 
 # ===== 每次射击前的初始化 =====
 func 初始化(起点: Vector2, 首个目标: Node2D, 伤害: float,
-			最大跳: int, 衰减: float, 范围: float, 来源塔 = null):
+			最大跳: int, 衰减: float, 范围: float, 来源塔 = null, 缓存技能: Array = []):
 	发射点 = 起点
 	target = 首个目标
 	_damage = 伤害
 	最大跳跃次数 = 最大跳
 	跳跃衰减 = 衰减
 	跳跃范围 = 范围
+	_cached_skills = 缓存技能
 	已命中列表.clear()
 	_has_hit = false
 	_链启动 = false
@@ -129,7 +130,8 @@ func _find_next_target(from_enemy: Node2D) -> Node2D:
 	var nodes = get_tree().get_nodes_in_group("enemy")
 	var pos = from_enemy.global_position
 	var best = null
-	var best_dist = 跳跃范围 + 1.0
+	var best_dist2 = (跳跃范围 + 1.0) * (跳跃范围 + 1.0)
+	var range_sq = 跳跃范围 * 跳跃范围
 	for n in nodes:
 		if not is_instance_valid(n):
 			continue
@@ -138,9 +140,9 @@ func _find_next_target(from_enemy: Node2D) -> Node2D:
 			continue
 		if enemy in 已命中列表:
 			continue
-		var d = enemy.global_position.distance_to(pos)
-		if d <= 跳跃范围 and d < best_dist:
-			best_dist = d
+		var d2 = enemy.global_position.distance_squared_to(pos)
+		if d2 <= range_sq and d2 < best_dist2:
+			best_dist2 = d2
 			best = enemy
 	return best
 
