@@ -1,5 +1,5 @@
 # ===== 火球子弹 =====
-# 飞行追踪(带旋转) + 命中爆炸溅射范围伤害
+# 圆形火球(逐帧重绘) + 拖尾粒子 + 命中爆炸溅射
 extends "res://子弹/bullet.gd"
 
 const _FIRE_EXPLOSION = preload("res://子弹/fireball_explosion.tscn")
@@ -7,25 +7,24 @@ const _FIRE_EXPLOSION = preload("res://子弹/fireball_explosion.tscn")
 @export var splash_radius: float = 60.0
 @export var splash_damage_ratio: float = 0.5
 
-@onready var bolt_sprite: Sprite2D = $Sprite2D
 @onready var _trail: GPUParticles2D = $GPUParticles2D
 
-var _anim_timer: float = 0.0
-const ANIM_FPS: float = 6.0
+var _pulse: float = 0.0
 
 func _ready():
 	super()
-	if bolt_sprite:
-		bolt_sprite.hframes = 4
 	if _trail:
 		_trail.emitting = true
 
 func _process(delta):
-	_anim_timer += delta
-	if _anim_timer >= 1.0 / ANIM_FPS:
-		_anim_timer -= 1.0 / ANIM_FPS
-		if bolt_sprite:
-			bolt_sprite.frame = (bolt_sprite.frame + 1) % 4
+	_pulse += delta
+	queue_redraw()
+
+func _draw():
+	draw_circle(Vector2.ZERO, 6, Color(1, 0.9, 0.4))
+	draw_circle(Vector2.ZERO, 9, Color(1, 0.5, 0.0, 0.6))
+	var outer = 13.0 + sin(_pulse * 8.0) * 2.0
+	draw_circle(Vector2.ZERO, outer, Color(1, 0.2, 0.0, 0.25))
 
 func _hit():
 	if _has_hit:

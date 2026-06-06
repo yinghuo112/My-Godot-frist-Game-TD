@@ -4,22 +4,23 @@
 [ext_resource type="Script" path="res://子弹/fireball_bullet.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://ci7jm6gf671n1" path="res://icon.svg" id="3_texture"]
 
-[node name="FireballBullet" unique_id=1085135973 instance=ExtResource("1_bullet")]
+[node name="FireballBullet" instance=ExtResource("1_bullet")]
 script = ExtResource("2_script")
 splash_radius = 60.0
 splash_damage_ratio = 0.5
 _speed = 500.0
 
-[node name="Sprite2D" parent="." index="1" unique_id=566413034]
-modulate = Color(1, 0.5, 0.05, 1)
-material = null
-position = Vector2(0.5, 0.5)
-scale = Vector2(0.53125, 0.2421875)
-hframes = 4
+[node name="Sprite2D" parent="." index="1"]
+visible = false
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="." index="2" unique_id=1598663950]
-modulate = Color(1, 0.4, 0, 0.5)
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." index="2"]
 emitting = false
+amount = 8
+lifetime = 0.5
+one_shot = false
+explosiveness = 0.0
+fixed_fps = 12
+spread = 180.0
+local_coords = false
+modulate = Color(1, 0.4, 0.0, 0.6)
 texture = ExtResource("3_texture")
-lifetime = 0.4
-fixed_fps = 10
