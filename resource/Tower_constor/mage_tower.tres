@@ -23,3 +23,5 @@ skill_categories = ["魔法", "元素", "远程"]
 chain_jumps = 3
 chain_falloff = 0.8
 chain_range = 150.0
+lightning_color = Color(0.3, 0.8, 1.0, 0.95)
+lightning_line_count = 3

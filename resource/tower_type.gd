@@ -22,6 +22,8 @@ enum AttackType { PHYSICAL, MAGIC }
 @export var chain_jumps: int = 0                   # 链式跳跃次数（0=无连锁）
 @export var chain_falloff: float = 1.0             # 跳跃伤害衰减系数
 @export var chain_range: float = 0.0               # 跳跃搜索范围（像素）
+@export var lightning_color: Color = Color(1, 1, 1) # 闪电主色，默认白
+@export var lightning_line_count: int = 3          # 并行线条数
 
 func can_equip_skill(skill) -> bool:
 	if not skill_categories.is_empty() and skill.has_method("can_equip"):
