@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dwvs2bx2y7lt6"]
+
+[ext_resource type="PackedScene" uid="uid://dltmulxy4cnmr" path="res://子弹/bullet.tscn" id="1_bullet"]
+[ext_resource type="Script" path="res://子弹/fireball_bullet.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://ci7jm6gf671n1" path="res://icon.svg" id="3_texture"]
+
+[node name="FireballBullet" unique_id=1085135973 instance=ExtResource("1_bullet")]
+script = ExtResource("2_script")
+splash_radius = 60.0
+splash_damage_ratio = 0.5
+_speed = 500.0
+
+[node name="Sprite2D" parent="." index="1" unique_id=566413034]
+modulate = Color(1, 0.5, 0.05, 1)
+material = null
+position = Vector2(0.5, 0.5)
+scale = Vector2(0.53125, 0.2421875)
+hframes = 4
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="." index="2" unique_id=1598663950]
+modulate = Color(1, 0.4, 0, 0.5)
+emitting = false
+texture = ExtResource("3_texture")
+lifetime = 0.4
+fixed_fps = 10

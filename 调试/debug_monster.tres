@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="EnemyType" format=3 uid="uid://bffeo7nhpqvvt"]
 
-[ext_resource type="Script" uid="uid://c67ocaxkc0vfl" path="res://resource/enemy_type.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://c67ocaxkc0vfl" path="res://config/enemy_type.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://07sie8ex2xn3" path="res://怪物/green_monster.tscn" id="2_scene"]
 
 [resource]

@@ -71,9 +71,9 @@ func start_wave():
 # --- 加载波次配置 ---
 # 从文件加载波次配置，失败时用默认配置
 func _load_config() -> WaveConfigData:
-	print("尝试加载波次配置: res://resource/wave_config.tres")
-	if ResourceLoader.exists("res://resource/wave_config.tres"):
-		var data: WaveConfigData = load("res://resource/wave_config.tres")
+	print("尝试加载波次配置: res://config/wave_config.tres")
+	if ResourceLoader.exists("res://config/wave_config.tres"):
+		var data: WaveConfigData = load("res://config/wave_config.tres")
 		if data and data.waves.size() > 0:
 			total_waves = data.waves.size()
 			print("波次配置加载成功: %d 个波次" % data.waves.size())

@@ -11,6 +11,7 @@ func _ready():
 	register_pool(preload("res://子弹/magic_bolt.tscn"), 15)
 	register_pool(preload("res://子弹/mage_bolt.tscn"), 15)
 	register_pool(preload("res://子弹/lightning_bolt.tscn"), 10)
+	register_pool(preload("res://子弹/fireball_bullet.tscn"), 15)
 
 # 注册一种子弹池，如场景不存在则自动创建
 func register_pool(scene: PackedScene, size: int) -> void:

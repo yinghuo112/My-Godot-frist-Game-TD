@@ -14,10 +14,10 @@ extends Node2D
 @onready var skill_book_plane: PanelContainer = $UI/SkillBookPlane
 
 var tower_types: Array[TowerType] = [
-	preload("res://resource/Tower_constor/arrow.tres"),
-	preload("res://resource/Tower_constor/cannon.tres"),
-	preload("res://resource/Tower_constor/magic.tres"),
-	preload("res://resource/Tower_constor/mage_tower.tres"),
+	preload("res://config/Tower_constor/arrow.tres"),
+	preload("res://config/Tower_constor/cannon.tres"),
+	preload("res://config/Tower_constor/magic.tres"),
+	preload("res://config/Tower_constor/mage_tower.tres"),
 ]
 var _build_panel: Panel
 var _debug_overlay: CanvasLayer

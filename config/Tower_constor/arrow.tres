@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="TowerType" format=3 uid="uid://6jgq0knh4sxw"]
 
-[ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://resource/tower_type.gd" id="1_jhvrw"]
+[ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://config/tower_type.gd" id="1_jhvrw"]
 [ext_resource type="PackedScene" uid="uid://de5m5ivccvuh2" path="res://Tower/弓箭手塔/ArrowTower.tscn" id="2_arrow"]
 [ext_resource type="Resource" uid="uid://dwwq0dyu3ct76" path="res://SkillSystem/books/弓箭手技能书.tres" id="3_skillbook"]
 

@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://kuf0ctw1e711" path="res://assets/UI/info_UI.png" id="1_8x4wp"]
 [ext_resource type="Script" uid="uid://dr37cy67pkufj" path="res://UI/info_plane.gd" id="1_r7jkc"]
 [ext_resource type="Texture2D" uid="uid://ca26uq0jo40xp" path="res://assets/UI/stone_btn.png" id="3_dy0i4"]
+[ext_resource type="Texture2D" uid="uid://chvaa2si5tx4h" path="res://assets/UI/btn_close.png" id="4_11pgh"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxFlat_3hs5n"]
 content_margin_left = 15.0
@@ -16,19 +17,33 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_3ebp6"]
-atlas = ExtResource("3_dy0i4")
+[sub_resource type="AtlasTexture" id="AtlasTexture_fqknj"]
+atlas = ExtResource("4_11pgh")
 region = Rect2(0, 0, 16, 16)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_11pgh"]
-texture = SubResource("AtlasTexture_3ebp6")
+texture = SubResource("AtlasTexture_fqknj")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_close"]
-bg_color = Color(0.3, 0.15, 0.15, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+[sub_resource type="AtlasTexture" id="AtlasTexture_qhyk8"]
+atlas = ExtResource("4_11pgh")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lpaou"]
+texture = SubResource("AtlasTexture_qhyk8")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fbk3g"]
+atlas = ExtResource("4_11pgh")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ybf4n"]
+texture = SubResource("AtlasTexture_fbk3g")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lpaou"]
+atlas = ExtResource("4_11pgh")
+region = Rect2(32, 0, 16, 16)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fbk3g"]
+texture = SubResource("AtlasTexture_lpaou")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dy0i4"]
 atlas = ExtResource("3_dy0i4")
@@ -127,9 +142,9 @@ size_flags_horizontal = 0
 theme_override_colors/font_color = Color(1, 0.6, 0.6, 1)
 theme_override_font_sizes/font_size = 16
 theme_override_styles/normal = SubResource("StyleBoxTexture_11pgh")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_close")
-theme_override_styles/hover = SubResource("StyleBoxFlat_close")
-text = "关闭"
+theme_override_styles/pressed = SubResource("StyleBoxTexture_lpaou")
+theme_override_styles/hover = SubResource("StyleBoxTexture_ybf4n")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_fbk3g")
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=1666959743]
 layout_mode = 2

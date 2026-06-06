@@ -1,8 +1,8 @@
 [gd_resource type="Resource" script_class="TowerType" format=3 uid="uid://d3jvtu6i145mv"]
 
 [ext_resource type="PackedScene" uid="uid://dwew2eykqysxs" path="res://Tower/magic_tower/magic_tower.tscn" id="1_ep0b0"]
-[ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://resource/tower_type.gd" id="2_xhu2c"]
-[ext_resource type="PackedScene" uid="uid://d4m3p0l8t2c6b" path="res://子弹/magic_bolt.tscn" id="3_bolt"]
+[ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://config/tower_type.gd" id="2_xhu2c"]
+[ext_resource type="PackedScene" uid="uid://dwvs2bx2y7lt6" path="res://子弹/fireball_bullet.tscn" id="3_fireball"]
 [ext_resource type="Resource" uid="uid://cidxily7lm3db" path="res://SkillSystem/books/魔法塔技能书.tres" id="4_skillbook"]
 
 [resource]
@@ -13,10 +13,10 @@ fire_rate = 1.2
 range_radius = 100.0
 cost = 70
 scene = ExtResource("1_ep0b0")
-bullet_scene = ExtResource("3_bolt")
+bullet_scene = ExtResource("3_fireball")
 attack_type = 1
 hit_chance = 1.0
-description = "魔法塔。魔法攻击无视部分抗性，追踪弹道[color=yellow]必中[/color]，克制高闪避敌人。"
+description = "魔法塔。火球[color=yellow]必中[/color]，溅射范围伤害，克制密集敌人。"
 skill_book = ExtResource("4_skillbook")
 skill_categories = ["魔法", "元素", "远程"]
 metadata/_custom_type_script = "uid://chxc0a8vjbkuo"
