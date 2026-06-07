@@ -1,0 +1,74 @@
+================== 音效清单 ==================
+
+=== 触发源一览 ===
+shoot     塔射击                    tower_base.gd / mage_tower.gd
+die       怪物死亡                  enemy_base.gd
+wave      波次开始                  main.gd
+gameover  游戏结束                  main.gd
+lightning 闪电链跳跃               lightning_bolt.gd
+fireball  火球爆炸                  fireball_bullet.gd
+freeze    冰冻/眩晕                 stun_skill.gd
+upgrade   塔/技能升级               tower_base.gd / skill_book_plane.gd
+coin      获得金币                  game_manager.gd
+ui_click  按钮点击                  toolbar.gd / panel_base.gd / info_plane.gd / tower_action_ring.gd
+place     放置塔                    main.gd
+sell      出售塔                    tower_action_ring.gd / info_plane.gd
+
+=== 四种实现 ===
+✓ 方案A — 程序化生成（代码）  audio_manager.gd  正弦/噪声/扫描
+✓ 方案B — GodotSfxr（插件）   sfxr_generator.gd  预设 + 高级波形
+✓ 方案C — 外部 .wav 文件      audio/{1,2,3}/  Python 生成
+  方案D — Foley AI 插件        addons/foley_ai/  AI 语音/音效生成
+
+✓ = 已使用
+
+=== 音效优先级 ===
+方案C（外部 .wav） > 方案B（GodotSfxr） > 方案A（程序化） > 方案D（Foley AI 未启用）
+
+=== 当前三套配置 ===
+audio/1/  — 第一套（默认，简单）纯正弦/噪声/扫描，干净经典
+audio/2/  — 第二套（更丰富）方波/锯齿/ADSR包络/多种噪声，电子游戏感
+audio/3/  — 第三套（三角波+颤音）三角波 + vibrato 频率调制，温暖揉弦
+
+切换命令（在 Godot 控制台或任意 gd 调用）：
+  AudioManager.set_sfx_set("1")    ← 切到第一套
+  AudioManager.set_sfx_set("2")    ← 切到第二套
+  AudioManager.set_sfx_set("3")    ← 切到第三套
+运行时按 1/2/3 键也可切换。
+无需重启游戏，即时生效。
+
+================== 逐音效测试清单 ==================
+
+测试方法：运行游戏触发事件，或手动调用 AudioManager.play("shoot")
+运行时按 1/2/3 键可随时切换三套对比。
+按下述标题方法记录，最后决定用哪套：
+
+编号  音效名     触发方式                audio/1/ (正弦)       audio/2/ (方波/锯齿)  audio/3/ (三角波+颤音)  结论(保留哪个?)
+----  ----------  --------------------   -------------------  -------------------   ---------------------   --------------
+1     shoot       塔射击                 [当前播放]            [当前播放]             [当前播放]
+2     die         怪物死亡               [当前播放]            [当前播放]             [当前播放]
+3     wave        波次开始               [当前播放]            [当前播放]             [当前播放]
+4     gameover    游戏结束               [当前播放]            [当前播放]             [当前播放]
+5     lightning   闪电链跳跃             [当前播放]            [当前播放]             [当前播放]
+6     fireball    火球爆炸               [当前播放]            [当前播放]             [当前播放]
+7     freeze      冰冻/眩晕              [当前播放]            [当前播放]             [当前播放]
+8     upgrade     塔/技能升级            [当前播放]            [当前播放]             [当前播放]
+9     coin        获得金币               [当前播放]            [当前播放]             [当前播放]
+10    ui_click    按钮点击               [当前播放]            [当前播放]             [当前播放]
+11    place       放置塔                 [当前播放]            [当前播放]             [当前播放]
+12    sell        出售塔                 [当前播放]            [当前播放]             [当前播放]
+
+===== 测试指引 =====
+1. 保持默认 audio/1/，运行游戏触发每音效，填感受
+2. 按 2 键切到 audio/2/，再触发一遍，填感受
+3. 按 3 键切到 audio/3/，再触发一遍，填感受
+4. 结论列决定保留哪套
+5. 最终定稿后将目标 set 的 .wav 文件保留，其余可清理
+
+调试命令：
+  AudioManager.play("shoot")            // 手动触发某个音效
+  AudioManager.play_file("res://audio/2/sfx_shoot.wav")  // 直接播文件
+  AudioManager.set_sfx_set("1")         // 切换到 set1（正弦）
+  AudioManager.set_sfx_set("2")         // 切换到 set2（方波/锯齿）
+  AudioManager.set_sfx_set("3")         // 切换到 set3（三角波+颤音）
+  print(AudioManager._sfx_map.keys())   // 查看已加载的音效

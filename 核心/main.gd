@@ -90,6 +90,12 @@ func _input(event: InputEvent) -> void:
 		$Camera2D.position = Vector2.ZERO
 		$Camera2D.zoom = Vector2(1, 1)
 		($Camera2D as Camera2D)._target_zoom = 1.0
+	if event is InputEventKey and event.pressed and event.keycode == KEY_1:
+		AudioManager.set_sfx_set("1")
+	if event is InputEventKey and event.pressed and event.keycode == KEY_2:
+		AudioManager.set_sfx_set("2")
+	if event is InputEventKey and event.pressed and event.keycode == KEY_3:
+		AudioManager.set_sfx_set("3")
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible) or info_plane.visible or skill_book_plane.visible:
 			return

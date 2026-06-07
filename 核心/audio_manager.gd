@@ -10,26 +10,62 @@ var _sfx_map: Dictionary = {}
 
 var _config_path: String = "user://audio_settings.cfg"
 
+var _current_set: String = "1"
+
 func _ready():
+	_load_external_sounds()
 	_generate_sounds()
 	_setup_players()
 	_load_settings()
 
+# ===== 外部音效加载 =====
+
+func _load_external_sounds():
+	var d = DirAccess.open("res://audio/" + _current_set + "/")
+	if not d:
+		return
+	d.list_dir_begin()
+	var fn = d.get_next()
+	while fn != "":
+		if fn.ends_with(".wav") or fn.ends_with(".ogg"):
+			var name = fn.get_basename()
+			if name.begins_with("sfx_"):
+				name = name.substr(4)
+			var stream = load("res://audio/" + _current_set + "/" + fn)
+			if stream:
+				_sfx_map[name] = stream
+		fn = d.get_next()
+	d.list_dir_end()
+
+func set_sfx_set(n: String):
+	if n == _current_set:
+		return
+	_current_set = n
+	_sfx_map.clear()
+	_load_external_sounds()
+	_generate_sounds()
+	print("AudioManager: switched to set " + n)
+
 # ===== 音效生成 =====
 
 func _generate_sounds():
-	_sfx_map["shoot"] = _make_tone(800, 0.08, 0.4)
-	_sfx_map["die"] = _make_tone(200, 0.12, 0.3, true)
-	_sfx_map["wave"] = _make_sweep(300, 700, 0.4, 0.3)
-	_sfx_map["gameover"] = _make_sweep(500, 100, 0.6, 0.4)
-	_sfx_map["lightning"] = _make_lightning()
-	_sfx_map["fireball"] = _make_noise_tone(100, 0.25, 0.5)
-	_sfx_map["freeze"] = _make_noise_tone(4000, 0.2, 0.3)
-	_sfx_map["upgrade"] = _make_sweep(400, 1200, 0.3, 0.4)
-	_sfx_map["coin"] = _make_tone(1800, 0.08, 0.3)
-	_sfx_map["ui_click"] = _make_tone(1000, 0.03, 0.2)
-	_sfx_map["place"] = _make_tone(120, 0.1, 0.5)
-	_sfx_map["sell"] = _make_sweep(600, 200, 0.15, 0.35)
+	var names = ["shoot", "die", "wave", "gameover", "lightning", "fireball", "freeze", "upgrade", "coin", "ui_click", "place", "sell"]
+	for n in names:
+		if _sfx_map.has(n):
+			continue
+		match n:
+			"shoot": _sfx_map[n] = _make_tone(800, 0.08, 0.4)
+			"die": _sfx_map[n] = _make_tone(200, 0.12, 0.3, true)
+			"wave": _sfx_map[n] = _make_sweep(300, 700, 0.4, 0.3)
+			"gameover": _sfx_map[n] = _make_sweep(500, 100, 0.6, 0.4)
+			"lightning": _sfx_map[n] = _make_lightning()
+			"fireball": _sfx_map[n] = _make_noise_tone(100, 0.25, 0.5)
+			"freeze": _sfx_map[n] = _make_noise_tone(4000, 0.2, 0.3)
+			"upgrade": _sfx_map[n] = _make_sweep(400, 1200, 0.3, 0.4)
+			"coin": _sfx_map[n] = _make_tone(1800, 0.08, 0.3)
+			"ui_click": _sfx_map[n] = _make_tone(1000, 0.03, 0.2)
+			"place": _sfx_map[n] = _make_tone(120, 0.1, 0.5)
+			"sell": _sfx_map[n] = _make_sweep(600, 200, 0.15, 0.35)
 
 func _make_tone(freq: float, duration: float, amp: float, descend: bool = false) -> AudioStreamWAV:
 	var rate = 22050
@@ -145,6 +181,24 @@ func play(name: String, pitch_override: float = -1.0):
 	else:
 		p.pitch_scale = 1.0 + randf_range(-0.1, 0.1)
 	p.play()
+
+func play_file(path: String, pitch_override: float = -1.0):
+	var stream = load(path)
+	if not stream:
+		return
+	var p = _get_idle_sfx_player()
+	if not p:
+		return
+	p.stream = stream
+	p.volume_db = linear_to_db(sfx_volume)
+	if pitch_override > 0:
+		p.pitch_scale = pitch_override
+	else:
+		p.pitch_scale = 1.0 + randf_range(-0.1, 0.1)
+	p.play()
+
+func get_current_set() -> String:
+	return _current_set
 
 # ===== 兼容旧接口 =====
 
