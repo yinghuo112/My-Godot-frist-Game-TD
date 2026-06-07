@@ -21,6 +21,7 @@ var enable_debug_button: bool = true                     # 手机端是否显示
 var auto_reduce_particles: bool = true                   # 手机端是否自动降低粒子数量
 
 # ===== 内部状态 =====
+var _camera: Camera2D = null
 var _is_mobile: bool = false
 var _is_android: bool = false
 var _is_ios: bool = false
@@ -256,9 +257,9 @@ func _particle_scale_node(node: Node, ratio: float):
 static func make_touch_friendly(button: BaseButton, min_size: Vector2 = Vector2(48, 48)):
 	button.custom_minimum_size = min_size
 
-# 获取当前触摸位置（手机优先触摸，PC 回退鼠标）
-static func get_touch_pos() -> Vector2:
-	var touch = Input.get_last_touch_screen_position(0)
-	if touch != Vector2.ZERO:
-		return touch
-	return get_viewport().get_mouse_position()
+# 获取当前鼠标/触摸位置（手机触摸自动转鼠标）
+func get_touch_pos() -> Vector2:
+	var vp = get_viewport()
+	if vp:
+		return vp.get_mouse_position()
+	return Vector2.ZERO
