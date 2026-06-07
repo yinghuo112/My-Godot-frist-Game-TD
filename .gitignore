@@ -7,6 +7,7 @@ addons/*
 
 # 保留 mobile_adapter 模块
 !addons/mobile_adapter/
+!addons/map_panel/
 
 # 文档不上传
 *.txt
