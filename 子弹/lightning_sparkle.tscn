@@ -1,21 +1,25 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://dgfyvnmsk0w5d"]
 
-[ext_resource type="Script" path="res://子弹/lightning_sparkle.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/mage/mage_sparkle.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://clcgvo6uai6c" path="res://子弹/lightning_sparkle.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bc27rpgxlqw3r" path="res://assets/bullet/粒子/bolt_lightning.png" id="2_texture"]
 
-[node name="LightningSparkle" type="GPUParticles2D"]
-script = ExtResource("1_script")
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yrmpc"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 98, 0)
+
+[node name="LightningSparkle" type="GPUParticles2D" unique_id=930360222]
+modulate = Color(0.6, 0.85, 1, 1)
 emitting = false
-amount = 8
+texture = ExtResource("2_texture")
+lifetime = 0.3
 one_shot = true
 explosiveness = 1.0
-lifetime = 0.3
 fixed_fps = 8
-modulate = Color(0.6, 0.85, 1.0, 1.0)
-texture = ExtResource("2_texture")
+process_material = SubResource("ParticleProcessMaterial_yrmpc")
+script = ExtResource("1_script")
 
-[node name="CleanupTimer" type="Timer" parent="."]
-one_shot = true
+[node name="CleanupTimer" type="Timer" parent="." unique_id=1537626921]
 wait_time = 0.8
+one_shot = true
 
 [connection signal="timeout" from="CleanupTimer" to="." method="_on_cleanup_timer_timeout"]

@@ -1,7 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://子弹/mage_sparkle.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://b3pddso1rsbiv" path="res://assets/mage/mage_sparkle.png" id="2_texture"]
+[ext_resource type="Texture2D" path="res://assets/bullet/粒子/bolt_lightning.png" id="2_texture"]
 
 [node name="MageSparkle" type="GPUParticles2D"]
 script = ExtResource("1_script")
@@ -13,7 +13,7 @@ lifetime = 0.6
 spread = 180.0
 fixed_fps = 10
 texture = ExtResource("2_texture")
-hframes = 5
+hframes = 4
 
 [node name="CleanupTimer" type="Timer" parent="."]
 one_shot = true

@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dltmulxy4cnmr" path="res://子弹/bullet.tscn" id="1_bullet"]
 [ext_resource type="Script" uid="uid://c1h7pkcqfter5" path="res://子弹/fireball_bullet.gd" id="2_script"]
-[ext_resource type="Texture2D" uid="uid://ci7jm6gf671n1" path="res://icon.svg" id="3_texture"]
+[ext_resource type="Texture2D" path="res://assets/bullet/粒子/spark_fire.png" id="3_texture"]
 
 [node name="FireballBullet" unique_id=197492407 instance=ExtResource("1_bullet")]
 script = ExtResource("2_script")
@@ -19,3 +19,4 @@ emitting = false
 texture = ExtResource("3_texture")
 lifetime = 0.5
 fixed_fps = 12
+hframes = 4

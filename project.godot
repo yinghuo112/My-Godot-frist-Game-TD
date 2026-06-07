@@ -23,6 +23,7 @@ config/icon="res://icon.svg"
 GameManager="*res://核心/game_manager.gd"
 AudioManager="*res://核心/audio_manager.gd"
 BulletManager="*res://子弹/bullet_manager.gd"
+MobileAdapter="*res://addons/mobile_adapter/MobileAdapter.gd"
 _mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [display]

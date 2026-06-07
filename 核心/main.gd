@@ -66,6 +66,8 @@ func _ready() -> void:
 	add_child(_debug_overlay)
 
 	_init_play_area()
+	# 初始化手机适配模块
+	MobileAdapter.setup()
 
 # 设置树木生成计时器，3秒后开始生成
 func _setup_tree_spawning():

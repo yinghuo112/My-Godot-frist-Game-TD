@@ -88,6 +88,11 @@ func _physics_process(_delta):
 
 # ===== 抖动动画 + 链完成后释放 =====
 func _process(delta):
+	# 每帧跟随敌人当前位置，线条不悬空
+	for i in range(已命中列表.size()):
+		var idx = i + 1
+		if idx < 路径点.size() and is_instance_valid(已命中列表[i]):
+			路径点[idx] = 已命中列表[i].global_position
 	抖动计时 += delta
 	抖动总时长 += delta
 	if 抖动计时 >= 0.05:

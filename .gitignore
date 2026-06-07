@@ -3,7 +3,10 @@
 /android/
 
 # MCP 插件（不上传）
-addons/
+addons/*
+
+# 保留 mobile_adapter 模块
+!addons/mobile_adapter/
 
 # 文档不上传
 *.txt

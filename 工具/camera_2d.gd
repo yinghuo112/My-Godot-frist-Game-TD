@@ -18,9 +18,21 @@ var _is_dragging: bool = false
 func _ready():
 	_target_zoom = zoom.x
 
+# 供 MobileAdapter 读取缩放范围
+func get_zoom_min() -> float:
+	return _zoom_min
+
+func get_zoom_max() -> float:
+	return _zoom_max
+
 
 # 每帧检测鼠标边缘位置实现滚动，平滑缩放至目标值
 func _process(delta):
+	# 手机端用触摸拖拽，跳过鼠标边缘滚动
+	if MobileAdapter.is_mobile():
+		_clamp_position(get_viewport().get_visible_rect().size)
+		zoom = zoom.lerp(Vector2(_target_zoom, _target_zoom), _zoom_speed * delta)
+		return
 	var mouse_pos = get_viewport().get_mouse_position()
 	var window_size = get_viewport().get_visible_rect().size
 	var move_direction = Vector2.ZERO
@@ -55,6 +67,9 @@ func _clamp_position(window_size: Vector2):
 
 # 处理鼠标点击拖动和滚轮缩放
 func _unhandled_input(event: InputEvent):
+	# 手机端用触摸拖拽，跳过鼠标逻辑
+	if MobileAdapter.is_mobile():
+		return
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_LEFT:
 			_is_dragging = event.pressed

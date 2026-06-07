@@ -26,9 +26,13 @@ func apply(duration: float, target_node: Node2D) -> void:
 		_target.modulate = Color(1, 0.9, 0.5)  # 黄色提示
 	_spawn_sparkle()
 
-# 每帧倒计时
+# 每帧倒计时 + 粒子跟随
 func _process(delta: float) -> void:
 	_remaining_time -= delta
+	if not _sparkle or not is_instance_valid(_sparkle):
+		_spawn_sparkle()
+	elif _target and is_instance_valid(_target):
+		_sparkle.global_position = _target.global_position
 	if _remaining_time <= 0:
 		_restore()
 		queue_free()
