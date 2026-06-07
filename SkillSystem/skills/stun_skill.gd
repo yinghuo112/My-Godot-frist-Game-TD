@@ -24,6 +24,7 @@ func on_hit(_tower: Node2D, _bullet: Node2D, target: Node2D,
 	var ctrl = _get_or_create_stun(target)
 	if ctrl:
 		ctrl.apply(duration, target)
+		AudioManager.play("freeze")
 
 # 查找敌人身上已有的 StunController，没有则新建
 func _get_or_create_stun(target: Node2D) -> Node:

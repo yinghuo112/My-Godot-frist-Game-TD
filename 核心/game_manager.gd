@@ -139,6 +139,7 @@ func _spawn_enemy():
 func _on_enemy_died(enemy):
 	var reward = enemy.gold_reward
 	gold += reward
+	AudioManager.play("coin")
 	gold_changed.emit(gold)
 	enemy_killed.emit(reward)
 	enemies_on_field -= 1

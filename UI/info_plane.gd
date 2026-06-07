@@ -75,12 +75,14 @@ func _populate(tower: Node2D) -> void:
 
 # 点击技能按钮 → 打开技能书面板
 func _on_skill_click() -> void:
+	AudioManager.play("ui_click")
 	if is_instance_valid(_target_tower):
 		skill_book_requested.emit(_target_tower)
 		close()
 
 # 升级塔
 func _on_upgrade() -> void:
+	AudioManager.play("ui_click")
 	if not is_instance_valid(_target_tower) or not _target_tower.has_method("do_upgrade"):
 		return
 	if not _target_tower.do_upgrade():
@@ -89,10 +91,12 @@ func _on_upgrade() -> void:
 
 # 出售塔
 func _on_sell() -> void:
+	AudioManager.play("ui_click")
 	if not is_instance_valid(_target_tower) or not _target_tower.has_method("get_sell_value"):
 		return
 	var value = _target_tower.get_sell_value()
 	GameManager.add_gold(value)
+	AudioManager.play("sell")
 	_target_tower.queue_free()
 	close()
 

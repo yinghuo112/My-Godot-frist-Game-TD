@@ -243,6 +243,7 @@ func do_upgrade() -> bool:
 		return false
 	level += 1
 	skill_points += 1
+	AudioManager.play("upgrade")
 	_refresh_cached_stats()
 	if range_shape and range_shape.shape is CircleShape2D:
 		range_shape.shape.radius = _cached_range

@@ -143,6 +143,7 @@ func _place_tower(slot: Marker2D, tt: TowerType) -> void:
 	slot.add_child(tower)
 	tower.position = Vector2.ZERO
 	GameManager.spend_gold(tt.cost)
+	AudioManager.play("place")
 
 # 初始化建造面板（3个塔按钮）
 func _init_build_panel():

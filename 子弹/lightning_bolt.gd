@@ -109,6 +109,7 @@ func _chain_step(enemy: Node2D):
 		return
 	已命中列表.append(enemy)
 	_apply_damage(enemy)
+	AudioManager.play_lightning()
 	路径点.append(enemy.global_position)
 	_update_lines()
 	_spawn_sparks(enemy.global_position)

@@ -34,6 +34,7 @@ func _hit():
 		return
 	_has_hit = true
 	_spawn_explosion()
+	AudioManager.play("fireball")
 	_apply_damage(target)
 	_splash_damage(target, global_position)
 	call_deferred("_release")
@@ -45,6 +46,7 @@ func _on_area_entered(area):
 		_has_hit = true
 		var enemy = area.get_parent()
 		_spawn_explosion()
+		AudioManager.play("fireball")
 		_apply_damage(enemy)
 		_splash_damage(enemy, global_position)
 		call_deferred("_release")

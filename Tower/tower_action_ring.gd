@@ -75,6 +75,7 @@ func hide_ring():
 
 # 点击升级按钮：弹窗显示升级前后属性对比
 func _on_upgrade_click():
+	AudioManager.play("ui_click")
 	if not is_instance_valid(target_tower) or not target_tower.has_method("can_upgrade") or not target_tower.can_upgrade():
 		return
 	if info_popup.visible and _popup_mode == "upgrade":
@@ -100,6 +101,7 @@ func _on_upgrade_click():
 
 # 点击出售按钮：弹窗确认出售金额
 func _on_sell_click():
+	AudioManager.play("ui_click")
 	if not is_instance_valid(target_tower):
 		return
 	if info_popup.visible and _popup_mode == "sell":
@@ -118,6 +120,7 @@ func _on_sell_click():
 
 # 点击信息按钮：发射信号让 InfoPlane 从右侧滑入
 func _on_info_click():
+	AudioManager.play("ui_click")
 	if not is_instance_valid(target_tower):
 		return
 	show_info_requested.emit(target_tower)
@@ -170,5 +173,6 @@ func _do_sell():
 		return
 	var value = target_tower.get_sell_value()
 	GameManager.add_gold(value)
+	AudioManager.play("sell")
 	target_tower.queue_free()
 	hide_ring()

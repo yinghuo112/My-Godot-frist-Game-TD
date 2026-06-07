@@ -249,6 +249,7 @@ func _on_upgrade_skill(tower: Node2D, skill_idx: int) -> void:
 		tower.skill_points = sp - cost_points
 		state.proficiency -= cost_prof
 		state.level = next_level
+		AudioManager.play("upgrade")
 		states[path] = state
 		tower.skill_states = states
 		_populate(tower)

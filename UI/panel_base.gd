@@ -41,6 +41,7 @@ func show_panel() -> void:
 func close() -> void:
 	if not _is_open:
 		return
+	AudioManager.play("ui_click")
 	if _tween and _tween.is_valid():
 		_tween.kill()
 	# 滑出动画：从原位偏移到右侧屏幕外

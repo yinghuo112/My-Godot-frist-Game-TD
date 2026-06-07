@@ -20,14 +20,14 @@ func _ready():
 	_update_speed_buttons()
 
 func _setup_buttons():
-	%StartWaveBtn.pressed.connect(wave_start_requested.emit)
+	%StartWaveBtn.pressed.connect(_on_start_wave)
 	%Speed05xBtn.pressed.connect(_on_speed.bind(0.5))
 	%Speed1xBtn.pressed.connect(_on_speed.bind(1.0))
 	%Speed2xBtn.pressed.connect(_on_speed.bind(2.0))
 	%Speed4xBtn.pressed.connect(_on_speed.bind(4.0))
 	%PauseBtn.pressed.connect(_on_pause)
-	%SettingsBtn.pressed.connect(settings_requested.emit)
-	%DebugBtn.pressed.connect(debug_requested.emit)
+	%SettingsBtn.pressed.connect(_on_settings)
+	%DebugBtn.pressed.connect(_on_debug)
 
 # ===== 外部接口 =====
 
@@ -53,13 +53,27 @@ func set_start_btn_visible(visible_state: bool):
 
 # ===== 速度控制 =====
 
+func _on_start_wave():
+	AudioManager.play("ui_click")
+	wave_start_requested.emit()
+
+func _on_settings():
+	AudioManager.play("ui_click")
+	settings_requested.emit()
+
+func _on_debug():
+	AudioManager.play("ui_click")
+	debug_requested.emit()
+
 func _on_speed(speed: float):
+	AudioManager.play("ui_click")
 	_current_speed = speed
 	_paused = false
 	Engine.time_scale = speed
 	_update_speed_buttons()
 
 func _on_pause():
+	AudioManager.play("ui_click")
 	_paused = not _paused
 	Engine.time_scale = 0.0 if _paused else _current_speed
 	_update_speed_buttons()
