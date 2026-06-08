@@ -165,10 +165,10 @@ func _get_idle_sfx_player() -> AudioStreamPlayer:
 
 # ===== 通用播放接口 =====
 
-func play(name: String, pitch_override: float = -1.0):
-	if not _sfx_map.has(name):
+func play(sfx_name: String, pitch_override: float = -1.0):
+	if not _sfx_map.has(sfx_name):
 		return
-	var stream = _sfx_map[name] as AudioStreamWAV
+	var stream = _sfx_map[sfx_name] as AudioStreamWAV
 	if not stream:
 		return
 	var p = _get_idle_sfx_player()
