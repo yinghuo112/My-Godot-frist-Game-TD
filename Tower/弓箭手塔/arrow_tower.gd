@@ -2,6 +2,10 @@ extends TowerBase
 
 var _triple_cooldown: float = 0.0
 
+func _ready():
+	super()
+	print(">>> arrow_tower ready, name=", name)
+
 func _process(delta):
 	if _triple_cooldown > 0:
 		_triple_cooldown -= delta
@@ -13,6 +17,8 @@ func _shoot():
 	_last_skills = _get_active_skills()
 	var skill = _find_triple_skill(_last_skills)
 	var lv = get_skill_level(skill)
+	var found_triple = skill != null
+	print(">>> arrow_tower._shoot() triple_found=%s lv=%d cd=%.1f" % [found_triple, lv, _triple_cooldown])
 	var count = 1
 	if lv > 0 and _triple_cooldown <= 0:
 		count = skill.get_shot_count(lv)
