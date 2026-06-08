@@ -4,30 +4,7 @@
 [ext_resource type="Script" uid="uid://djexle8apaqmy" path="res://SkillSystem/core/skill_base.gd" id="2_base"]
 [ext_resource type="Script" uid="uid://8n6kncpitabq" path="res://SkillSystem/skills/fireball_skill.gd" id="3_fire"]
 [ext_resource type="Script" uid="uid://84ephp5ykds0" path="res://SkillSystem/skills/poison_skill.gd" id="4_poison"]
-[ext_resource type="Script" uid="uid://g2l8o8vkx7xp" path="res://SkillSystem/skills/triple_shot_skill.gd" id="5_triple"]
-
-[sub_resource type="Resource" id="s_base_shot"]
-script = ExtResource("2_base")
-name = "基础射击"
-tags = ["通用", "弹道"]
-description = "提高基础攻击力。"
-max_level = 3
-level_table = [{
-"cost_points": 1,
-"cost_prof": 0,
-"damage": 5.0,
-"special": ""
-}, {
-"cost_points": 1,
-"cost_prof": 50,
-"damage": 10.0,
-"special": ""
-}, {
-"cost_points": 2,
-"cost_prof": 150,
-"damage": 18.0,
-"special": "暴击率+5%"
-}]
+[ext_resource type="Script" path="res://SkillSystem/skills/triple_shot_skill.gd" id="5_triple"]
 
 [sub_resource type="Resource" id="s_triple_shot"]
 script = ExtResource("5_triple")
@@ -35,11 +12,9 @@ name = "三连射"
 tags = ["通用", "弹道"]
 description = "下一次攻击同时射出3箭。冷却6秒。"
 max_level = 1
-prerequisites = [0]
-gold_cost = 20
 level_table = [{
 "cooldown": 6.0,
-"cost_points": 0,
+"cost_points": 1,
 "cost_prof": 0,
 "shot_count": 3
 }]
@@ -100,4 +75,4 @@ level_table = [{
 script = ExtResource("1_book")
 name = "弓箭手手札"
 tags = ["元素", "弹道"]
-skills = [SubResource("s_base_shot"), SubResource("s_triple_shot"), SubResource("s_fireball"), SubResource("s_poison")]
+skills = [SubResource("s_triple_shot"), SubResource("s_fireball"), SubResource("s_poison")]
