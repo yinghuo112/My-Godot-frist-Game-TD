@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bireon27oqa4e" path="res://树/tree.gd" id="1"]
 
+[sub_resource type="Theme" id="Theme_p2csb"]
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_p2csb"]
 radius = 20.0
 
@@ -13,7 +15,7 @@ offset_left = -12.0
 offset_top = -12.0
 offset_right = 12.0
 offset_bottom = 12.0
-color = Color(0.3, 0.8, 0.3, 1)
+theme = SubResource("Theme_p2csb")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=1136152752]
 collision_layer = 2

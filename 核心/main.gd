@@ -22,11 +22,13 @@ var tower_types: Array[TowerType] = [
 ]
 var _build_panel: Panel
 var _debug_overlay: CanvasLayer
+var _debug_panel: Control
 var _build_buttons: Array[Button] = []
 var _pending_slot: Marker2D = null
 var tree_scene = preload("res://树/Tree.tscn")
 var floating_text_scene = preload("res://工具/FloatingText.tscn")
 const _DEBUG_OVERLAY_SCRIPT = preload("res://调试/debug_overlay.gd")
+const _DEBUG_PANEL_SCENE = preload("res://UI/Debug_panel/debug_panel.tscn")
 const _DEBUG_MONSTER_TYPE = preload("res://config/test_enemy.tres")
 const _TEST_WAVE_COUNT = 5
 const _TEST_WAVE_INTERVAL = 1.27  # 间距127px / 速度100
@@ -47,7 +49,7 @@ var _tree_spawn_timer: Timer
 func _ready() -> void:
 	toolbar.wave_start_requested.connect(_on_start_wave)
 	toolbar.settings_requested.connect(_on_settings)
-	toolbar.debug_requested.connect(_spawn_test_enemy)
+	toolbar.debug_requested.connect(_toggle_debug_panel)
 	GameManager.reset()
 	GameManager.gold_changed.connect(_update_gold)
 	GameManager.lives_changed.connect(_update_lives)
@@ -73,6 +75,12 @@ func _ready() -> void:
 	_debug_overlay = _DEBUG_OVERLAY_SCRIPT.new()
 	_debug_overlay.name = "DebugOverlay"
 	add_child(_debug_overlay)
+
+	# 添加调试面板（左下角，工具栏按钮开关）
+	_debug_panel = _DEBUG_PANEL_SCENE.instantiate()
+	_debug_panel.name = "DebugPanel"
+	$UI.add_child(_debug_panel)
+	_debug_panel.hide()
 
 	_init_play_area()
 	# 初始化手机适配模块
@@ -221,6 +229,11 @@ func _on_build_selected(idx: int):
 	_hide_build_panel()
 	if slot and is_instance_valid(slot) and slot.get_child_count() == 0:
 		_place_tower(slot, tower_types[idx])
+
+# 工具栏调试按钮：开关左下角调试面板
+func _toggle_debug_panel() -> void:
+	if _debug_panel and _debug_panel.has_method("toggle"):
+		_debug_panel.toggle()
 
 # 调试功能：按T键直接生成一个高血量测试怪物
 func _spawn_test_enemy() -> void:

@@ -11,6 +11,10 @@ extends Resource
 @export var gold_cost: int = 0            # 解锁所需金币
 @export var level_table: Array = []       # 每级数据表（dict 数组，各技能自定义字段）
 
+
+
+# ===== 技能的特殊效果(是否有弹射，辐射，喷射，散射，光环，召唤)====
+
 # ===== 技能挂载点（子类重写这些方法实现效果）=====
 
 # 判断该技能是否能被指定标签的塔装备
