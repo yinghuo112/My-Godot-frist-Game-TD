@@ -18,6 +18,7 @@ var tower_types: Array[TowerType] = [
 	preload("res://config/Tower_constor/cannon.tres"),
 	preload("res://config/Tower_constor/magic.tres"),
 	preload("res://config/Tower_constor/mage_tower.tres"),
+	preload("res://config/test_tower.tres"),
 ]
 var _build_panel: Panel
 var _debug_overlay: CanvasLayer
