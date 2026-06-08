@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bb33s770com65" path="res://assets/防御塔/弓箭手/111111_6.png" id="7_63vmt"]
 [ext_resource type="Texture2D" uid="uid://bhxxlfbnqc77u" path="res://assets/防御塔/弓箭手/111111_7.png" id="8_00mvs"]
 [ext_resource type="Texture2D" uid="uid://h4si00bps5hy" path="res://assets/防御塔/弓箭手/111111_8.png" id="9_vxobc"]
-[ext_resource type="Script" uid="" path="res://Tower/弓箭手塔/arrow_tower.gd" id="10_script"]
+[ext_resource type="Script" path="res://Tower/弓箭手塔/arrow_tower.gd" id="10_script"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_l6fjp"]
 animations = [{
