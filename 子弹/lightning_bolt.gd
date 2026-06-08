@@ -108,7 +108,10 @@ func _chain_step(enemy: Node2D):
 		_chain_done = true
 		return
 	已命中列表.append(enemy)
+	var original_damage = _damage
+	_damage = original_damage * pow(跳跃衰减, 当前跳跃数)
 	_apply_damage(enemy)
+	_damage = original_damage
 	AudioManager.play_lightning()
 	路径点.append(enemy.global_position)
 	_update_lines()
