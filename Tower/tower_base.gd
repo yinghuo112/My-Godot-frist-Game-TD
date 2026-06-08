@@ -22,6 +22,7 @@ var skill_unlocked_indices: Array = []
 var skill_states: Dictionary = {}
 var _last_skills: Array = []
 var _tick_accum: float = 0.0
+var _triple_cd: Timer = null            # 三连射CD计时器
 
 var can_shoot: bool = true
 var target: Node2D = null
@@ -125,25 +126,50 @@ func _process(delta):
 func _shoot():
 	if sprite and sprite.sprite_frames.has_animation("attack"):
 		sprite.play("attack")
-	AudioManager.play_shoot()
-	var bullet = _bullet_manager.get_bullet(bullet_scene) if _bullet_manager else bullet_scene.instantiate()
-	if not bullet:
-		return
-	bullet.global_position = bullet_spawn.global_position
+
+	# 懒创建三连射计时器
+	if _triple_cd == null:
+		_triple_cd = Timer.new()
+		_triple_cd.one_shot = true
+		_triple_cd.name = "TripleTimer"
+		add_child(_triple_cd)
+
 	_last_skills = _get_active_skills()
-	bullet.initialize(target, _cached_damage,
-		tower_type.crit_chance, tower_type.crit_multiplier,
-		tower_type.hit_chance, tower_type.attack_type, self,
-		_last_skills)
 
+	# 检查是否有三连射技能且冷却就绪
+	var triple_count = 1
+	var is_triple = false
 	for s in _last_skills:
-		if s and s.has_method("on_pre_shot"):
-			s.on_pre_shot(self, bullet, target, get_skill_level(s))
+		if s is TripleShotSkill:
+			var lv = get_skill_level(s)
+			if lv > 0 and _triple_cd.is_stopped():
+				triple_count = s.get_shot_count(lv)
+				_triple_cd.wait_time = s.get_cooldown(lv)
+				_triple_cd.start()
+				is_triple = true
+				print(">>> 三连射 %d 箭!" % triple_count)
 
-	if _tower_defense_root:
-		_tower_defense_root.add_child(bullet)
-	else:
-		get_parent().add_child(bullet)
+	AudioManager.play_shoot()
+
+	for i in range(triple_count):
+		var bullet = _bullet_manager.get_bullet(bullet_scene) if _bullet_manager else bullet_scene.instantiate()
+		if not bullet:
+			continue
+		bullet.global_position = bullet_spawn.global_position
+		bullet.modulate = Color.RED if is_triple else Color.WHITE
+		bullet.initialize(target, _cached_damage,
+			tower_type.crit_chance, tower_type.crit_multiplier,
+			tower_type.hit_chance, tower_type.attack_type, self,
+			_last_skills)
+
+		for sk in _last_skills:
+			if sk and sk.has_method("on_pre_shot"):
+				sk.on_pre_shot(self, bullet, target, get_skill_level(sk))
+
+		if _tower_defense_root:
+			_tower_defense_root.add_child(bullet)
+		else:
+			get_parent().add_child(bullet)
 
 # ------ 目标管理：信号驱动（优先敌人列表，其次树木）------
 
