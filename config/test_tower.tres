@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://config/tower_type.gd" id="1_jhvrw"]
 [ext_resource type="PackedScene" uid="uid://de5m5ivccvuh2" path="res://Tower/弓箭手塔/ArrowTower.tscn" id="2_arrow"]
+[ext_resource type="Resource" uid="uid://dwwq0dyu3ct76" path="res://SkillSystem/books/弓箭手技能书.tres" id="3_skillbook"]
 
 [resource]
 script = ExtResource("1_jhvrw")
@@ -14,3 +15,5 @@ crit_chance = 0.0
 crit_multiplier = 2.0
 hit_chance = 1.0
 description = "测试塔：攻击10，暴击0，命中100，范围150"
+skill_book = ExtResource("3_skillbook")
+skill_categories = ["通用", "弹道"]
