@@ -1,29 +1,29 @@
 extends TowerBase
 
-var _triple_cooldown: float = 0.0
-
-func _ready():
-	super()
-	print(">>> arrow_tower ready, name=", name)
-
-func _process(delta):
-	if _triple_cooldown > 0:
-		_triple_cooldown -= delta
-	super(delta)
+var _triple_cd: Timer = null
 
 func _shoot():
+	if _triple_cd == null:
+		_triple_cd = Timer.new()
+		_triple_cd.one_shot = true
+		_triple_cd.name = "TripleTimer"
+		add_child(_triple_cd)
+
 	if sprite and sprite.sprite_frames.has_animation("attack"):
 		sprite.play("attack")
 	_last_skills = _get_active_skills()
 	var skill = _find_triple_skill(_last_skills)
 	var lv = get_skill_level(skill)
-	var found_triple = skill != null
-	print(">>> arrow_tower._shoot() triple_found=%s lv=%d cd=%.1f" % [found_triple, lv, _triple_cooldown])
+	var cd_ready = skill != null and lv > 0 and _triple_cd.is_stopped()
+
+	print(">>> _shoot triple_found=%s lv=%d cd_ready=%s" % [skill != null, lv, cd_ready])
+
 	var count = 1
-	if lv > 0 and _triple_cooldown <= 0:
+	if cd_ready:
 		count = skill.get_shot_count(lv)
-		_triple_cooldown = skill.get_cooldown(lv)
-		print(">>> 三连射 %d 箭, 冷却 %.1fs" % [count, _triple_cooldown])
+		_triple_cd.wait_time = skill.get_cooldown(lv)
+		_triple_cd.start()
+		print(">>> 三连射 %d 箭, CD %.1fs" % [count, skill.get_cooldown(lv)])
 
 	AudioManager.play_shoot()
 	for i in range(count):
