@@ -17,12 +17,18 @@ var level: int = 1
 var max_level: int = 3
 
 # --- 技能系统 ---
+# 由 tower_type.skill_book 驱动的技能树系统
+# 索引 0 自动解锁（根技能），其余需玩家花费金币+技能点解锁
+# 技能通过 on_pre_shot / on_hit / on_tower_tick 三个挂载点介入战斗
 var skill_points: int = 0
 var skill_unlocked_indices: Array = []
 var skill_states: Dictionary = {}
 var _last_skills: Array = []
 var _tick_accum: float = 0.0
-var _triple_cd: Timer = null            # 三连射CD计时器
+# ===== 爆发射击系统（用于三连射等多发技能）=====
+var _burst_remaining: int = 0           # 爆发中还剩几箭（>0 = 爆发中，_process 跳过主动射击）
+var _burst_timer: Timer = null          # 爆发间隔计时器，每次超时射一箭
+var _triple_cd: Timer = null            # 三连射全局 CD 计时器（one_shot，独立于 burst_timer）
 
 var can_shoot: bool = true
 var target: Node2D = null
@@ -102,8 +108,33 @@ func _ready():
 	_range_indicator.visible = _show_range_circle
 	add_child(_range_indicator)
 
-# 每帧射击逻辑 + 懒搜索树木目标 + 技能 tick
+	# 爆发间隔计时器(三连射等技能用)
+	_burst_timer = Timer.new()
+	_burst_timer.one_shot = false
+	_burst_timer.name = "BurstTimer"
+	_burst_timer.timeout.connect(_on_burst_timer)
+	add_child(_burst_timer)
+
+# ===== 框架主循环 =====
+
+# 每帧处理：射击逻辑 + 目标搜索 + 技能 tick
 func _process(delta):
+	# 爆发中跳过主动射击（由 _on_burst_timer 驱动），仅保留目标搜索和技能 tick
+	if _burst_remaining > 0:
+		if target == null or not is_instance_valid(target):
+			_tree_search_timer += delta
+			if _tree_search_timer >= 0.5:
+				_tree_search_timer = 0.0
+				_find_tree_target()
+		_tick_accum += delta
+		if _tick_accum >= 0.5:
+			var tick_delta = _tick_accum
+			_tick_accum = 0.0
+			for s in _last_skills:
+				if s and s.has_method("on_tower_tick"):
+					s.on_tower_tick(self, tick_delta, get_skill_level(s))
+		return
+
 	if target and is_instance_valid(target):
 		if can_shoot:
 			_shoot()
@@ -122,12 +153,14 @@ func _process(delta):
 			if s and s.has_method("on_tower_tick"):
 				s.on_tower_tick(self, tick_delta, get_skill_level(s))
 
+# ===== 射击逻辑 =====
+
 # 播放攻击动画，生成子弹并发射
 func _shoot():
 	if sprite and sprite.sprite_frames.has_animation("attack"):
 		sprite.play("attack")
 
-	# 懒创建三连射计时器
+	# 懒创建三连射CD计时器
 	if _triple_cd == null:
 		_triple_cd = Timer.new()
 		_triple_cd.one_shot = true
@@ -136,40 +169,58 @@ func _shoot():
 
 	_last_skills = _get_active_skills()
 
-	# 检查是否有三连射技能且冷却就绪
-	var triple_count = 1
+	# 检查是否有三连射技能且冷却就绪 → 启动爆发
 	var is_triple = false
 	for s in _last_skills:
 		if s is TripleShotSkill:
 			var lv = get_skill_level(s)
 			if lv > 0 and _triple_cd.is_stopped():
-				triple_count = s.get_shot_count(lv)
+				var count = s.get_shot_count(lv)
 				_triple_cd.wait_time = s.get_cooldown(lv)
 				_triple_cd.start()
+				_burst_remaining = count - 1
+				_burst_timer.wait_time = 0.12
+				_burst_timer.start()
 				is_triple = true
-				print(">>> 三连射 %d 箭!" % triple_count)
+				print(">>> 三连射 %d 箭!" % count)
+				_fire_bullet(true)
+				return
 
+	# 正常单发
 	AudioManager.play_shoot()
+	_fire_bullet(false)
 
-	for i in range(triple_count):
-		var bullet = _bullet_manager.get_bullet(bullet_scene) if _bullet_manager else bullet_scene.instantiate()
-		if not bullet:
-			continue
-		bullet.global_position = bullet_spawn.global_position
-		bullet.modulate = Color.RED if is_triple else Color.WHITE
-		bullet.initialize(target, _cached_damage,
-			tower_type.crit_chance, tower_type.crit_multiplier,
-			tower_type.hit_chance, tower_type.attack_type, self,
-			_last_skills)
+# 爆发计时器回调：依次射出剩余箭矢
+# 由 _burst_timer.timeout 驱动，间隔固定 0.12s
+func _on_burst_timer():
+	if _burst_remaining <= 0:
+		_burst_timer.stop()
+		can_shoot = true       # 爆发结束，恢复主动射击
+		return
+	_fire_bullet(true)
+	_burst_remaining -= 1
 
-		for sk in _last_skills:
-			if sk and sk.has_method("on_pre_shot"):
-				sk.on_pre_shot(self, bullet, target, get_skill_level(sk))
+# 发射一颗子弹（通用方法，供 _shoot 和 _on_burst_timer 共用）
+# is_triple = true 时子弹着色红色（视觉区分爆发/普通）
+func _fire_bullet(is_triple: bool):
+	var bullet = _bullet_manager.get_bullet(bullet_scene) if _bullet_manager else bullet_scene.instantiate()
+	if not bullet:
+		return
+	bullet.global_position = bullet_spawn.global_position
+	bullet.modulate = Color.RED if is_triple else Color.WHITE
+	bullet.initialize(target, _cached_damage,
+		tower_type.crit_chance, tower_type.crit_multiplier,
+		tower_type.hit_chance, tower_type.attack_type, self,
+		_last_skills)
 
-		if _tower_defense_root:
-			_tower_defense_root.add_child(bullet)
-		else:
-			get_parent().add_child(bullet)
+	for sk in _last_skills:
+		if sk and sk.has_method("on_pre_shot"):
+			sk.on_pre_shot(self, bullet, target, get_skill_level(sk))
+
+	if _tower_defense_root:
+		_tower_defense_root.add_child(bullet)
+	else:
+		get_parent().add_child(bullet)
 
 # ------ 目标管理：信号驱动（优先敌人列表，其次树木）------
 
@@ -280,6 +331,9 @@ func do_upgrade() -> bool:
 		_range_indicator.set_range(_cached_range)
 	return true
 
+# ===== 技能系统接口 =====
+
+# 获取技能的当前等级（0 = 未解锁/无此技能）
 func get_skill_level(skill) -> int:
 	if not skill:
 		return 0
@@ -288,6 +342,7 @@ func get_skill_level(skill) -> int:
 		return skill_states[path].get("level", 0)
 	return 0
 
+# 获取所有已解锁且等级 > 0 的技能列表（用于技能回调遍历）
 func _get_active_skills() -> Array:
 	var sb = tower_type.get("skill_book") if tower_type else null
 	if not sb:

@@ -140,6 +140,6 @@ level_table = [{
 
 [resource]
 script = ExtResource("1_book")
-name = "魔法塔奥义"
+name = "魔法塔笔记"
 tags = ["元素", "诅咒", "魔法"]
 skills = [SubResource("s_base_shot"), SubResource("s_fireball"), SubResource("s_poison"), SubResource("s_slow"), SubResource("s_stun")]
