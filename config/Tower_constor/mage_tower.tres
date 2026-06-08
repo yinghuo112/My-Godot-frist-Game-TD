@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("3_rjh77")
 display_name = "Mage"
-damage = 6.0
+damage = 4.3
 fire_rate = 0.8
 range_radius = 150.0
 cost = 50
@@ -17,10 +17,10 @@ bullet_scene = ExtResource("1_k77yg")
 attack_type = 1
 crit_chance = 0.0
 hit_chance = 1.0
-description = "闪电塔。攻击6,弹射3跳/衰减0.5,等效标准塔3目标战力"
+description = "闪电塔。攻击4.3,弹射3跳/衰减0.8,3目标约等于标准塔,4目标超越"
 skill_book = ExtResource("4_qj3o4")
 skill_categories = ["魔法", "元素", "远程"]
 chain_jumps = 3
-chain_falloff = 0.5
+chain_falloff = 0.8
 chain_range = 150.0
 lightning_color = Color(0.3, 0.8, 1, 0.95)
