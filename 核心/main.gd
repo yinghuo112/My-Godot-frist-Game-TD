@@ -33,6 +33,10 @@ const _TEST_WAVE_INTERVAL = 1.27  # 间距127px / 速度100
 var _test_wave_remaining: int = 0
 var _test_wave_timer: Timer
 
+const _DEBUG_MONSTER_TYPE_2 = preload("res://config/test_enemy_2.tres")
+var _test_wave_2_remaining: int = 0
+var _test_wave_2_timer: Timer
+
 const _CLICK_RADIUS_SQ: float = 20.0 * 20.0
 const _TREE_CLICK_RADIUS_SQ: float = 25.0 * 25.0
 const _TREE_MARK_COST: int = 10
@@ -81,6 +85,12 @@ func _ready() -> void:
 	_test_wave_timer.timeout.connect(_on_test_wave_spawn)
 	add_child(_test_wave_timer)
 
+	_test_wave_2_timer = Timer.new()
+	_test_wave_2_timer.name = "TestWave2Timer"
+	_test_wave_2_timer.one_shot = false
+	_test_wave_2_timer.timeout.connect(_on_test_wave_2_spawn)
+	add_child(_test_wave_2_timer)
+
 # 设置树木生成计时器，3秒后开始生成
 func _setup_tree_spawning():
 	_tree_spawn_timer = Timer.new()
@@ -98,6 +108,8 @@ func _input(event: InputEvent) -> void:
 			_debug_overlay.toggle()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
 		_spawn_test_enemy()
+	if event is InputEventKey and event.pressed and event.keycode == KEY_Y:
+		_spawn_test_enemy_2()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_G:
 		$Camera2D.position = Vector2.ZERO
 		$Camera2D.zoom = Vector2(1, 1)
@@ -235,6 +247,31 @@ func _spawn_one_test_enemy():
 	path.add_child(enemy)
 	_test_wave_remaining -= 1
 	print("测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_remaining, debug_type.max_hp, debug_type.speed])
+
+func _spawn_test_enemy_2() -> void:
+	if _test_wave_2_timer.is_stopped():
+		_test_wave_2_remaining = _TEST_WAVE_COUNT
+		_test_wave_2_timer.wait_time = _TEST_WAVE_INTERVAL
+		_test_wave_2_timer.start()
+		print("=== 2塔测试波次开始: %d 只, 间隔 %.2fs, HP=40 ===" % [_TEST_WAVE_COUNT, _TEST_WAVE_INTERVAL])
+		_spawn_one_test_enemy_2()
+
+func _on_test_wave_2_spawn():
+	_spawn_one_test_enemy_2()
+
+func _spawn_one_test_enemy_2():
+	if _test_wave_2_remaining <= 0:
+		_test_wave_2_timer.stop()
+		return
+	var debug_type = _DEBUG_MONSTER_TYPE_2
+	var enemy = debug_type.scene.instantiate()
+	enemy.init(debug_type)
+	enemy.died.connect(_on_test_enemy_died)
+	enemy.reached_end.connect(_on_test_enemy_reached_end)
+	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
+	path.add_child(enemy)
+	_test_wave_2_remaining -= 1
+	print("2塔测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_2_remaining, debug_type.max_hp, debug_type.speed])
 
 # 从 TileMapLayer 格子计算可玩区域并存入 GameManager.play_area
 func _init_play_area():
