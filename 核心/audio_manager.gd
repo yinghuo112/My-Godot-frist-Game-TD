@@ -28,12 +28,12 @@ func _load_external_sounds():
 	var fn = d.get_next()
 	while fn != "":
 		if fn.ends_with(".wav") or fn.ends_with(".ogg"):
-			var name = fn.get_basename()
-			if name.begins_with("sfx_"):
-				name = name.substr(4)
+			var sfx_name = fn.get_basename()
+			if sfx_name.begins_with("sfx_"):
+				sfx_name = sfx_name.substr(4)
 			var stream = load("res://audio/" + _current_set + "/" + fn)
 			if stream:
-				_sfx_map[name] = stream
+				_sfx_map[sfx_name] = stream
 		fn = d.get_next()
 	d.list_dir_end()
 
