@@ -27,7 +27,7 @@ var _pending_slot: Marker2D = null
 var tree_scene = preload("res://树/Tree.tscn")
 var floating_text_scene = preload("res://工具/FloatingText.tscn")
 const _DEBUG_OVERLAY_SCRIPT = preload("res://调试/debug_overlay.gd")
-const _DEBUG_MONSTER_TYPE = preload("res://调试/debug_monster.tres")
+const _DEBUG_MONSTER_TYPE = preload("res://config/test_enemy.tres")
 
 const _CLICK_RADIUS_SQ: float = 20.0 * 20.0
 const _TREE_CLICK_RADIUS_SQ: float = 25.0 * 25.0
