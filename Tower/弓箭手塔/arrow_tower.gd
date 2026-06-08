@@ -17,6 +17,8 @@ func _shoot():
 	if lv > 0 and _triple_cooldown <= 0:
 		count = skill.get_shot_count(lv)
 		_triple_cooldown = skill.get_cooldown(lv)
+		print(">>> 三连射 %d 箭, 冷却 %.1fs" % [count, _triple_cooldown])
+
 	AudioManager.play_shoot()
 	for i in range(count):
 		_fire_arrow(target)

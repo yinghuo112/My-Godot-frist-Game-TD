@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://djexle8apaqmy" path="res://SkillSystem/core/skill_base.gd" id="2_base"]
 [ext_resource type="Script" uid="uid://8n6kncpitabq" path="res://SkillSystem/skills/fireball_skill.gd" id="3_fire"]
 [ext_resource type="Script" uid="uid://84ephp5ykds0" path="res://SkillSystem/skills/poison_skill.gd" id="4_poison"]
-[ext_resource type="Script" uid="" path="res://SkillSystem/skills/triple_shot_skill.gd" id="5_triple"]
+[ext_resource type="Script" uid="uid://g2l8o8vkx7xp" path="res://SkillSystem/skills/triple_shot_skill.gd" id="5_triple"]
 
 [sub_resource type="Resource" id="s_base_shot"]
 script = ExtResource("2_base")
@@ -35,14 +35,13 @@ name = "三连射"
 tags = ["通用", "弹道"]
 description = "下一次攻击同时射出3箭。冷却6秒。"
 max_level = 1
-gold_cost = 20
 prerequisites = [0]
-required_tower_level = 1
+gold_cost = 20
 level_table = [{
+"cooldown": 6.0,
 "cost_points": 0,
 "cost_prof": 0,
-"shot_count": 3,
-"cooldown": 6.0
+"shot_count": 3
 }]
 
 [sub_resource type="Resource" id="s_fireball"]
