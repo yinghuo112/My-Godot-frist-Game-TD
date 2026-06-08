@@ -28,6 +28,10 @@ var tree_scene = preload("res://树/Tree.tscn")
 var floating_text_scene = preload("res://工具/FloatingText.tscn")
 const _DEBUG_OVERLAY_SCRIPT = preload("res://调试/debug_overlay.gd")
 const _DEBUG_MONSTER_TYPE = preload("res://config/test_enemy.tres")
+const _TEST_WAVE_COUNT = 5
+const _TEST_WAVE_INTERVAL = 1.27  # 间距127px / 速度100
+var _test_wave_remaining: int = 0
+var _test_wave_timer: Timer
 
 const _CLICK_RADIUS_SQ: float = 20.0 * 20.0
 const _TREE_CLICK_RADIUS_SQ: float = 25.0 * 25.0
@@ -69,6 +73,13 @@ func _ready() -> void:
 	_init_play_area()
 	# 初始化手机适配模块
 	MobileAdapter.setup()
+
+	# 测试波次生成计时器
+	_test_wave_timer = Timer.new()
+	_test_wave_timer.name = "TestWaveTimer"
+	_test_wave_timer.one_shot = false
+	_test_wave_timer.timeout.connect(_on_test_wave_spawn)
+	add_child(_test_wave_timer)
 
 # 设置树木生成计时器，3秒后开始生成
 func _setup_tree_spawning():
@@ -201,7 +212,20 @@ func _on_build_selected(idx: int):
 
 # 调试功能：按T键直接生成一个高血量测试怪物
 func _spawn_test_enemy() -> void:
-	print("=== 调试: 生成 Debug Monster ===")
+	if _test_wave_timer.is_stopped():
+		_test_wave_remaining = _TEST_WAVE_COUNT
+		_test_wave_timer.wait_time = _TEST_WAVE_INTERVAL
+		_test_wave_timer.start()
+		print("=== 测试波次开始: %d 只, 间隔 %.2fs ===" % [_TEST_WAVE_COUNT, _TEST_WAVE_INTERVAL])
+		_spawn_one_test_enemy()
+
+func _on_test_wave_spawn():
+	_spawn_one_test_enemy()
+
+func _spawn_one_test_enemy():
+	if _test_wave_remaining <= 0:
+		_test_wave_timer.stop()
+		return
 	var debug_type = _DEBUG_MONSTER_TYPE
 	var enemy = debug_type.scene.instantiate()
 	enemy.init(debug_type)
@@ -209,7 +233,8 @@ func _spawn_test_enemy() -> void:
 	enemy.reached_end.connect(_on_test_enemy_reached_end)
 	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
 	path.add_child(enemy)
-	print("Debug Monster 已生成，血量: %.0f, 速度: %.1f" % [debug_type.max_hp, debug_type.speed])
+	_test_wave_remaining -= 1
+	print("测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_remaining, debug_type.max_hp, debug_type.speed])
 
 # 从 TileMapLayer 格子计算可玩区域并存入 GameManager.play_area
 func _init_play_area():
