@@ -36,18 +36,27 @@ function Run-Backup {
     git commit -m $msg
     if ($LASTEXITCODE -ne 0) { L "[ERR] git commit failed"; return }
 
+    $pushOk = $false
     $hasRemote = git remote -v
     if ($hasRemote) {
         $branch = git branch --show-current
         L "[INFO] pushing to origin/$branch ..."
         git pull --rebase origin $branch 2>&1 | Out-Null
         git push origin $branch 2>&1 | Out-Null
-        if ($LASTEXITCODE -eq 0) { L "[OK] pushed" }
+        if ($LASTEXITCODE -eq 0) { L "[OK] pushed"; $pushOk = $true }
         else { L "[WARN] push failed (network?)" }
     } else {
         L "[INFO] no remote, local commit only"
     }
     L "[DONE] $msg"
+
+    # 弹窗通知
+    $pop = New-Object -ComObject WScript.Shell
+    if ($pushOk) {
+        $pop.Popup("Backup pushed to GitHub: $ts", 5, "Auto Backup", 64)
+    } else {
+        $pop.Popup("Backup committed (local): $ts", 5, "Auto Backup", 64)
+    }
 }
 
 if ($Daemon) {
