@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" path="res://SkillSystem/ui/SkillBookPlane.tscn" id="9_skill"]
 [ext_resource type="PackedScene" uid="uid://bqyv1ckhua0c6" path="res://UI/Toolbar.tscn" id="10_toolbar"]
 [ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
+[ext_resource type="Script" path="res://核心/map_manager.gd" id="132_map"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rqaol"]
 texture = ExtResource("2_l7pho")
@@ -102,36 +103,39 @@ position = Vector2(672, 341)
 offset = Vector2(0, 100)
 script = ExtResource("131_fsg3x")
 
-[node name="TowerSlots" type="Node2D" parent="." unique_id=1907941790]
+[node name="MapManager" type="Node" parent="." unique_id=999800001]
+script = ExtResource("132_map")
 
-[node name="Slot1" type="Marker2D" parent="TowerSlots" unique_id=2130101613]
+[node name="TowerSlots" type="Node2D" parent="MapManager" unique_id=1907941790]
+
+[node name="Slot1" type="Marker2D" parent="MapManager/TowerSlots" unique_id=2130101613]
 position = Vector2(1007, 83)
 
-[node name="Slot2" type="Marker2D" parent="TowerSlots" unique_id=1504534801]
+[node name="Slot2" type="Marker2D" parent="MapManager/TowerSlots" unique_id=1504534801]
 position = Vector2(95, 242)
 
-[node name="Slot3" type="Marker2D" parent="TowerSlots" unique_id=1370790087]
+[node name="Slot3" type="Marker2D" parent="MapManager/TowerSlots" unique_id=1370790087]
 position = Vector2(94, 307)
 
-[node name="Slot4" type="Marker2D" parent="TowerSlots" unique_id=765730771]
+[node name="Slot4" type="Marker2D" parent="MapManager/TowerSlots" unique_id=765730771]
 position = Vector2(223, 275)
 
-[node name="Slot5" type="Marker2D" parent="TowerSlots" unique_id=770919734]
+[node name="Slot5" type="Marker2D" parent="MapManager/TowerSlots" unique_id=770919734]
 position = Vector2(991, 286)
 
-[node name="Slot6" type="Marker2D" parent="TowerSlots" unique_id=1078024356]
+[node name="Slot6" type="Marker2D" parent="MapManager/TowerSlots" unique_id=1078024356]
 position = Vector2(222, -46)
 
-[node name="Slot7" type="Marker2D" parent="TowerSlots" unique_id=416610387]
+[node name="Slot7" type="Marker2D" parent="MapManager/TowerSlots" unique_id=416610387]
 position = Vector2(270, -46)
 
-[node name="Slot8" type="Marker2D" parent="TowerSlots" unique_id=1910197851]
+[node name="Slot8" type="Marker2D" parent="MapManager/TowerSlots" unique_id=1910197851]
 position = Vector2(511, -47)
 
-[node name="Slot9" type="Marker2D" parent="TowerSlots" unique_id=441447992]
+[node name="Slot9" type="Marker2D" parent="MapManager/TowerSlots" unique_id=441447992]
 position = Vector2(572, -46)
 
-[node name="TreeContainer" type="Node2D" parent="." unique_id=1415092192]
+[node name="TreeContainer" type="Node2D" parent="MapManager" unique_id=1415092192]
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=604907210]
 

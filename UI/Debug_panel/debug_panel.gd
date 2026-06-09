@@ -9,8 +9,13 @@ var _game_label: Label     # 游戏行：Gold / Lives / Wave / Enemies / Towers
 var _mouse_label: Label    # 鼠标行：Mouse pos / Tile / Keys
 
 var _is_visible: bool = false
+var _map_manager: Node = null
 
 func _ready():
+	if not OS.is_debug_build():
+		queue_free()
+		return
+	_map_manager = get_tree().get_first_node_in_group("map_manager")
 	_build_ui()
 	visible = false
 
@@ -121,19 +126,14 @@ func _update_mouse():
 	_mouse_label.text = "Mouse: (%.0f, %.0f)\nTile: (%d, %d)" % [mouse_pos.x, mouse_pos.y, tile_pos.x, tile_pos.y]
 
 func _get_tile_map():
-	var root = get_tree().current_scene
-	if root and root.has_node("TileMapLayer"):
-		return root.get_node("TileMapLayer")
+	if _map_manager and _map_manager.has_method("get_tile_map"):
+		return _map_manager.get_tile_map()
 	return null
 
 func _count_towers() -> int:
-	var count = 0
-	var root = get_tree().current_scene
-	if root and root.has_node("TowerSlots"):
-		for child in root.get_node("TowerSlots").get_children():
-			if child.get_child_count() > 0:
-				count += 1
-	return count
+	if _map_manager and _map_manager.has_method("count_towers"):
+		return _map_manager.count_towers()
+	return 0
 
 func toggle():
 	_is_visible = not _is_visible

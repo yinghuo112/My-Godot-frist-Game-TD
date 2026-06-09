@@ -1,65 +1,60 @@
-# ========================================
-# 自动提交脚本（PowerShell版）
-# 功能：检测本地仓库变更，自动提交并推送
-# 用法：右键 -> 使用 PowerShell 运行，或添加到任务计划程序
+﻿# ========================================
+# auto backup script (PowerShell)
+# detect changes -> commit -> push if remote exists
+# Usage: .\auto_backup.ps1              one-shot
+#        .\auto_backup.ps1 -Daemon      loop every 30min
+#        Windows Task Scheduler          timer trigger
 # ========================================
 
-# ---------- 配置区（请修改为你的实际路径）----------
+param([switch]$Daemon)
+
 $RepoPath = "D:\Administrator\Game\first-游戏"
-# ---------- 配置结束 ----------
+$LogDir  = Join-Path $RepoPath "Log"
+if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Force | Out-Null }
 
-# 切换到仓库目录
-Set-Location -Path $RepoPath -ErrorAction Stop
+function Run-Backup {
+    $logFile = Join-Path $LogDir ("backup_" + (Get-Date -Format "yyyyMMdd_HHmmss") + ".log")
+    function L { param([string]$m) $m | Out-File -FilePath $logFile -Append }
 
-# 检查是否为 git 仓库
-try {
+    Set-Location $RepoPath
+    L ("=" * 40)
+    L ("start: " + (Get-Date -Format "yyyy-MM-dd HH:mm:ss"))
+
     $gitDir = git rev-parse --git-dir 2>$null
-    if (-not $gitDir) { throw "不是 git 仓库" }
-}
-catch {
-    Write-Host "[错误] 当前目录不是 git 仓库: $RepoPath" -ForegroundColor Red
-    exit 1
-}
+    if (-not $gitDir) { L "[ERR] not a git repo"; return }
 
-# 检查是否有未提交的更改
-$changes = git status --porcelain
-if (-not $changes) {
-    Write-Host "[信息] 没有变更，退出。"
-    exit 0
-}
+    $changes = git status --porcelain
+    if (-not $changes) { L "[OK] no changes"; return }
 
-# 获取当前时间
-$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-$commitMsg = "自动备份 $timestamp"
+    $ts = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $msg = "auto backup $ts"
+    L "[INFO] changes detected, committing..."
 
-# 添加所有变更
-Write-Host "[信息] 检测到变更，准备提交..." -ForegroundColor Yellow
-git add .
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "[错误] git add 失败" -ForegroundColor Red
-    exit 1
-}
+    git add .
+    if ($LASTEXITCODE -ne 0) { L "[ERR] git add failed"; return }
 
-# 提交
-git commit -m $commitMsg
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "[错误] git commit 失败" -ForegroundColor Red
-    exit 1
+    git commit -m $msg
+    if ($LASTEXITCODE -ne 0) { L "[ERR] git commit failed"; return }
+
+    $hasRemote = git remote -v
+    if ($hasRemote) {
+        $branch = git branch --show-current
+        L "[INFO] pushing to origin/$branch ..."
+        git pull --rebase origin $branch 2>&1 | Out-Null
+        git push origin $branch 2>&1 | Out-Null
+        if ($LASTEXITCODE -eq 0) { L "[OK] pushed" }
+        else { L "[WARN] push failed (network?)" }
+    } else {
+        L "[INFO] no remote, local commit only"
+    }
+    L "[DONE] $msg"
 }
 
-# 推送到远程（先尝试拉取最新，避免冲突）
-Write-Host "[信息] 正在拉取远程更新..." -ForegroundColor Yellow
-git pull --rebase origin main
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "[警告] git pull 失败，跳过拉取，直接推送" -ForegroundColor Yellow
+if ($Daemon) {
+    while ($true) {
+        Run-Backup
+        Start-Sleep -Seconds 1800
+    }
+} else {
+    Run-Backup
 }
-
-Write-Host "[信息] 正在推送到远程仓库..." -ForegroundColor Yellow
-git push origin main
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "[错误] git push 失败，请检查网络或认证" -ForegroundColor Red
-    exit 1
-}
-
-Write-Host "[成功] 已提交并推送: $commitMsg" -ForegroundColor Green
-exit 0

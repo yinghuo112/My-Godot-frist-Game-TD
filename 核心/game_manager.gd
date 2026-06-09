@@ -16,11 +16,7 @@ var enemies_to_spawn: int = 0       # 当前波次还未生成的敌人数
 var enemies_on_field: int = 0       # 当前在场上的敌人数
 var is_wave_active: bool = false    # 波次进行中锁定，防止重复点击
 
-var total_waves: int = 0            # 总波次数，从配置加载后赋值
-var play_area: Rect2                # 游戏地图边界，main.gd 初始化时计算
-var play_area_margin: float = 100.0 # 地图边界余量（像素），play_area 在 TileMap 基础上的外扩值
-var enemy_path: Path2D              # 敌人路径节点
-var enemy_path_cached: Path2D = null
+var total_waves: int = 0
 var timer: Timer                    # 生成定时器
 var _config: WaveConfigData         # 波次配置数据
 var _current_entry: WaveEntry       # 当前波次配置条目
@@ -59,9 +55,6 @@ func start_wave():
 	enemies_to_spawn = _current_entry.count
 	enemies_on_field = 0
 	timer.wait_time = _current_entry.spawn_interval
-	if not enemy_path_cached:
-		enemy_path_cached = get_tree().root.get_node("TowerDefense/EnemyPath")
-	enemy_path = enemy_path_cached
 	timer.one_shot = false
 	timer.start()
 
@@ -123,7 +116,9 @@ func _spawn_enemy():
 			enemy = _current_entry.enemy_scene.instantiate()
 		enemy.died.connect(_on_enemy_died)
 		enemy.reached_end.connect(_on_enemy_reached_end)
-		enemy_path.add_child(enemy)
+		var mm = get_tree().get_first_node_in_group("map_manager")
+		var path = mm.get_enemy_path() if mm else get_tree().root.get_node("TowerDefense/EnemyPath")
+		path.add_child(enemy)
 		# 沿路径分散位置，避免全部堆叠在起点
 		enemy.progress = i * 60 + randf_range(0, 30)
 		# 垂直路径方向随机偏移，模拟区域散布

@@ -170,7 +170,6 @@ func _shoot():
 	_last_skills = _get_active_skills()
 
 	# 检查是否有三连射技能且冷却就绪 → 启动爆发
-	var is_triple = false
 	for s in _last_skills:
 		if s is TripleShotSkill:
 			var lv = get_skill_level(s)
@@ -181,8 +180,6 @@ func _shoot():
 				_burst_remaining = count - 1
 				_burst_timer.wait_time = 0.12
 				_burst_timer.start()
-				is_triple = true
-				print(">>> 三连射 %d 箭!" % count)
 				_fire_bullet(true)
 				return
 

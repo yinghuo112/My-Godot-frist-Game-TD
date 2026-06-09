@@ -59,6 +59,13 @@ text = "音效音量"
 layout_mode = 2
 value = 70.0
 
+[node name="FontLabel" type="Label" parent="Dialog/VBox" unique_id=999700001]
+layout_mode = 2
+text = "字体"
+
+[node name="FontDropdown" type="OptionButton" parent="Dialog/VBox" unique_id=999700002]
+layout_mode = 2
+
 [node name="Control" type="Control" parent="Dialog/VBox" unique_id=717873316]
 custom_minimum_size = Vector2(0, 30)
 layout_mode = 2

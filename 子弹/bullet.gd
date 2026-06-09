@@ -14,6 +14,7 @@ var source_tower: Node2D = null     # 来源塔（技能回调用）
 var _floating_text_scene = preload("res://工具/FloatingText.tscn")  # 伤害/闪避飘字
 
 var _main_scene: Node = null
+var _map_manager: Node = null
 var _cached_skills: Array = []
 @onready var _collision_shape: CollisionShape2D = $CollisionShape2D
 
@@ -25,7 +26,6 @@ var _attack_type: int = 0  # TowerType.AttackType.PHYSICAL
 
 # 初始化子弹碰撞掩码和命中信号
 func _ready():
-	_main_scene = get_tree().current_scene
 	collision_mask |= 2
 	area_entered.connect(_on_area_entered)
 
@@ -45,9 +45,16 @@ func initialize(p_target: Node2D, p_damage: float,
 	if is_instance_valid(target):
 		look_at(target.global_position)
 
+# Lazy 查找 MapManager（自动加载 _ready 时 MapManager 尚未就绪）
+func _get_map_manager():
+	if not _map_manager:
+		_map_manager = get_tree().get_first_node_in_group("map_manager")
+	return _map_manager
+
 # 每帧追踪目标飞行或惯性飞行，出界/目标死亡/接近目标时释放
 func _physics_process(delta: float) -> void:
-	if not GameManager.play_area.has_point(global_position):
+	var mm = _get_map_manager()
+	if not mm or not mm.play_area.has_point(global_position):
 		call_deferred("_release")
 		return
 	if is_instance_valid(target):
@@ -108,6 +115,10 @@ func _apply_damage(enemy: Node2D) -> void:
 # 在敌人头上显示 MISS 闪避飘字
 func _spawn_miss_text(enemy: Node2D) -> void:
 	var root = _main_scene
+	if not root:
+		if get_tree():
+			_main_scene = get_tree().current_scene
+			root = _main_scene
 	if not root:
 		return
 	var ft = _floating_text_scene.instantiate()

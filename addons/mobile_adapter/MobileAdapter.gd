@@ -31,6 +31,7 @@ var _camera_start_pos: Vector2 = Vector2.ZERO
 var _target_zoom: float = 1.0
 var _debug_btn: Button = null
 var _btn_container: CanvasLayer = null
+var _map_manager: Node = null
 
 # ========================================
 # 初始化
@@ -45,6 +46,7 @@ func _ready():
 # 公开的完全初始化方法（游戏主场景就绪后调用一次）
 func setup():
 	_cache_camera()
+	_get_map_manager()
 	if _is_mobile:
 		_adapt_camera()
 		if enable_debug_button:
@@ -63,6 +65,11 @@ func _detect_platform():
 	_is_ios = (os_name == "iOS")
 	_is_mobile = _is_android or _is_ios
 	print("MobileAdapter: 当前平台 = ", os_name, "，是手机 = ", _is_mobile)
+
+func _get_map_manager() -> Node:
+	if not _map_manager:
+		_map_manager = get_tree().get_first_node_in_group("map_manager")
+	return _map_manager
 
 func is_mobile() -> bool:
 	return _is_mobile
@@ -116,20 +123,22 @@ func _input(event: InputEvent):
 func _clamp_camera():
 	if not _camera:
 		return
-	if not GameManager or GameManager.play_area.size == Vector2.ZERO:
+	var mm = _get_map_manager()
+	if not mm or mm.play_area.size == Vector2.ZERO:
 		return
 	var viewport = get_viewport()
 	if not viewport:
 		return
 	var window_size = viewport.get_visible_rect().size
+	var pa = mm.play_area
 	var half_w = window_size.x / (2.0 * _camera.zoom.x)
 	var half_h = window_size.y / (2.0 * _camera.zoom.y)
 	_camera.position.x = clamp(_camera.position.x,
-		GameManager.play_area.position.x + half_w,
-		GameManager.play_area.end.x - half_w)
+		pa.position.x + half_w,
+		pa.end.x - half_w)
 	_camera.position.y = clamp(_camera.position.y,
-		GameManager.play_area.position.y + half_h,
-		GameManager.play_area.end.y - half_h)
+		pa.position.y + half_h,
+		pa.end.y - half_h)
 
 # ========================================
 # 相机自适应缩放（保持设计比例可见）

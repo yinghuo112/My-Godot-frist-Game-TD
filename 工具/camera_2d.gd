@@ -12,11 +12,17 @@ extends Camera2D
 
 var _target_zoom: float = 1.0
 var _is_dragging: bool = false
+var _map_manager: Node = null
 
 
 # 初始化目标缩放值
 func _ready():
 	_target_zoom = zoom.x
+
+func _get_map_manager() -> Node:
+	if not _map_manager:
+		_map_manager = get_tree().get_first_node_in_group("map_manager")
+	return _map_manager
 
 # 供 MobileAdapter 读取缩放范围
 func get_zoom_min() -> float:
@@ -57,12 +63,14 @@ func _process(delta):
 
 # 将相机位置限制在 play_area 内
 func _clamp_position(window_size: Vector2):
-	if GameManager.play_area.size == Vector2.ZERO:
+	var mm = _get_map_manager()
+	if not mm or mm.play_area.size == Vector2.ZERO:
 		return
+	var pa = mm.play_area
 	var half_w = window_size.x / (2.0 * zoom.x)
 	var half_h = window_size.y / (2.0 * zoom.y)
-	position.x = clamp(position.x, GameManager.play_area.position.x + half_w, GameManager.play_area.end.x - half_w)
-	position.y = clamp(position.y, GameManager.play_area.position.y + half_h, GameManager.play_area.end.y - half_h)
+	position.x = clamp(position.x, pa.position.x + half_w, pa.end.x - half_w)
+	position.y = clamp(position.y, pa.position.y + half_h, pa.end.y - half_h)
 
 
 # 处理鼠标点击拖动和滚轮缩放
