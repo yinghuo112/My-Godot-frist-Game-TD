@@ -34,6 +34,10 @@ const _DEBUG_MONSTER_TYPE_2 = preload("res://config/test_enemy_2.tres")
 var _test_wave_2_remaining: int = 0
 var _test_wave_2_timer: Timer
 
+const _DEBUG_MONSTER_TYPE_3 = preload("res://config/test_enemy_3.tres")
+var _test_wave_3_remaining: int = 0
+var _test_wave_3_timer: Timer
+
 func _ready() -> void:
 	toolbar.wave_start_requested.connect(_on_start_wave)
 	toolbar.settings_requested.connect(_on_settings)
@@ -83,6 +87,12 @@ func _ready() -> void:
 	_test_wave_2_timer.timeout.connect(_on_test_wave_2_spawn)
 	add_child(_test_wave_2_timer)
 
+	_test_wave_3_timer = Timer.new()
+	_test_wave_3_timer.name = "TestWave3Timer"
+	_test_wave_3_timer.one_shot = false
+	_test_wave_3_timer.timeout.connect(_on_test_wave_3_spawn)
+	add_child(_test_wave_3_timer)
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
 		_toggle_debug_panel()
@@ -90,6 +100,8 @@ func _input(event: InputEvent) -> void:
 		_spawn_test_enemy()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_Y:
 		_spawn_test_enemy_2()
+	if event is InputEventKey and event.pressed and event.keycode == KEY_U:
+		_spawn_test_enemy_3()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_G:
 		$Camera2D.position = Vector2.ZERO
 		$Camera2D.zoom = Vector2(1, 1)
@@ -246,6 +258,31 @@ func _spawn_one_test_enemy_2():
 	path.add_child(enemy)
 	_test_wave_2_remaining -= 1
 	print("2塔测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_2_remaining, debug_type.max_hp, debug_type.speed])
+
+func _spawn_test_enemy_3() -> void:
+	if _test_wave_3_timer.is_stopped():
+		_test_wave_3_remaining = _TEST_WAVE_COUNT
+		_test_wave_3_timer.wait_time = _TEST_WAVE_INTERVAL
+		_test_wave_3_timer.start()
+		print("=== 3号测试波次开始: %d 只, 间隔 %.2fs, HP=1000 ===" % [_TEST_WAVE_COUNT, _TEST_WAVE_INTERVAL])
+		_spawn_one_test_enemy_3()
+
+func _on_test_wave_3_spawn():
+	_spawn_one_test_enemy_3()
+
+func _spawn_one_test_enemy_3():
+	if _test_wave_3_remaining <= 0:
+		_test_wave_3_timer.stop()
+		return
+	var debug_type = _DEBUG_MONSTER_TYPE_3
+	var enemy = debug_type.scene.instantiate()
+	enemy.init(debug_type)
+	enemy.died.connect(_on_test_enemy_died)
+	enemy.reached_end.connect(_on_test_enemy_reached_end)
+	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
+	path.add_child(enemy)
+	_test_wave_3_remaining -= 1
+	print("3号测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_3_remaining, debug_type.max_hp, debug_type.speed])
 
 func _on_test_enemy_died(enemy):
 	print(">>> Debug Monster 被击杀，剩余血量: %.0f / %.0f，金币奖励: %d" % [enemy.current_hp, enemy.max_hp, enemy.gold_reward])
