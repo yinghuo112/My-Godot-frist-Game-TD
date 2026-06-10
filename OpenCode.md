@@ -24,9 +24,9 @@
 | `核心/game_manager.gd` (Node autoload) | Gold/lives/wave state, batch enemy spawn, config load, signals |
 | `核心/bullet.gd` (extends Area2D) | Homing projectile, proximity hit (<12px) + `area_entered` with `"enemy"` group |
 | `核心/audio_manager.gd` (Node autoload) | BGM (`音乐/BJ_TD.mp3`), placeholder SFX, volume persist via ConfigFile |
-| `核心/settings_panel.gd` | Fullscreen toggle, music/sfx volume, pause |
-| `核心/start_screen.gd` | Start screen (开始游戏/关卡选择/设置/退出) |
-| `核心/level_select_panel.gd` | Level select dialog |
+| `UI/panel_settings.gd` (extends PanelBase) | Fullscreen toggle, music/sfx volume, pause |
+| `UI/panel_start.gd` (extends PanelBase) | Start screen (开始游戏/关卡选择/设置/退出) |
+| `UI/panel_level_select.gd` (extends PanelBase) | Level select dialog |
 
 ### Enemy System
 | File | What it does |

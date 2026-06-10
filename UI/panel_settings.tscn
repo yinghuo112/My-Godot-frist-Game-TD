@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cpfuaeo4uvigo"]
 
-[ext_resource type="Script" uid="uid://cnm0un85p1num" path="res://核心/settings_panel.gd" id="1_qw5p7"]
+[ext_resource type="Script" path="res://UI/panel_settings.gd" id="1_qw5p7"]
 
-[node name="SettingsPanel" type="Control" unique_id=564713927]
+[node name="SettingsPanel" type="PanelContainer" unique_id=564713927]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

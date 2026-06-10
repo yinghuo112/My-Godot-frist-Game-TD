@@ -5,14 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://dlfcste8d18kt" path="res://assets/tiles/path.png" id="3_4xjh4"]
 [ext_resource type="PackedScene" uid="uid://07sie8ex2xn3" path="res://怪物/green_monster.tscn" id="3_8fgb4"]
 [ext_resource type="Texture2D" uid="uid://bip40iu65e5a2" path="res://assets/tiles/wall.png" id="4_4xjh4"]
-[ext_resource type="PackedScene" uid="uid://cpfuaeo4uvigo" path="res://场景/SettingsPanel.tscn" id="5_7k3j9"]
+[ext_resource type="PackedScene" uid="uid://cpfuaeo4uvigo" path="res://UI/panel_settings.tscn" id="5_7k3j9"]
 [ext_resource type="PackedScene" uid="uid://m76ufcttltpb" path="res://Tower/TowerActionRing.tscn" id="6_6t6t6"]
 [ext_resource type="PackedScene" uid="uid://dh1yua7d4vc4l" path="res://UI/DialogueUI.tscn" id="7_i3l6g"]
 [ext_resource type="PackedScene" uid="uid://2v2qfgwom1yw" path="res://UI/InfoPlane.tscn" id="8_info"]
 [ext_resource type="PackedScene" path="res://SkillSystem/ui/SkillBookPlane.tscn" id="9_skill"]
 [ext_resource type="PackedScene" uid="uid://bqyv1ckhua0c6" path="res://UI/Toolbar.tscn" id="10_toolbar"]
 [ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
-[ext_resource type="Script" path="res://核心/map_manager.gd" id="132_map"]
+[ext_resource type="Script" uid="uid://b0y8cx23iwbjw" path="res://核心/map_manager.gd" id="132_map"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rqaol"]
 texture = ExtResource("2_l7pho")

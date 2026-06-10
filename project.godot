@@ -14,7 +14,7 @@ config_version=5
 
 config/name="first_游戏"
 config/tags=PackedStringArray("td", "基类")
-run/main_scene="res://场景/StartScreen.tscn"
+run/main_scene="res://UI/panel_start.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
