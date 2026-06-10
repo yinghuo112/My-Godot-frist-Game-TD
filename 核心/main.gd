@@ -25,6 +25,8 @@ var _pending_slot: Marker2D = null
 const _DEBUG_PANEL_SCENE = preload("res://UI/Debug_panel/debug_panel.tscn")
 const _DPS_METER_SCENE = preload("res://UI/panel_dps_meter.tscn")
 var _dps_meter: PanelContainer
+var _session_id: int = 0
+var _last_test_type: String = ""
 const _DEBUG_MONSTER_TYPE = preload("res://config/test_enemy.tres")
 const _TEST_WAVE_COUNT = 5
 const _TEST_WAVE_INTERVAL = 1.27
@@ -40,6 +42,7 @@ var _test_wave_3_remaining: int = 0
 var _test_wave_3_timer: Timer
 
 func _ready() -> void:
+	_session_id = _generate_session_id()
 	toolbar.wave_start_requested.connect(_on_start_wave)
 	toolbar.settings_requested.connect(_on_settings)
 	toolbar.debug_requested.connect(_toggle_debug_panel)
@@ -94,14 +97,33 @@ func _ready() -> void:
 	_test_wave_3_timer.timeout.connect(_on_test_wave_3_spawn)
 	add_child(_test_wave_3_timer)
 
+func _generate_session_id() -> int:
+	var path = "user://logs/session.txt"
+	var dir = DirAccess.open("user://")
+	if dir:
+		dir.make_dir_recursive("logs")
+	var id = 1
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file:
+		id = int(file.get_line()) + 1
+		file.close()
+	file = FileAccess.open(path, FileAccess.WRITE)
+	if file:
+		file.store_line(str(id))
+		file.close()
+	return id
+
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
 		_toggle_debug_panel()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
+		_last_test_type = "T(20HP)"
 		_spawn_test_enemy()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_Y:
+		_last_test_type = "Y(40HP)"
 		_spawn_test_enemy_2()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_U:
+		_last_test_type = "U(1000HP)"
 		_spawn_test_enemy_3()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_G:
 		$Camera2D.position = Vector2.ZERO
@@ -116,7 +138,8 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_L:
 		if _debug_panel and _debug_panel.has_method("add_log"):
 			_debug_panel.add_log("📝 DPS数据记录中...")
-		_dps_meter.dump_to_log(GameManager.wave + 1, _debug_panel)
+		_dps_meter.dump_to_log(GameManager.wave + 1, _session_id, _last_test_type, _debug_panel)
+		_last_test_type = ""
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible) or info_plane.visible or skill_book_plane.visible:
 			return

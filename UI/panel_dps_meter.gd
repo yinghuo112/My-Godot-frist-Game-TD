@@ -124,7 +124,7 @@ func _toggle_all():
 	_show_all = not _show_all
 	_refresh()
 
-func dump_to_log(wave: int, debug_panel = null) -> void:
+func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = null) -> void:
 	var date_str = Time.get_date_string_from_system()
 	var path = "user://logs/dps_%s.csv" % [date_str]
 	var dir = DirAccess.open("user://")
@@ -139,19 +139,20 @@ func dump_to_log(wave: int, debug_panel = null) -> void:
 			if debug_panel and debug_panel.has_method("add_log"):
 				debug_panel.add_log("❌ 无法创建DPS日志文件")
 			return
-		file.store_line("时间,波次,塔名,共计,实际秒伤,战斗时间,路线覆盖,峰值,现在的秒伤")
+		file.store_line("会话,时间,波次,塔名,共计,实际秒伤,战斗时间,路线覆盖,峰值,现在的秒伤,备注")
 	else:
 		file.seek_end()
 	var time_str = Time.get_time_string_from_system(false)
 	for t in get_tree().get_nodes_in_group("tower"):
 		if not is_instance_valid(t) or not t.has_method("get_tower_name"):
 			continue
-		var line = "%s,%d,%s,%d,%.1f,%.1fs,%d%%,%.1f,%.1f" % [
-			time_str, wave, t.get_tower_name(),
+		var line = "%d,%s,%d,%s,%d,%.1f,%.1fs,%d%%,%.1f,%.1f,%s" % [
+			session_id, time_str, wave, t.get_tower_name(),
 			int(t.total_damage_dealt),
 			t.get_combat_dps(), t.get_combat_time(),
 			t.get_path_coverage(),
-			t.get_peak_dps(), t.get_realtime_dps()
+			t.get_peak_dps(), t.get_realtime_dps(),
+			test_type
 		]
 		file.store_line(line)
 	file.close()
