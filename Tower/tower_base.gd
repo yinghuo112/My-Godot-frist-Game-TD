@@ -38,6 +38,7 @@ var bullet_scene = preload("res://子弹/bullet.tscn")
 
 var total_damage_dealt: float = 0.0
 var _lifetime: float = 0.0
+var _combat_time: float = 0.0
 var peak_dps: float = 0.0
 var _realtime_dps: float = 0.0
 var _dps_counter: float = 0.0
@@ -146,6 +147,8 @@ func _ready():
 # 每帧处理：射击逻辑 + 目标搜索 + 技能 tick
 func _process(delta):
 	_lifetime += delta
+	if _enemies_in_range.size() > 0:
+		_combat_time += delta
 	if _burst_remaining > 0:
 		if target == null or not is_instance_valid(target):
 			_tree_search_timer += delta
@@ -392,6 +395,9 @@ func report_damage(amount: float):
 
 func get_dps() -> float:
 	return total_damage_dealt / max(_lifetime, 0.001)
+
+func get_combat_dps() -> float:
+	return total_damage_dealt / max(_combat_time, 0.001)
 
 func get_peak_dps() -> float:
 	return peak_dps

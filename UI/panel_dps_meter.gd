@@ -40,7 +40,7 @@ func _refresh():
 	hname.size_flags_horizontal = 3
 	hdr.add_child(hname)
 	hdr.add_child(mk_label.call("共计", 55, Color(0.8, 0.8, 0.5), 2))
-	hdr.add_child(mk_label.call("均伤/秒", 50, Color(0.6, 0.8, 0.6), 2))
+	hdr.add_child(mk_label.call("实际秒伤", 50, Color(0.6, 0.8, 0.6), 2))
 	hdr.add_child(mk_label.call("峰值", 50, Color(0.5, 0.7, 0.8), 2))
 	hdr.add_child(mk_label.call("现在的秒伤", 50, Color(0.8, 0.6, 0.4), 2))
 	list_container.add_child(hdr)
@@ -67,7 +67,7 @@ func _refresh():
 		dmg_lbl.add_theme_font_size_override("font_size", 10)
 		dmg_lbl.add_theme_color_override("font_color", Color(1, 1, 0.6))
 		var dps_lbl = Label.new()
-		dps_lbl.text = "%.1f" % [t.get_dps()]
+		dps_lbl.text = "%.1f" % [t.get_combat_dps()]
 		dps_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 		dps_lbl.custom_minimum_size.x = 50
 		dps_lbl.add_theme_font_size_override("font_size", 10)
