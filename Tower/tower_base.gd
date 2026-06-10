@@ -230,6 +230,9 @@ func _on_burst_timer():
 # 发射一颗子弹（通用方法，供 _shoot 和 _on_burst_timer 共用）
 # is_triple = true 时子弹着色红色（视觉区分爆发/普通）
 func _fire_bullet(is_triple: bool):
+	if not is_instance_valid(target):
+		_pick_target()
+		return
 	var bullet = _bullet_manager.get_bullet(bullet_scene) if _bullet_manager else bullet_scene.instantiate()
 	if not bullet:
 		return
