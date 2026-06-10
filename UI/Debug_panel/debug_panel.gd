@@ -7,6 +7,7 @@ extends Control
 var _perf_label: Label     # 性能行：FPS / Memory / Nodes / Physics
 var _game_label: Label     # 游戏行：Gold / Lives / Wave / Enemies / Towers
 var _mouse_label: Label    # 鼠标行：Mouse pos / Tile / Keys
+var _log_label: Label      # 日志行：DPS记录/调试消息
 
 var _is_visible: bool = false
 var _map_manager: Node = null
@@ -85,6 +86,14 @@ func _build_ui():
 	_mouse_label = _make_label()
 	vbox.add_child(_mouse_label)
 
+	var sep3 = HSeparator.new()
+	sep3.modulate = Color(1, 1, 1, 0.3)
+	vbox.add_child(sep3)
+
+	_log_label = _make_label()
+	_log_label.text = ""
+	vbox.add_child(_log_label)
+
 func _make_label() -> Label:
 	var label = Label.new()
 	label.add_theme_font_size_override("font_size", 11)
@@ -138,3 +147,7 @@ func _count_towers() -> int:
 func toggle():
 	_is_visible = not _is_visible
 	visible = _is_visible
+
+func add_log(text: String) -> void:
+	var time_str = Time.get_time_string_from_system(false)
+	_log_label.text = "[%s] %s" % [time_str, text]

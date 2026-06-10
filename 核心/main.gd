@@ -114,7 +114,9 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_3:
 		AudioManager.set_sfx_set("3")
 	if event is InputEventKey and event.pressed and event.keycode == KEY_L:
-		_dps_meter.dump_to_log(GameManager.wave + 1)
+		if _debug_panel and _debug_panel.has_method("add_log"):
+			_debug_panel.add_log("📝 DPS数据记录中...")
+		_dps_meter.dump_to_log(GameManager.wave + 1, _debug_panel)
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible) or info_plane.visible or skill_book_plane.visible:
 			return

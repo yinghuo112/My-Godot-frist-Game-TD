@@ -124,15 +124,19 @@ func _toggle_all():
 	_show_all = not _show_all
 	_refresh()
 
-func dump_to_log(wave: int) -> void:
+func dump_to_log(wave: int, debug_panel = null) -> void:
 	var date_str = Time.get_date_string_from_system()
 	var path = "user://logs/dps_%s.csv" % [date_str]
+	DirAccess.make_dir_recursive("user://logs/")
 	var file = FileAccess.open(path, FileAccess.READ_WRITE)
 	var is_new = file == null
 	if is_new:
 		file = FileAccess.open(path, FileAccess.WRITE)
 		if not file:
-			push_error("无法创建日志文件: ", path)
+			var msg = "❌ 无法创建DPS日志文件"
+			push_error(msg, path)
+			if debug_panel and debug_panel.has_method("add_log"):
+				debug_panel.add_log(msg)
 			return
 		file.store_line("时间,波次,塔名,共计,实际秒伤,战斗时间,路线覆盖,峰值,现在的秒伤")
 	else:
@@ -150,4 +154,7 @@ func dump_to_log(wave: int) -> void:
 		]
 		file.store_line(line)
 	file.close()
-	print("DPS 日志已写入: ", path)
+	var msg = "✅ DPS数据已写入 %s" % [path]
+	print(msg)
+	if debug_panel and debug_panel.has_method("add_log"):
+		debug_panel.add_log(msg)
