@@ -38,6 +38,12 @@ func _refresh():
 		name_lbl.size_flags_horizontal = 3
 		name_lbl.add_theme_font_size_override("font_size", 10)
 		name_lbl.add_theme_color_override("font_color", Color(0.9, 0.9, 1.0))
+		var dmg_lbl = Label.new()
+		dmg_lbl.text = str(int(t.total_damage_dealt))
+		dmg_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		dmg_lbl.custom_minimum_size.x = 55
+		dmg_lbl.add_theme_font_size_override("font_size", 10)
+		dmg_lbl.add_theme_color_override("font_color", Color(1, 1, 0.6))
 		var dps_lbl = Label.new()
 		dps_lbl.text = "%.1f" % [t.get_dps()]
 		dps_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -46,6 +52,7 @@ func _refresh():
 		dps_lbl.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
 		row.add_child(idx)
 		row.add_child(name_lbl)
+		row.add_child(dmg_lbl)
 		row.add_child(dps_lbl)
 		list_container.add_child(row)
 	if towers.size() > 5:
