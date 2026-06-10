@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://config/tower_type.gd" id="1_jhvrw"]
 [ext_resource type="PackedScene" uid="uid://ckqtojipubauo" path="res://Tower/炮塔/cannon_tower.tscn" id="1_mnci3"]
-[ext_resource type="PackedScene" uid="uid://cp5lssoqlc4j2" path="res://子弹/cannon_shell.tscn" id="2_shell"]
+[ext_resource type="PackedScene" path="res://子弹/cannon_shell.tscn" id="2_shell"]
 [ext_resource type="Resource" uid="uid://dpd5itiyb8t86" path="res://SkillSystem/books/炮塔技能书.tres" id="3_skillbook"]
 
 [resource]

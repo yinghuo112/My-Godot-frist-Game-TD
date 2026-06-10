@@ -4,6 +4,11 @@
       "id": "mps1tcb3",
       "text": "All .gd script functions must have Chinese comment (# 注释) written ABOVE the function declaration, not inside the function body. Example: `# 初始化游戏\\nfunc _ready():`",
       "retention": 100
+    },
+    {
+      "id": "mq7dqivh",
+      "text": "Rebalanced 4 towers per standard model (commit 8c07a7f): Arrow(50g) dmg8→10; Magic(70g) dmg30→24; Cannon(80g) dmg30→43 range60→120 + new AoE cannon_shell splash50/0.35; Mage(75g) unchanged",
+      "retention": 5
     }
   ]
 }
