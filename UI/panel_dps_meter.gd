@@ -23,6 +23,28 @@ func _refresh():
 	towers.sort_custom(func(a, b): return a.get_dps() > b.get_dps())
 	for c in list_container.get_children():
 		c.queue_free()
+	
+	# 表头行
+	var hdr = HBoxContainer.new()
+	hdr.custom_minimum_size.y = 18
+	var mk_label = func(text: String, min_w: float, color: Color, align: int) -> Label:
+		var l = Label.new()
+		l.text = text
+		l.custom_minimum_size.x = min_w
+		l.add_theme_font_size_override("font_size", 9)
+		l.add_theme_color_override("font_color", color)
+		l.horizontal_alignment = align
+		return l
+	hdr.add_child(mk_label.call("#", 22, Color(0.5, 0.5, 0.5), 0))
+	var hname = mk_label.call("名称", 0, Color(0.6, 0.6, 0.6), 0)
+	hname.size_flags_horizontal = 3
+	hdr.add_child(hname)
+	hdr.add_child(mk_label.call("共计", 55, Color(0.8, 0.8, 0.5), 2))
+	hdr.add_child(mk_label.call("共计/秒数", 50, Color(0.6, 0.8, 0.6), 2))
+	hdr.add_child(mk_label.call("峰值", 50, Color(0.5, 0.7, 0.8), 2))
+	hdr.add_child(mk_label.call("现在的秒伤", 50, Color(0.8, 0.6, 0.4), 2))
+	list_container.add_child(hdr)
+
 	var count = towers.size() if _show_all else min(5, towers.size())
 	for i in range(count):
 		var t = towers[i]
