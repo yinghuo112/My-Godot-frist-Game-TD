@@ -2,19 +2,23 @@
 
 [ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://config/tower_type.gd" id="1_jhvrw"]
 [ext_resource type="PackedScene" uid="uid://ckqtojipubauo" path="res://Tower/炮塔/cannon_tower.tscn" id="1_mnci3"]
-[ext_resource type="Resource" uid="uid://dpd5itiyb8t86" path="res://SkillSystem/books/炮塔技能书.tres" id="2_skillbook"]
+[ext_resource type="PackedScene" uid="uid://cp5lssoqlc4j2" path="res://子弹/cannon_shell.tscn" id="2_shell"]
+[ext_resource type="Resource" uid="uid://dpd5itiyb8t86" path="res://SkillSystem/books/炮塔技能书.tres" id="3_skillbook"]
 
 [resource]
 script = ExtResource("1_jhvrw")
 display_name = "Cannon"
-damage = 30.0
+damage = 43.0
 fire_rate = 2.0
-range_radius = 60.0
+range_radius = 120.0
 cost = 80
 scene = ExtResource("1_mnci3")
+bullet_scene = ExtResource("2_shell")
+attack_type = 0
 crit_chance = 0.05
+crit_multiplier = 2.0
 hit_chance = 0.9
 description = "重型炮塔。范围物理伤害，低攻速高伤害，适合对付群体敌人。"
-skill_book = ExtResource("2_skillbook")
+skill_book = ExtResource("3_skillbook")
 skill_categories = ["通用", "范围", "重炮"]
 metadata/_custom_type_script = "uid://chxc0a8vjbkuo"

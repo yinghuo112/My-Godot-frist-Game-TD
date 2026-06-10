@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cp5lssoqlc4j2"]
+
+[ext_resource type="PackedScene" uid="uid://dltmulxy4cnmr" path="res://子弹/bullet.tscn" id="1_bullet"]
+[ext_resource type="Script" uid="uid://c3w3x4d3qargh" path="res://子弹/cannon_shell.gd" id="2_script"]
+
+[node name="CannonShell" instance=ExtResource("1_bullet")]
+script = ExtResource("2_script")
+splash_radius = 50.0
+splash_damage_ratio = 0.35
+_speed = 500.0
+
+[node name="Sprite2D" parent="." index="1"]
+visible = false

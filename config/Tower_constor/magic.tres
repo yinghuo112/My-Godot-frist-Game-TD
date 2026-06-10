@@ -8,7 +8,7 @@
 [resource]
 script = ExtResource("2_xhu2c")
 display_name = "Magic"
-damage = 30.0
+damage = 24.0
 fire_rate = 1.2
 range_radius = 100.0
 cost = 70

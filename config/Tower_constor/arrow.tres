@@ -7,11 +7,14 @@
 [resource]
 script = ExtResource("1_jhvrw")
 display_name = "Arrow"
-damage = 8.0
+damage = 10.0
 fire_rate = 0.8
 range_radius = 150.0
+cost = 50
 scene = ExtResource("2_arrow")
 crit_chance = 0.15
+crit_multiplier = 2.0
+hit_chance = 0.95
 description = "基础弓箭塔。远程物理攻击，高命中率，适合稳定输出。"
 skill_book = ExtResource("3_skillbook")
 skill_categories = ["通用", "弹道"]
