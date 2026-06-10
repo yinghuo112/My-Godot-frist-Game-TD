@@ -74,6 +74,8 @@ func _splash_damage(hit_enemy: Node2D, pos: Vector2):
 		if enemy == hit_enemy or not enemy.has_method("take_damage"):
 			continue
 		enemy.take_damage(splash_dmg, false)
+		if is_instance_valid(source_tower) and source_tower.has_method("report_damage"):
+			source_tower.report_damage(splash_dmg)
 
 func _release():
 	if _trail:

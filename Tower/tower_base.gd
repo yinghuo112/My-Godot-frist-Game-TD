@@ -36,6 +36,9 @@ var _tree_target: Node2D = null
 var enemy_group: String = "enemy"
 var bullet_scene = preload("res://子弹/bullet.tscn")
 
+var total_damage_dealt: float = 0.0
+var _lifetime: float = 0.0
+
 var _range_indicator: TowerRangeIndicator
 
 # ===== #1 / #3: signal-driven target + cached refs + cached stats =====
@@ -131,7 +134,7 @@ func _ready():
 
 # 每帧处理：射击逻辑 + 目标搜索 + 技能 tick
 func _process(delta):
-	# 爆发中跳过主动射击（由 _on_burst_timer 驱动），仅保留目标搜索和技能 tick
+	_lifetime += delta
 	if _burst_remaining > 0:
 		if target == null or not is_instance_valid(target):
 			_tree_search_timer += delta
@@ -371,3 +374,15 @@ func get_current_fire_rate() -> float:
 
 func get_current_range() -> float:
 	return range_radius * pow(1.2, level - 1)
+
+func report_damage(amount: float):
+	total_damage_dealt += amount
+
+func get_dps() -> float:
+	return total_damage_dealt / max(_lifetime, 0.001)
+
+func get_tower_name() -> String:
+	var name_label = get_node_or_null("TowerNameLabel")
+	if name_label:
+		return name_label.text
+	return tower_type.display_name if tower_type else "?"

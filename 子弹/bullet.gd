@@ -102,6 +102,8 @@ func _apply_damage(enemy: Node2D) -> void:
 	var crit = result[1]
 	if dmg > 0:
 		enemy.take_damage(dmg, crit)
+		if is_instance_valid(source_tower) and source_tower.has_method("report_damage"):
+			source_tower.report_damage(dmg)
 	else:
 		_spawn_miss_text(enemy)
 	if not is_instance_valid(source_tower) or not source_tower.has_method("get_skill_level"):

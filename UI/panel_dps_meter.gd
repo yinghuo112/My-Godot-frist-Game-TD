@@ -1,0 +1,66 @@
+extends PanelContainer
+
+var _collapsed: bool = false
+var _show_all: bool = false
+var _refresh_timer: Timer
+
+@onready var header: Button = $VBox/HeaderBtn
+@onready var list_container: VBoxContainer = $VBox/ListBox
+@onready var toggle_btn: Button = $VBox/ToggleBtn
+
+func _ready():
+	_refresh_timer = Timer.new()
+	_refresh_timer.name = "DpsRefreshTimer"
+	_refresh_timer.wait_time = 0.5
+	_refresh_timer.timeout.connect(_refresh)
+	add_child(_refresh_timer)
+	_refresh_timer.start()
+	header.pressed.connect(_toggle_collapse)
+	toggle_btn.pressed.connect(_toggle_all)
+
+func _refresh():
+	var towers = get_tree().get_nodes_in_group("tower")
+	towers.sort_custom(func(a, b): return a.get_dps() > b.get_dps())
+	for c in list_container.get_children():
+		c.queue_free()
+	var count = towers.size() if _show_all else min(5, towers.size())
+	for i in range(count):
+		var t = towers[i]
+		var row = HBoxContainer.new()
+		row.custom_minimum_size.y = 18
+		var idx = Label.new()
+		idx.text = "#" + str(i + 1)
+		idx.custom_minimum_size.x = 22
+		idx.add_theme_font_size_override("font_size", 10)
+		idx.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+		var name_lbl = Label.new()
+		name_lbl.text = t.get_tower_name() if t.has_method("get_tower_name") else "?"
+		name_lbl.size_flags_horizontal = 3
+		name_lbl.add_theme_font_size_override("font_size", 10)
+		name_lbl.add_theme_color_override("font_color", Color(0.9, 0.9, 1.0))
+		var dps_lbl = Label.new()
+		dps_lbl.text = "%.1f" % [t.get_dps()]
+		dps_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		dps_lbl.custom_minimum_size.x = 50
+		dps_lbl.add_theme_font_size_override("font_size", 10)
+		dps_lbl.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
+		row.add_child(idx)
+		row.add_child(name_lbl)
+		row.add_child(dps_lbl)
+		list_container.add_child(row)
+	if towers.size() > 5:
+		toggle_btn.text = "显示Top5 △" if _show_all else "显示全部 ▽"
+		toggle_btn.show()
+	else:
+		toggle_btn.hide()
+	list_container.visible = not _collapsed
+
+func _toggle_collapse():
+	_collapsed = not _collapsed
+	list_container.visible = not _collapsed
+	toggle_btn.visible = not _collapsed
+	header.text = "📊 DPS统计  " + ("▼" if _collapsed else "▲")
+
+func _toggle_all():
+	_show_all = not _show_all
+	_refresh()

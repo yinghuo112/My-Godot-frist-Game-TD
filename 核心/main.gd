@@ -25,6 +25,7 @@ var _build_buttons: Array[Button] = []
 var _pending_slot: Marker2D = null
 const _DEBUG_OVERLAY_SCRIPT = preload("res://调试/debug_overlay.gd")
 const _DEBUG_PANEL_SCENE = preload("res://UI/Debug_panel/debug_panel.tscn")
+const _DPS_METER_SCENE = preload("res://UI/panel_dps_meter.tscn")
 const _DEBUG_MONSTER_TYPE = preload("res://config/test_enemy.tres")
 const _TEST_WAVE_COUNT = 5
 const _TEST_WAVE_INTERVAL = 1.27
@@ -69,6 +70,10 @@ func _ready() -> void:
 	_debug_panel.name = "DebugPanel"
 	$UI.add_child(_debug_panel)
 	_debug_panel.hide()
+
+	var _dps_meter = _DPS_METER_SCENE.instantiate()
+	_dps_meter.name = "DPSMeter"
+	$UI.add_child(_dps_meter)
 
 	MobileAdapter.setup()
 

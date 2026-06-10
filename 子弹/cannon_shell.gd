@@ -60,3 +60,5 @@ func _splash_damage():
 		if enemy == target or not enemy.has_method("take_damage"):
 			continue
 		enemy.take_damage(splash_dmg, false)
+		if is_instance_valid(source_tower) and source_tower.has_method("report_damage"):
+			source_tower.report_damage(splash_dmg)
