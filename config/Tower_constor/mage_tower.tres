@@ -8,6 +8,8 @@
 [resource]
 script = ExtResource("3_rjh77")
 display_name = "Mage"
+chinese_type = "闪电塔"
+name_prefixes = ["天雷", "紫电", "雷鸣", "闪电", "狂风"]
 damage = 6.15
 fire_rate = 0.8
 range_radius = 150.0

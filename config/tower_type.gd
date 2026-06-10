@@ -6,6 +6,8 @@ class_name TowerType
 enum AttackType { PHYSICAL, MAGIC }
 
 @export var display_name: String = "Tower"       # 显示名字
+@export var chinese_type: String = ""             # 中文类型名（如"弓箭塔"）
+@export var name_prefixes: Array[String] = []     # 随机塔名前缀池
 @export var damage: float = 5.0                  # 攻击力
 @export var fire_rate: float = 1.0               # 射速（秒），每次攻击的冷却时间
 @export var range_radius: float = 120.0          # 射程（像素），防御塔的攻击范围半径

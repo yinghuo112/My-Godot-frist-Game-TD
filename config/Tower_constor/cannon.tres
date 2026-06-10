@@ -8,6 +8,8 @@
 [resource]
 script = ExtResource("1_jhvrw")
 display_name = "Cannon"
+chinese_type = "炮塔"
+name_prefixes = ["雷霆", "震地", "碎岩", "灭世", "怒焰"]
 damage = 43.0
 fire_rate = 2.0
 range_radius = 120.0

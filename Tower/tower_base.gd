@@ -100,8 +100,20 @@ func _ready():
 	level_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	level_label.add_theme_color_override("font_color", Color(1, 0.9, 0.2))
 	level_label.add_theme_font_size_override("font_size", 10)
-	level_label.position = Vector2(-10, -40)
+	level_label.position = Vector2(-10, -38)
 	add_child(level_label)
+
+	if tower_type and tower_type.name_prefixes.size() > 0:
+		var name_label = Label.new()
+		name_label.name = "TowerNameLabel"
+		var prefix = tower_type.name_prefixes[randi() % tower_type.name_prefixes.size()]
+		var type_name = tower_type.chinese_type if tower_type.chinese_type != "" else tower_type.display_name
+		name_label.text = prefix + type_name
+		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		name_label.add_theme_color_override("font_color", Color(0.8, 0.8, 1.0))
+		name_label.add_theme_font_size_override("font_size", 9)
+		name_label.position = Vector2(-10, -54)
+		add_child(name_label)
 
 	_range_indicator = TowerRangeIndicator.new()
 	_range_indicator.set_range(get_current_range())

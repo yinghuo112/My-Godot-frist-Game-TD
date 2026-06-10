@@ -7,6 +7,8 @@
 [resource]
 script = ExtResource("1_jhvrw")
 display_name = "Arrow"
+chinese_type = "弓箭塔"
+name_prefixes = ["疾风", "穿云", "追风", "破空", "流星"]
 damage = 10.0
 fire_rate = 0.8
 range_radius = 150.0
