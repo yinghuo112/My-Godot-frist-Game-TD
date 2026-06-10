@@ -19,11 +19,9 @@ var tower_types: Array[TowerType] = [
 	preload("res://config/test_tower.tres"),
 ]
 var _build_panel: Panel
-var _debug_overlay: CanvasLayer
 var _debug_panel: Control
 var _build_buttons: Array[Button] = []
 var _pending_slot: Marker2D = null
-const _DEBUG_OVERLAY_SCRIPT = preload("res://调试/debug_overlay.gd")
 const _DEBUG_PANEL_SCENE = preload("res://UI/Debug_panel/debug_panel.tscn")
 const _DPS_METER_SCENE = preload("res://UI/panel_dps_meter.tscn")
 const _DEBUG_MONSTER_TYPE = preload("res://config/test_enemy.tres")
@@ -62,10 +60,6 @@ func _ready() -> void:
 	info_plane.skill_book_requested.connect(_on_skill_book_requested)
 	skill_book_plane.closed.connect(_on_skill_book_plane_closed)
 
-	_debug_overlay = _DEBUG_OVERLAY_SCRIPT.new()
-	_debug_overlay.name = "DebugOverlay"
-	add_child(_debug_overlay)
-
 	_debug_panel = _DEBUG_PANEL_SCENE.instantiate()
 	_debug_panel.name = "DebugPanel"
 	$UI.add_child(_debug_panel)
@@ -91,8 +85,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
-		if _debug_overlay and _debug_overlay.has_method("toggle"):
-			_debug_overlay.toggle()
+		_toggle_debug_panel()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
 		_spawn_test_enemy()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_Y:
