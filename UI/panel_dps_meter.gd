@@ -123,3 +123,31 @@ func _toggle_collapse():
 func _toggle_all():
 	_show_all = not _show_all
 	_refresh()
+
+func dump_to_log(wave: int) -> void:
+	var date_str = Time.get_date_string_from_system()
+	var path = "user://logs/dps_%s.csv" % [date_str]
+	var file = FileAccess.open(path, FileAccess.READ_WRITE)
+	var is_new = file == null
+	if is_new:
+		file = FileAccess.open(path, FileAccess.WRITE)
+		if not file:
+			push_error("无法创建日志文件: ", path)
+			return
+		file.store_line("时间,波次,塔名,共计,实际秒伤,战斗时间,路线覆盖,峰值,现在的秒伤")
+	else:
+		file.seek_end()
+	var time_str = Time.get_time_string_from_system(false)
+	for t in get_tree().get_nodes_in_group("tower"):
+		if not is_instance_valid(t) or not t.has_method("get_tower_name"):
+			continue
+		var line = "%s,%d,%s,%d,%.1f,%.1fs,%d%%,%.1f,%.1f" % [
+			time_str, wave, t.get_tower_name(),
+			int(t.total_damage_dealt),
+			t.get_combat_dps(), t.get_combat_time(),
+			t.get_path_coverage(),
+			t.get_peak_dps(), t.get_realtime_dps()
+		]
+		file.store_line(line)
+	file.close()
+	print("DPS 日志已写入: ", path)

@@ -24,6 +24,7 @@ var _build_buttons: Array[Button] = []
 var _pending_slot: Marker2D = null
 const _DEBUG_PANEL_SCENE = preload("res://UI/Debug_panel/debug_panel.tscn")
 const _DPS_METER_SCENE = preload("res://UI/panel_dps_meter.tscn")
+var _dps_meter: PanelContainer
 const _DEBUG_MONSTER_TYPE = preload("res://config/test_enemy.tres")
 const _TEST_WAVE_COUNT = 5
 const _TEST_WAVE_INTERVAL = 1.27
@@ -69,7 +70,7 @@ func _ready() -> void:
 	$UI.add_child(_debug_panel)
 	_debug_panel.hide()
 
-	var _dps_meter = _DPS_METER_SCENE.instantiate()
+	_dps_meter = _DPS_METER_SCENE.instantiate()
 	_dps_meter.name = "DPSMeter"
 	$UI.add_child(_dps_meter)
 
@@ -112,6 +113,8 @@ func _input(event: InputEvent) -> void:
 		AudioManager.set_sfx_set("2")
 	if event is InputEventKey and event.pressed and event.keycode == KEY_3:
 		AudioManager.set_sfx_set("3")
+	if event is InputEventKey and event.pressed and event.keycode == KEY_L:
+		_dps_meter.dump_to_log(GameManager.wave + 1)
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible) or info_plane.visible or skill_book_plane.visible:
 			return
