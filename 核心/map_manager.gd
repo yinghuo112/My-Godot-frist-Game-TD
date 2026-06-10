@@ -11,6 +11,7 @@ var play_area_margin: float = 100.0
 
 var current_map_data = null
 var _occupied_slots: Dictionary = {}
+var _baked_path_points: PackedVector2Array = []
 
 const CLICK_RADIUS_SQ: float = 400.0
 const TREE_CLICK_RADIUS_SQ: float = 625.0
@@ -28,6 +29,8 @@ func _ready():
 	add_to_group("map_manager")
 	tile_map_layer = get_node("../TileMapLayer")
 	enemy_path = get_node("../EnemyPath")
+	if enemy_path and enemy_path.curve:
+		_baked_path_points = enemy_path.curve.get_baked_points()
 	_calculate_play_area()
 	# 加载默认地图数据
 	var default_map = load("res://data/maps/map_001.tres")
@@ -161,6 +164,16 @@ func handle_tree_click(click_pos: Vector2) -> bool:
 
 func get_enemy_path() -> Path2D:
 	return enemy_path
+
+func get_path_coverage(pos: Vector2, radius: float) -> float:
+	if _baked_path_points.is_empty():
+		return 0.0
+	var count = 0
+	var radius_sq = radius * radius
+	for p in _baked_path_points:
+		if pos.distance_squared_to(p) <= radius_sq:
+			count += 1
+	return float(count) / float(_baked_path_points.size()) * 100.0
 
 func get_tile_map() -> TileMapLayer:
 	return tile_map_layer

@@ -403,6 +403,15 @@ func get_dps() -> float:
 func get_combat_dps() -> float:
 	return total_damage_dealt / max(_combat_time, 0.001)
 
+func get_combat_time() -> float:
+	return _combat_time
+
+func get_path_coverage() -> float:
+	var mm = get_tree().get_first_node_in_group("map_manager")
+	if not mm or not mm.has_method("get_path_coverage"):
+		return 0.0
+	return mm.get_path_coverage(global_position, get_current_range())
+
 func get_peak_dps() -> float:
 	return peak_dps
 

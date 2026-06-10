@@ -41,6 +41,8 @@ func _refresh():
 	hdr.add_child(hname)
 	hdr.add_child(mk_label.call("共计", 55, Color(0.8, 0.8, 0.5), 2))
 	hdr.add_child(mk_label.call("实际秒伤", 50, Color(0.6, 0.8, 0.6), 2))
+	hdr.add_child(mk_label.call("战斗时间", 50, Color(0.6, 0.6, 0.7), 2))
+	hdr.add_child(mk_label.call("路线覆盖", 50, Color(0.5, 0.8, 0.7), 2))
 	hdr.add_child(mk_label.call("峰值", 50, Color(0.5, 0.7, 0.8), 2))
 	hdr.add_child(mk_label.call("现在的秒伤", 50, Color(0.8, 0.6, 0.4), 2))
 	list_container.add_child(hdr)
@@ -72,6 +74,18 @@ func _refresh():
 		dps_lbl.custom_minimum_size.x = 50
 		dps_lbl.add_theme_font_size_override("font_size", 10)
 		dps_lbl.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
+		var ct_lbl = Label.new()
+		ct_lbl.text = "%.1fs" % [t.get_combat_time()] if t.has_method("get_combat_time") else "?"
+		ct_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		ct_lbl.custom_minimum_size.x = 50
+		ct_lbl.add_theme_font_size_override("font_size", 10)
+		ct_lbl.add_theme_color_override("font_color", Color(0.6, 0.6, 0.8))
+		var cov_lbl = Label.new()
+		cov_lbl.text = "%d%%" % [t.get_path_coverage()] if t.has_method("get_path_coverage") else "?"
+		cov_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		cov_lbl.custom_minimum_size.x = 50
+		cov_lbl.add_theme_font_size_override("font_size", 10)
+		cov_lbl.add_theme_color_override("font_color", Color(0.5, 0.9, 0.7))
 		var peak_lbl = Label.new()
 		peak_lbl.text = "%.1f" % [t.get_peak_dps()]
 		peak_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -88,6 +102,8 @@ func _refresh():
 		row.add_child(name_lbl)
 		row.add_child(dmg_lbl)
 		row.add_child(dps_lbl)
+		row.add_child(ct_lbl)
+		row.add_child(cov_lbl)
 		row.add_child(peak_lbl)
 		row.add_child(rt_lbl)
 		list_container.add_child(row)
