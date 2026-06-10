@@ -87,9 +87,9 @@ func _on_upgrade_click():
 	var dmg = target_tower.get_current_damage()
 	var fr = target_tower.get_current_fire_rate()
 	var rng = target_tower.get_current_range()
-	var next_dmg = target_tower.damage * pow(1.5, lv)
-	var next_fr = target_tower.fire_rate * pow(0.85, lv)
-	var next_rng = target_tower.range_radius * pow(1.1, lv)
+	var next_dmg = target_tower.damage * pow(1.4, lv)
+	var next_fr = target_tower.fire_rate * pow(0.88, lv)
+	var next_rng = target_tower.range_radius * pow(1.2, lv)
 	var cost = target_tower.get_upgrade_cost()
 	popup_label.text = "升级到 Lv.%d\n伤害: %.1f → %.1f\n射速: %.2fs → %.2fs\n射程: %.0f → %.0f\n花费 %d 金" % [lv+1, dmg, next_dmg, fr, next_fr, rng, next_rng, cost]
 	_confirm_action = Callable(self, "_do_upgrade")

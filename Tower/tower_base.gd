@@ -287,11 +287,10 @@ func _on_attack_anim_finished():
 func can_upgrade() -> bool:
 	return level < max_level
 
-# 获取当前等级升级所需金币
 func get_upgrade_cost() -> int:
 	match level:
-		1: return 80
-		2: return 150
+		1: return max(1, int(cost * 0.9))
+		2: return max(1, int(cost * 1.8))
 		_: return -1
 
 # 计算出售价格 = 总投入的 50%
@@ -301,11 +300,10 @@ func get_sell_value() -> int:
 		total += get_upgrade_cost_at(lv)
 	return int(float(total) / 2)
 
-# 获取指定等级的升级花费
 func get_upgrade_cost_at(lv: int) -> int:
 	match lv:
-		1: return 80
-		2: return 150
+		1: return max(1, int(cost * 0.9))
+		2: return max(1, int(cost * 1.8))
 		_: return 0
 
 # 执行升级：扣除金币，更新属性，刷新视觉
@@ -353,14 +351,11 @@ func _get_active_skills() -> Array:
 			result.append(skill)
 	return result
 
-# 计算当前等级伤害：基础值 × 1.5^(等级-1)
 func get_current_damage() -> float:
-	return damage * pow(1.5, level - 1)
+	return damage * pow(1.4, level - 1)
 
-# 计算当前等级射速：基础值 × 0.85^(等级-1)
 func get_current_fire_rate() -> float:
-	return fire_rate * pow(0.85, level - 1)
+	return fire_rate * pow(0.88, level - 1)
 
-# 计算当前等级射程：基础值 × 4.0^(等级-1)
 func get_current_range() -> float:
-	return range_radius * pow(4.0, level - 1)
+	return range_radius * pow(1.2, level - 1)
