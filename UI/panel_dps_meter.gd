@@ -135,10 +135,9 @@ func dump_to_log(wave: int, debug_panel = null) -> void:
 	if is_new:
 		file = FileAccess.open(path, FileAccess.WRITE)
 		if not file:
-			var msg = "❌ 无法创建DPS日志文件"
-			push_error(msg, path)
+			push_error("❌ 无法创建DPS日志文件: ", path)
 			if debug_panel and debug_panel.has_method("add_log"):
-				debug_panel.add_log(msg)
+				debug_panel.add_log("❌ 无法创建DPS日志文件")
 			return
 		file.store_line("时间,波次,塔名,共计,实际秒伤,战斗时间,路线覆盖,峰值,现在的秒伤")
 	else:

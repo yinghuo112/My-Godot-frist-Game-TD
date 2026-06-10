@@ -1,7 +1,17 @@
 [gd_scene format=3 uid="uid://c3rr2d1fj873i"]
 
-[ext_resource type="Script" path="res://UI/Debug_panel/debug_panel.gd" id="1_0qepm"]
+[ext_resource type="Script" uid="uid://b6eju3ura75sr" path="res://UI/Debug_panel/debug_panel.gd" id="1_0qepm"]
 
-[node name="DebugPanel" type="Control"]
-script = ExtResource("1_0qepm")
+[node name="DebugPanel" type="Control" unique_id=960092050]
+layout_mode = 3
+anchor_right = 0.071
+anchor_bottom = 0.116000004
+offset_right = -90.880005
+offset_bottom = -83.520004
 mouse_filter = 2
+script = ExtResource("1_0qepm")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1589039641]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
