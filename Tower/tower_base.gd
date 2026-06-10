@@ -146,7 +146,6 @@ func _ready():
 # 每帧处理：射击逻辑 + 目标搜索 + 技能 tick
 func _process(delta):
 	_lifetime += delta
-	peak_dps = max(peak_dps, get_dps())
 	if _burst_remaining > 0:
 		if target == null or not is_instance_valid(target):
 			_tree_search_timer += delta
@@ -402,6 +401,7 @@ func get_realtime_dps() -> float:
 
 func _on_dps_tick():
 	_realtime_dps = _dps_counter
+	peak_dps = max(peak_dps, _dps_counter)
 	_dps_counter = 0.0
 
 func get_tower_name() -> String:
