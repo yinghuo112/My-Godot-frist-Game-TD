@@ -174,5 +174,8 @@ func _do_sell():
 	var value = target_tower.get_sell_value()
 	GameManager.add_gold(value)
 	AudioManager.play("sell")
+	var mm = get_tree().get_first_node_in_group("map_manager")
+	if mm and mm.has_method("free_slot_at"):
+		mm.free_slot_at(target_tower.global_position)
 	target_tower.queue_free()
 	hide_ring()

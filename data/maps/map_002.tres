@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3 uid="uid://br5mi3f29xq5"]
+
+[ext_resource type="Script" path="res://核心/map_data.gd" id="1_map"]
+
+[resource]
+script = ExtResource("1_map")
+map_id = "map_002"
+map_name = "中央蛇形图"
+slot_names = ["Slot1", "Slot2", "Slot3", "Slot4", "Slot5", "Slot6", "Slot7", "Slot8"]
+slot_positions = [Vector2(440, -48), Vector2(840, -48), Vector2(88, 160), Vector2(440, 160), Vector2(840, 320), Vector2(88, 320), Vector2(440, 480), Vector2(840, 640)]
+slot_difficulties = [1.05, 1.05, 1.10, 1.03, 1.10, 1.03, 1.10, 1.15]

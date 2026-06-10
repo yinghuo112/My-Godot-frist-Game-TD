@@ -148,6 +148,7 @@ func _place_tower(slot: Marker2D, tt: TowerType) -> void:
 	tower.add_to_group("tower")
 	slot.add_child(tower)
 	tower.position = Vector2.ZERO
+	map_manager.build_tower_at(slot.global_position, tower)
 	GameManager.spend_gold(tt.cost)
 	AudioManager.play("place")
 
@@ -191,7 +192,7 @@ func _hide_build_panel():
 func _on_build_selected(idx: int):
 	var slot = _pending_slot
 	_hide_build_panel()
-	if slot and is_instance_valid(slot) and slot.get_child_count() == 0:
+	if slot and is_instance_valid(slot) and map_manager.is_slot_empty(slot):
 		_place_tower(slot, tower_types[idx])
 
 func _toggle_debug_panel() -> void:

@@ -9,6 +9,9 @@ var enemy_path: Path2D
 var play_area: Rect2 = Rect2(-1000, -1000, 4000, 4000)
 var play_area_margin: float = 100.0
 
+var current_map_data = null
+var _occupied_slots: Dictionary = {}
+
 const CLICK_RADIUS_SQ: float = 400.0
 const TREE_CLICK_RADIUS_SQ: float = 625.0
 const TREE_MARK_COST: int = 10
@@ -26,6 +29,25 @@ func _ready():
 	tile_map_layer = get_node("../TileMapLayer")
 	enemy_path = get_node("../EnemyPath")
 	_calculate_play_area()
+	# 加载默认地图数据
+	var default_map = load("res://data/maps/map_001.tres")
+	load_map(default_map)
+
+func load_map(data):
+	if data == null:
+		push_error("load_map: data is null")
+		return
+	current_map_data = data
+	_occupied_slots.clear()
+	# 清空旧槽位节点
+	for child in $TowerSlots.get_children():
+		child.queue_free()
+	# 从数据创建槽位 Marker2D
+	for i in data.slot_names.size():
+		var marker = Marker2D.new()
+		marker.name = data.slot_names[i]
+		marker.position = data.slot_positions[i]
+		$TowerSlots.add_child(marker)
 
 func start_tree_spawning(delay: float = 3.0):
 	_tree_spawn_timer = Timer.new()
@@ -49,7 +71,33 @@ func get_slot_at(pos: Vector2) -> Marker2D:
 	return null
 
 func is_slot_empty(slot: Marker2D) -> bool:
-	return slot.get_child_count() == 0
+	return not _occupied_slots.has(slot.name)
+
+func can_build_at(pos: Vector2) -> bool:
+	var slot = get_slot_at(pos)
+	return slot != null and is_slot_empty(slot)
+
+func build_tower_at(pos: Vector2, tower_instance: Node2D) -> bool:
+	var slot = get_slot_at(pos)
+	if not slot or not is_slot_empty(slot):
+		return false
+	_occupied_slots[slot.name] = tower_instance
+	return true
+
+func free_slot_at(pos: Vector2) -> bool:
+	var slot = get_slot_at(pos)
+	if not slot:
+		return false
+	_occupied_slots.erase(slot.name)
+	return true
+
+func get_slot_difficulty(pos: Vector2) -> float:
+	if not current_map_data:
+		return 1.0
+	for i in current_map_data.slot_positions.size():
+		if current_map_data.slot_positions[i].distance_squared_to(pos) < CLICK_RADIUS_SQ:
+			return current_map_data.slot_difficulties[i]
+	return 1.0
 
 func handle_slot_click(click_pos: Vector2) -> bool:
 	var slot = get_slot_at(click_pos)
@@ -60,8 +108,8 @@ func handle_slot_click(click_pos: Vector2) -> bool:
 
 func count_towers() -> int:
 	var count = 0
-	for child in $TowerSlots.get_children():
-		if child.get_child_count() > 0:
+	for slot in get_slots():
+		if _occupied_slots.has(slot.name):
 			count += 1
 	return count
 

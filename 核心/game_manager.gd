@@ -18,8 +18,8 @@ var is_wave_active: bool = false    # 波次进行中锁定，防止重复点击
 
 var total_waves: int = 0
 var timer: Timer                    # 生成定时器
-var _config: WaveConfigData         # 波次配置数据
-var _current_entry: WaveEntry       # 当前波次配置条目
+var _config         # 波次配置数据
+var _current_entry       # 当前波次配置条目
 const _GREEN_MONSTER = preload("res://怪物/green_monster.tscn")
 
 # 初始化生成计时器和波次配置
@@ -63,10 +63,10 @@ func start_wave():
 
 # --- 加载波次配置 ---
 # 从文件加载波次配置，失败时用默认配置
-func _load_config() -> WaveConfigData:
+func _load_config():
 	print("尝试加载波次配置: res://config/wave_config.tres")
 	if ResourceLoader.exists("res://config/wave_config.tres"):
-		var data: WaveConfigData = load("res://config/wave_config.tres")
+		var data = load("res://config/wave_config.tres")
 		if data and data.waves.size() > 0:
 			total_waves = data.waves.size()
 			print("波次配置加载成功: %d 个波次" % data.waves.size())
@@ -74,25 +74,25 @@ func _load_config() -> WaveConfigData:
 		print("配置文件存在但数据无效，使用默认配置")
 	else:
 		print("配置文件不存在，使用默认配置")
-	var entry = WaveEntry.new()
+	var entry = preload("res://config/wave_entry.gd").new()
 	entry.enemy_scene = _GREEN_MONSTER
 	entry.count = 12
 	entry.spawn_interval = 0.5
-	var fallback = WaveConfigData.new()
+	var fallback = preload("res://config/wave_config_data.gd").new()
 	fallback.waves = [entry]
 	print("使用默认配置: 敌人=12, 间隔=0.5s")
 	return fallback
 
 # 根据波次号获取配置条目，超出则复用最后一波
-func _get_wave_entry(wave_number: int) -> WaveEntry:
+func _get_wave_entry(wave_number: int):
 	var idx = wave_number - 1
 	if idx >= 0 and idx < _config.waves.size():
 		return _config.waves[idx]
 	return _config.waves[-1] if _config.waves.size() > 0 else _fallback_entry()
 
 # 创建默认波次配置条目作为后备
-func _fallback_entry() -> WaveEntry:
-	var entry = WaveEntry.new()
+func _fallback_entry():
+	var entry = preload("res://config/wave_entry.gd").new()
 	entry.enemy_scene = _GREEN_MONSTER
 	entry.count = 12
 	entry.spawn_interval = 0.5

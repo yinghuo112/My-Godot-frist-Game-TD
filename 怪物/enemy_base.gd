@@ -6,7 +6,7 @@ signal died(enemy)
 signal reached_end
 
 # --- 数据驱动（通过 EnemyType .tres 文件配置数值）---
-var enemy_type: EnemyType            # 怪物类型数据（由生成器传入）
+var enemy_type            # 怪物类型数据（由生成器传入）
 
 # 基础属性（init() 会从 EnemyType 覆盖这些值）
 var speed: float = 150.0             # 移动速度
@@ -34,7 +34,7 @@ var _frame_skip: int = 0
 var _main_scene: Node = null
 
 # 由 GameManager 在生成时调用，传入 EnemyType 数据覆盖默认值
-func init(data: EnemyType):
+func init(data):
 	enemy_type = data
 	speed = data.speed
 	max_hp = data.max_hp

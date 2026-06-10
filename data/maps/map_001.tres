@@ -1,0 +1,11 @@
+[gd_resource type="Resource" format=3 uid="uid://1xsmqjdc23nr"]
+
+[ext_resource type="Script" path="res://核心/map_data.gd" id="1_map"]
+
+[resource]
+script = ExtResource("1_map")
+map_id = "map_001"
+map_name = "初始地图"
+slot_names = ["Slot1", "Slot2", "Slot3", "Slot4", "Slot5", "Slot6", "Slot7", "Slot8", "Slot9"]
+slot_positions = [Vector2(1007, 83), Vector2(95, 242), Vector2(94, 307), Vector2(223, 275), Vector2(991, 286), Vector2(222, -46), Vector2(270, -46), Vector2(511, -47), Vector2(572, -46)]
+slot_difficulties = [1.15, 1.11, 1.15, 1.36, 1.25, 1.03, 1.03, 1.04, 1.03]

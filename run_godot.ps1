@@ -10,9 +10,7 @@ if (-not (Test-Path $LogDir)) { New-Item -ItemType Directory -Path $LogDir -Forc
 
 # Locate Godot executable
 $PathsToTry = @(
-    "$env:LOCALAPPDATA\Godot\Godot_v4.6.3-stable_win64.exe\Godot_v4.6.3-stable_win64.exe",
     "D:\Administrator\Downloads\Apps\Godot_v4.6.3-stable_win64.exe\Godot_v4.6.3-stable_win64.exe",
-    "$env:LOCALAPPDATA\Godot\Godot_v4.6.2-stable_win64.exe\Godot_v4.6.2-stable_win64.exe",
     "D:\Administrator\Downloads\Apps\Godot_v4.6.2-stable_win64.exe\Godot_v4.6.2-stable_win64.exe",
     "D:\Administrator\Downloads\Apps\Godot_v4.6.2-stable_win64.exe\Godot_v4.6.2-stable_win64_console.exe"
 )

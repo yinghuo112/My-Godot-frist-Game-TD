@@ -108,33 +108,6 @@ script = ExtResource("132_map")
 
 [node name="TowerSlots" type="Node2D" parent="MapManager" unique_id=1907941790]
 
-[node name="Slot1" type="Marker2D" parent="MapManager/TowerSlots" unique_id=2130101613]
-position = Vector2(1007, 83)
-
-[node name="Slot2" type="Marker2D" parent="MapManager/TowerSlots" unique_id=1504534801]
-position = Vector2(95, 242)
-
-[node name="Slot3" type="Marker2D" parent="MapManager/TowerSlots" unique_id=1370790087]
-position = Vector2(94, 307)
-
-[node name="Slot4" type="Marker2D" parent="MapManager/TowerSlots" unique_id=765730771]
-position = Vector2(223, 275)
-
-[node name="Slot5" type="Marker2D" parent="MapManager/TowerSlots" unique_id=770919734]
-position = Vector2(991, 286)
-
-[node name="Slot6" type="Marker2D" parent="MapManager/TowerSlots" unique_id=1078024356]
-position = Vector2(222, -46)
-
-[node name="Slot7" type="Marker2D" parent="MapManager/TowerSlots" unique_id=416610387]
-position = Vector2(270, -46)
-
-[node name="Slot8" type="Marker2D" parent="MapManager/TowerSlots" unique_id=1910197851]
-position = Vector2(511, -47)
-
-[node name="Slot9" type="Marker2D" parent="MapManager/TowerSlots" unique_id=441447992]
-position = Vector2(572, -46)
-
 [node name="TreeContainer" type="Node2D" parent="MapManager" unique_id=1415092192]
 
 [node name="UI" type="CanvasLayer" parent="." unique_id=604907210]
