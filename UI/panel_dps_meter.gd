@@ -127,7 +127,9 @@ func _toggle_all():
 func dump_to_log(wave: int, debug_panel = null) -> void:
 	var date_str = Time.get_date_string_from_system()
 	var path = "user://logs/dps_%s.csv" % [date_str]
-	DirAccess.make_dir_recursive("user://logs/")
+	var dir = DirAccess.open("user://")
+	if dir:
+		dir.make_dir_recursive("logs")
 	var file = FileAccess.open(path, FileAccess.READ_WRITE)
 	var is_new = file == null
 	if is_new:
