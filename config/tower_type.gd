@@ -27,6 +27,15 @@ enum AttackType { PHYSICAL, MAGIC }
 @export var lightning_color: Color = Color(1, 1, 1) # 闪电主色，默认白
 @export var lightning_line_count: int = 3          # 并行线条数
 
+var _name_counter: int = 0
+
+func generate_name() -> String:
+	if chinese_type != "":
+		var prefix = name_prefixes[randi() % name_prefixes.size()]
+		return prefix + chinese_type
+	_name_counter += 1
+	return name_prefixes[0] + str(_name_counter)
+
 func can_equip_skill(skill) -> bool:
 	if not skill_categories.is_empty() and skill.has_method("can_equip"):
 		return skill.can_equip(skill_categories)

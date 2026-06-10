@@ -8,7 +8,7 @@
 script = ExtResource("1_jhvrw")
 display_name = "TestTower"
 chinese_type = ""
-name_prefixes = ["调试弓箭手1", "调试弓箭手2", "调试弓箭手3", "调试弓箭手4", "调试弓箭手5"]
+name_prefixes = ["调试弓箭手"]
 damage = 10.0
 fire_rate = 0.8
 range_radius = 150.0

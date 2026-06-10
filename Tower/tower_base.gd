@@ -114,9 +114,7 @@ func _ready():
 	if tower_type and tower_type.name_prefixes.size() > 0:
 		var name_label = Label.new()
 		name_label.name = "TowerNameLabel"
-		var name_text = tower_type.name_prefixes[randi() % tower_type.name_prefixes.size()]
-		if tower_type.chinese_type != "":
-			name_text += tower_type.chinese_type
+		var name_text = tower_type.generate_name()
 		name_label.text = name_text
 		name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		name_label.add_theme_color_override("font_color", Color(0.8, 0.8, 1.0))
