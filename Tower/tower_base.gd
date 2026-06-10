@@ -38,6 +38,9 @@ var bullet_scene = preload("res://子弹/bullet.tscn")
 
 var total_damage_dealt: float = 0.0
 var _lifetime: float = 0.0
+var peak_dps: float = 0.0
+var _realtime_dps: float = 0.0
+var _dps_counter: float = 0.0
 
 var _range_indicator: TowerRangeIndicator
 
@@ -130,11 +133,20 @@ func _ready():
 	_burst_timer.timeout.connect(_on_burst_timer)
 	add_child(_burst_timer)
 
+	# 实时DPS统计计时器（每秒采样）
+	var dps_timer = Timer.new()
+	dps_timer.name = "DpsTickTimer"
+	dps_timer.wait_time = 1.0
+	dps_timer.timeout.connect(_on_dps_tick)
+	add_child(dps_timer)
+	dps_timer.start()
+
 # ===== 框架主循环 =====
 
 # 每帧处理：射击逻辑 + 目标搜索 + 技能 tick
 func _process(delta):
 	_lifetime += delta
+	peak_dps = max(peak_dps, get_dps())
 	if _burst_remaining > 0:
 		if target == null or not is_instance_valid(target):
 			_tree_search_timer += delta
@@ -377,9 +389,20 @@ func get_current_range() -> float:
 
 func report_damage(amount: float):
 	total_damage_dealt += amount
+	_dps_counter += amount
 
 func get_dps() -> float:
 	return total_damage_dealt / max(_lifetime, 0.001)
+
+func get_peak_dps() -> float:
+	return peak_dps
+
+func get_realtime_dps() -> float:
+	return _realtime_dps
+
+func _on_dps_tick():
+	_realtime_dps = _dps_counter
+	_dps_counter = 0.0
 
 func get_tower_name() -> String:
 	var name_label = get_node_or_null("TowerNameLabel")

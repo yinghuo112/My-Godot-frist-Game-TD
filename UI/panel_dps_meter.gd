@@ -50,10 +50,24 @@ func _refresh():
 		dps_lbl.custom_minimum_size.x = 50
 		dps_lbl.add_theme_font_size_override("font_size", 10)
 		dps_lbl.add_theme_color_override("font_color", Color(0.8, 1.0, 0.8))
+		var peak_lbl = Label.new()
+		peak_lbl.text = "%.1f" % [t.get_peak_dps()]
+		peak_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		peak_lbl.custom_minimum_size.x = 50
+		peak_lbl.add_theme_font_size_override("font_size", 10)
+		peak_lbl.add_theme_color_override("font_color", Color(0.6, 0.9, 1.0))
+		var rt_lbl = Label.new()
+		rt_lbl.text = "%.1f" % [t.get_realtime_dps()]
+		rt_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		rt_lbl.custom_minimum_size.x = 50
+		rt_lbl.add_theme_font_size_override("font_size", 10)
+		rt_lbl.add_theme_color_override("font_color", Color(1.0, 0.7, 0.5))
 		row.add_child(idx)
 		row.add_child(name_lbl)
 		row.add_child(dmg_lbl)
 		row.add_child(dps_lbl)
+		row.add_child(peak_lbl)
+		row.add_child(rt_lbl)
 		list_container.add_child(row)
 	if towers.size() > 5:
 		toggle_btn.text = "显示Top5 △" if _show_all else "显示全部 ▽"
