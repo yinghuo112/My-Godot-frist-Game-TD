@@ -8,6 +8,7 @@ const _FIRE_EXPLOSION = preload("res://子弹/fireball_explosion.tscn")
 @export var splash_damage_ratio: float = 0.5
 
 @onready var _trail: GPUParticles2D = $GPUParticles2D
+@onready var _sprite: Sprite2D = $Sprite2D
 
 var _pulse: float = 0.0
 var _splash_shape: CircleShape2D
@@ -21,13 +22,14 @@ func _ready():
 
 func _process(delta):
 	_pulse += delta
+	_sprite.frame = int(_pulse * 10) % 12
 	queue_redraw()
 
 func _draw():
-	draw_circle(Vector2.ZERO, 6, Color(1, 0.9, 0.4))
-	draw_circle(Vector2.ZERO, 9, Color(1, 0.5, 0.0, 0.6))
+	draw_circle(Vector2.ZERO, 6, Color(1, 0.9, 0.4, 0.5))
+	draw_circle(Vector2.ZERO, 9, Color(1, 0.5, 0.0, 0.35))
 	var outer = 13.0 + sin(_pulse * 8.0) * 2.0
-	draw_circle(Vector2.ZERO, outer, Color(1, 0.2, 0.0, 0.25))
+	draw_circle(Vector2.ZERO, outer, Color(1, 0.2, 0.0, 0.15))
 
 func _hit():
 	if _has_hit:
