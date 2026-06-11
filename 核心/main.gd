@@ -98,20 +98,24 @@ func _ready() -> void:
 	add_child(_test_wave_3_timer)
 
 func _ensure_logs_dir() -> String:
-	var logs_abs = "user://logs/"
-	if not DirAccess.dir_exists_absolute(logs_abs):
-		DirAccess.make_dir_recursive_absolute(logs_abs)
-	var test_path = logs_abs + ".write_test"
+	var base_dir = "user://"
+	var sub_dir = "logs"
+	var logs_abs = base_dir.path_join(sub_dir)
+	var dir = DirAccess.open(base_dir)
+	if dir:
+		if not dir.dir_exists(sub_dir):
+			dir.make_dir(sub_dir)
+	var test_path = logs_abs.path_join(".write_test")
 	var test_file = FileAccess.open(test_path, FileAccess.WRITE)
 	if test_file:
 		test_file.close()
-		DirAccess.remove_absolute(test_path)
+		DirAccess.remove_absolute(ProjectSettings.globalize_path(test_path))
+		return ProjectSettings.globalize_path(logs_abs)
 	else:
 		var temp = OS.get_environment("TEMP")
 		if not temp.is_empty():
-			logs_abs = temp.path_join("first_game_dps_logs")
-			DirAccess.make_dir_recursive_absolute(logs_abs)
-	return logs_abs
+			return temp.path_join("first_game_dps_logs")
+	return ProjectSettings.globalize_path(logs_abs)
 
 func _generate_session_id() -> int:
 	var logs_dir = _ensure_logs_dir()
