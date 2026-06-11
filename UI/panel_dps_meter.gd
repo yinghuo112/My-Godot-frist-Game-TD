@@ -126,15 +126,9 @@ func _toggle_all():
 
 func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = null) -> void:
 	var date_str = Time.get_date_string_from_system()
-	var ud = OS.get_user_data_dir()
-	var logs_dir = ud.path_join("logs")
+	var logs_dir = ProjectSettings.globalize_path("user://logs/")
 	var _cmd = "New-Item -ItemType Directory -Path \"%s\" -Force" % [logs_dir]
-	var _ret = OS.execute("powershell.exe", ["-NoProfile", "-Command", _cmd])
-	if _ret != 0:
-		var temp = OS.get_environment("TEMP")
-		if not temp.is_empty():
-			logs_dir = temp.path_join("first_game_dps_logs")
-			DirAccess.make_dir_recursive_absolute(logs_dir)
+	OS.execute("powershell.exe", ["-NoProfile", "-Command", _cmd])
 	var abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
 
 	var lines = []
@@ -151,9 +145,18 @@ func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = nu
 	if not file:
 		var temp = OS.get_environment("TEMP")
 		if not temp.is_empty():
-			var fb_dir = temp.path_join("first_game_dps_logs")
-			DirAccess.make_dir_recursive_absolute(fb_dir)
-			abs_path = fb_dir.path_join("dps_%s.csv" % [date_str])
+			logs_dir = temp.path_join("first_game_dps_logs")
+			DirAccess.make_dir_recursive_absolute(logs_dir)
+			abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
+			lines = []
+			if FileAccess.file_exists(abs_path):
+				var f = FileAccess.open(abs_path, FileAccess.READ)
+				if f:
+					while not f.eof_reached():
+						var l = f.get_line()
+						if not l.is_empty():
+							lines.append(l)
+					f.close()
 			file = FileAccess.open(abs_path, FileAccess.WRITE)
 	if not file:
 		push_error("❌ 无法创建DPS日志文件: ", abs_path)
