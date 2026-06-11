@@ -128,16 +128,13 @@ func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = nu
 	var date_str = Time.get_date_string_from_system()
 	var ud = OS.get_user_data_dir()
 	var logs_dir = ud.path_join("logs")
-	var _cmd = "New-Item -ItemType Directory -Path '%s' -Force" % [logs_dir]
-	OS.execute("powershell", ["-NoProfile", "-Command", _cmd])
-	var _test = FileAccess.open(logs_dir.path_join("_w"), FileAccess.WRITE)
-	if not _test:
+	var _cmd = "New-Item -ItemType Directory -Path \"%s\" -Force" % [logs_dir]
+	var _ret = OS.execute("powershell.exe", ["-NoProfile", "-Command", _cmd])
+	if _ret != 0:
 		var temp = OS.get_environment("TEMP")
 		if not temp.is_empty():
 			logs_dir = temp.path_join("first_game_dps_logs")
 			DirAccess.make_dir_recursive_absolute(logs_dir)
-	else:
-		_test.close()
 	var abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
 
 	var lines = []
