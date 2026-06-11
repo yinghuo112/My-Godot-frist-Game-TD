@@ -130,6 +130,7 @@ func _generate_map(md: MapData):
 	gen.generate(tilemap, md)
 	map_manager.load_map(md)
 	if path:
+		path.position = tilemap.position
 		path.curve = Curve2D.new()
 		if md.path_points.size() >= 2:
 			for i in md.path_points.size():

@@ -13,7 +13,9 @@ func _ready():
 	_style_opt = $Dialog/VBox/StyleOpt
 	_slot_spin = $Dialog/VBox/SlotSpin
 	_style_opt.add_item("蛇形")
+	_style_opt.set_item_metadata(0, "serpentine")
 	_style_opt.add_item("随机漫步")
+	_style_opt.set_item_metadata(1, "random_walk")
 	$Dialog/VBox/GenBtn.pressed.connect(_on_generate)
 	$Dialog/VBox/CloseBtn.pressed.connect(_on_close)
 	$Background.gui_input.connect(_on_bg_click)
@@ -27,7 +29,7 @@ func _on_generate():
 		"随机地图",
 		sd,
 		Vector2i(_w_spin.value, _h_spin.value),
-		_style_opt.get_item_text(_style_opt.selected),
+		_style_opt.get_item_metadata(_style_opt.selected),
 		int(_slot_spin.value)
 	)
 	MapGenerator.pending_gen = md
@@ -47,7 +49,7 @@ func populate(md: MapData = null):
 		_w_spin.value = md.grid_size.x
 		_h_spin.value = md.grid_size.y
 		for i in _style_opt.item_count:
-			if _style_opt.get_item_text(i) == md.path_style:
+			if _style_opt.get_item_metadata(i) == md.path_style:
 				_style_opt.selected = i
 				break
 	else:
