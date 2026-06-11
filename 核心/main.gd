@@ -100,12 +100,11 @@ func _ready() -> void:
 func _ensure_logs_dir() -> String:
 	var base = OS.get_user_data_dir()
 	var logs_abs = base.path_join("logs")
-	var dir = DirAccess.open(base)
-	if dir and not dir.dir_exists("logs"):
-		dir.make_dir("logs")
+	DirAccess.make_dir_recursive_absolute(logs_abs)
 	var test = FileAccess.open(logs_abs.path_join("_w"), FileAccess.WRITE)
 	if test:
 		test.close()
+		DirAccess.remove_absolute(logs_abs.path_join("_w"))
 		return logs_abs
 	var temp = OS.get_environment("TEMP")
 	if not temp.is_empty():
