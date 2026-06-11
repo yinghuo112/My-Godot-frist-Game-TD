@@ -1,6 +1,7 @@
 [gd_scene format=3]
 
 [ext_resource type="Script" path="res://UI/panel_level_select.gd" id="1"]
+[ext_resource type="PackedScene" uid="uid://ctyhp7r3xkrsg" path="res://UI/panel_map_gen.tscn" id="2"]
 
 [node name="LevelSelectPanel" type="PanelContainer"]
 layout_mode = 3
@@ -51,9 +52,20 @@ theme_override_colors/font_color = Color(0.3, 0.8, 0.3, 1.0)
 text = "当前选择"
 
 [node name="Control" type="Control" parent="Dialog/VBox"]
-custom_minimum_size = Vector2(0, 20)
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="GenMapBtn" type="Button" parent="Dialog/VBox"]
+layout_mode = 2
+text = "🎲 生成新地图"
+
+[node name="Control2" type="Control" parent="Dialog/VBox"]
+custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
 [node name="CloseBtn" type="Button" parent="Dialog/VBox"]
 layout_mode = 2
 text = "关闭"
+
+[node name="MapGenPanel" parent="." instance=ExtResource("2")]
+visible = false

@@ -58,6 +58,9 @@ func _ready() -> void:
 	AudioManager.play_music()
 	_init_build_panel()
 	map_manager.slot_clicked.connect(_on_slot_clicked)
+	if MapGenerator.pending_gen:
+		_generate_map(MapGenerator.pending_gen)
+		MapGenerator.pending_gen = null
 	if dialogue_ui and dialogue_ui.visible:
 		dialogue_ui.connect("dialogue_finished", map_manager.start_tree_spawning)
 	else:
@@ -116,6 +119,31 @@ func _generate_session_id() -> int:
 		file.store_line(str(id))
 		file.close()
 	return id
+
+func _generate_map(md: MapData):
+	var ts = load("res://assets/tiles/ground_tileset.tres")
+	var tilemap = map_manager.tile_map_layer
+	var path = map_manager.enemy_path
+	if ts and tilemap.tile_set != ts:
+		tilemap.tile_set = ts
+	var gen = MapGenerator.new()
+	gen.generate(tilemap, md)
+	map_manager.load_map(md)
+	if path:
+		path.curve = Curve2D.new()
+		if md.path_points.size() >= 2:
+			for i in md.path_points.size():
+				var p = md.path_points[i]
+				var pos = Vector2(p.x, p.y)
+				var pin = Vector2.ZERO
+				var pout = Vector2.ZERO
+				if i < md.path_points.size() - 1:
+					pout = (md.path_points[i + 1] - pos) * 0.3
+				if i > 0:
+					pin = (md.path_points[i - 1] - pos) * 0.3
+				path.curve.add_point(pos, pin, pout)
+		map_manager._baked_path_points = path.curve.get_baked_points()
+	map_manager._calculate_play_area()
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:

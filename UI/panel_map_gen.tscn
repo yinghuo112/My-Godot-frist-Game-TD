@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://ctyhp7r3xkrsg"]
+
+[ext_resource type="Script" path="res://UI/panel_map_gen.gd" id="1"]
+
+[node name="MapGenPanel" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 0
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 1
+color = Color(0, 0, 0, 0.5)
+
+[node name="Dialog" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 380.0
+offset_top = 200.0
+offset_right = 900.0
+offset_bottom = 520.0
+
+[node name="VBox" type="VBoxContainer" parent="Dialog"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 500.0
+offset_bottom = 300.0
+
+[node name="Title" type="Label" parent="Dialog/VBox"]
+layout_mode = 2
+text = "🎲 随机地图生成"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 18
+
+[node name="SeedLabel" type="Label" parent="Dialog/VBox"]
+layout_mode = 2
+text = "种子（留空=随机）"
+
+[node name="SeedEdit" type="LineEdit" parent="Dialog/VBox"]
+layout_mode = 2
+placeholder_text = "留空生成随机地图"
+
+[node name="SizeLabel" type="Label" parent="Dialog/VBox"]
+layout_mode = 2
+text = "地图尺寸"
+
+[node name="SizeHBox" type="HBoxContainer" parent="Dialog/VBox"]
+layout_mode = 2
+
+[node name="WLabel" type="Label" parent="Dialog/VBox/SizeHBox"]
+layout_mode = 2
+text = "宽:"
+
+[node name="GridW" type="SpinBox" parent="Dialog/VBox/SizeHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 40.0
+max_value = 120.0
+value = 80.0
+
+[node name="HLabel" type="Label" parent="Dialog/VBox/SizeHBox"]
+layout_mode = 2
+text = "高:"
+
+[node name="GridH" type="SpinBox" parent="Dialog/VBox/SizeHBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 30.0
+max_value = 80.0
+value = 56.0
+
+[node name="StyleLabel" type="Label" parent="Dialog/VBox"]
+layout_mode = 2
+text = "路径风格"
+
+[node name="StyleOpt" type="OptionButton" parent="Dialog/VBox"]
+layout_mode = 2
+
+[node name="SlotLabel" type="Label" parent="Dialog/VBox"]
+layout_mode = 2
+text = "塔槽位数"
+
+[node name="SlotSpin" type="SpinBox" parent="Dialog/VBox"]
+layout_mode = 2
+min_value = 4.0
+max_value = 14.0
+value = 8.0
+
+[node name="Spacer" type="Control" parent="Dialog/VBox"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="GenBtn" type="Button" parent="Dialog/VBox"]
+layout_mode = 2
+text = "生成并开始游戏"
+
+[node name="CloseBtn" type="Button" parent="Dialog/VBox"]
+layout_mode = 2
+text = "关闭"
