@@ -118,8 +118,6 @@ func _generate_session_id() -> int:
 		id = int(file.get_line()) + 1
 		file.close()
 	file = FileAccess.open(path, FileAccess.WRITE)
-	if not file:
-		print("session WRITE failed, err=", FileAccess.get_open_error())
 	if file:
 		file.store_line(str(id))
 		file.close()
