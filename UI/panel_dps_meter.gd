@@ -126,19 +126,40 @@ func _toggle_all():
 
 func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = null) -> void:
 	var date_str = Time.get_date_string_from_system()
-	var path = "user://dps_%s.csv" % [date_str]
-	var file = FileAccess.open(path, FileAccess.READ_WRITE)
+	var ud = OS.get_user_data_dir()
+	var logs_dir = ud.path_join("logs")
+	DirAccess.make_dir_recursive_absolute(logs_dir)
+	var abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
+
+	var lines = []
+	if FileAccess.file_exists(abs_path):
+		var f = FileAccess.open(abs_path, FileAccess.READ)
+		if f:
+			while not f.eof_reached():
+				var l = f.get_line()
+				if not l.is_empty():
+					lines.append(l)
+			f.close()
+
+	var file = FileAccess.open(abs_path, FileAccess.WRITE)
 	if not file:
-		file = FileAccess.open(path, FileAccess.WRITE)
+		var temp = OS.get_environment("TEMP")
+		if not temp.is_empty():
+			var fb_dir = temp.path_join("first_game_dps_logs")
+			DirAccess.make_dir_recursive_absolute(fb_dir)
+			abs_path = fb_dir.path_join("dps_%s.csv" % [date_str])
+			file = FileAccess.open(abs_path, FileAccess.WRITE)
 	if not file:
-		push_error("❌ 无法创建DPS日志文件: ", path)
+		push_error("❌ 无法创建DPS日志文件: ", abs_path)
 		if debug_panel and debug_panel.has_method("add_log"):
 			debug_panel.add_log("❌ 无法创建DPS日志文件")
 		return
-	if file.get_length() == 0:
+
+	if lines.is_empty():
 		file.store_line("会话,时间,波次,塔名,共计,实际秒伤,战斗时间,路线覆盖,峰值,现在的秒伤,备注")
 	else:
-		file.seek_end()
+		for l in lines:
+			file.store_line(l)
 	var time_str = Time.get_time_string_from_system(false)
 	for t in get_tree().get_nodes_in_group("tower"):
 		if not is_instance_valid(t) or not t.has_method("get_tower_name"):
@@ -153,7 +174,7 @@ func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = nu
 		]
 		file.store_line(line)
 	file.close()
-	var msg = "✅ DPS数据已写入 %s" % [path]
+	var msg = "✅ DPS数据已写入 %s" % [abs_path]
 	print(msg)
 	if debug_panel and debug_panel.has_method("add_log"):
 		debug_panel.add_log(msg)

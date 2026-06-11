@@ -97,14 +97,29 @@ func _ready() -> void:
 	_test_wave_3_timer.timeout.connect(_on_test_wave_3_spawn)
 	add_child(_test_wave_3_timer)
 
+func _ensure_logs_dir() -> String:
+	var ud = OS.get_user_data_dir()
+	var logs_abs = ud.path_join("logs")
+	var ret = DirAccess.make_dir_recursive_absolute(logs_abs)
+	if ret != OK:
+		# Fallback to TEMP
+		var temp = OS.get_environment("TEMP")
+		if not temp.is_empty():
+			logs_abs = temp.path_join("first_game_dps_logs")
+			DirAccess.make_dir_recursive_absolute(logs_abs)
+	return logs_abs
+
 func _generate_session_id() -> int:
-	var path = "user://session.txt"
+	var logs_dir = _ensure_logs_dir()
+	var path = logs_dir.path_join("session.txt")
 	var id = 1
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file:
 		id = int(file.get_line()) + 1
 		file.close()
 	file = FileAccess.open(path, FileAccess.WRITE)
+	if not file:
+		print("session WRITE failed, err=", FileAccess.get_open_error())
 	if file:
 		file.store_line(str(id))
 		file.close()
