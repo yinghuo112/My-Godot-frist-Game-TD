@@ -129,6 +129,16 @@ func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = nu
 	var logs_dir = "user://logs/"
 	if not DirAccess.dir_exists_absolute(logs_dir):
 		DirAccess.make_dir_recursive_absolute(logs_dir)
+	var test_path = logs_dir + ".write_test"
+	var test_file = FileAccess.open(test_path, FileAccess.WRITE)
+	if test_file:
+		test_file.close()
+		DirAccess.remove_absolute(test_path)
+	else:
+		var temp = OS.get_environment("TEMP")
+		if not temp.is_empty():
+			logs_dir = temp.path_join("first_game_dps_logs")
+			DirAccess.make_dir_recursive_absolute(logs_dir)
 	var abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
 
 	var lines = []
