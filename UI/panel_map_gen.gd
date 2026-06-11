@@ -8,10 +8,12 @@ var _slot_spin: SpinBox
 
 func _ready():
 	_seed_edit = $Dialog/VBox/SeedEdit
-	_w_spin = $Dialog/VBox/GridW
-	_h_spin = $Dialog/VBox/GridH
+	_w_spin = $Dialog/VBox/SizeHBox/GridW
+	_h_spin = $Dialog/VBox/SizeHBox/GridH
 	_style_opt = $Dialog/VBox/StyleOpt
 	_slot_spin = $Dialog/VBox/SlotSpin
+	_style_opt.add_item("蛇形")
+	_style_opt.add_item("随机漫步")
 	$Dialog/VBox/GenBtn.pressed.connect(_on_generate)
 	$Dialog/VBox/CloseBtn.pressed.connect(_on_close)
 	$Background.gui_input.connect(_on_bg_click)
@@ -25,7 +27,8 @@ func _on_generate():
 		"随机地图",
 		sd,
 		Vector2i(_w_spin.value, _h_spin.value),
-		_style_opt.get_item_text(_style_opt.selected)
+		_style_opt.get_item_text(_style_opt.selected),
+		int(_slot_spin.value)
 	)
 	MapGenerator.pending_gen = md
 	_on_close()

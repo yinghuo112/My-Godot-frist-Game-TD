@@ -159,7 +159,7 @@ func _add_obstacles():
 						_sv(n, SRC_WALL)
 
 func _generate_slots(pts: Array[Vector2i], md: MapData):
-	var n = _rng.randi_range(6, 10)
+	var n = md.slot_count
 	var spacing = maxi(1, pts.size() / (n + 1))
 	var names: Array[String] = []
 	var positions: Array[Vector2] = []
