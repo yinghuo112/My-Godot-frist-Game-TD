@@ -126,13 +126,10 @@ func _toggle_all():
 
 func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = null) -> void:
 	var date_str = Time.get_date_string_from_system()
-	var logs_dir = ProjectSettings.globalize_path("user://logs/")
-	print("user://logs/ = ", logs_dir)
-	var _cmd = "New-Item -ItemType Directory -Path \"%s\" -Force" % [logs_dir]
-	var _ret = OS.execute("powershell.exe", ["-NoProfile", "-Command", _cmd])
-	print("OS.execute ret = ", _ret)
+	var logs_dir = "user://logs/"
+	if not DirAccess.dir_exists_absolute(logs_dir):
+		DirAccess.make_dir_recursive_absolute(logs_dir)
 	var abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
-	print("abs_path = ", abs_path)
 
 	var lines = []
 	if FileAccess.file_exists(abs_path):
@@ -145,7 +142,6 @@ func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = nu
 			f.close()
 
 	var file = FileAccess.open(abs_path, FileAccess.WRITE)
-	print("FileAccess.WRITE = ", file, " err=", FileAccess.get_open_error())
 	if not file:
 		var temp = OS.get_environment("TEMP")
 		if not temp.is_empty():

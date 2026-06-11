@@ -98,18 +98,14 @@ func _ready() -> void:
 	add_child(_test_wave_3_timer)
 
 func _ensure_logs_dir() -> String:
-	var logs_abs = ProjectSettings.globalize_path("user://logs/")
-	var cmd = "New-Item -ItemType Directory -Path \"%s\" -Force" % [logs_abs]
-	OS.execute("powershell.exe", ["-NoProfile", "-Command", cmd])
-	var test = FileAccess.open(logs_abs + "_w", FileAccess.WRITE)
-	if not test:
+	var logs_abs = "user://logs/"
+	if not DirAccess.dir_exists_absolute(logs_abs):
+		DirAccess.make_dir_recursive_absolute(logs_abs)
+	if not FileAccess.file_exists(logs_abs + "_w"):
 		var temp = OS.get_environment("TEMP")
 		if not temp.is_empty():
 			logs_abs = temp.path_join("first_game_dps_logs")
 			DirAccess.make_dir_recursive_absolute(logs_abs)
-			test = FileAccess.open(logs_abs + "/_w", FileAccess.WRITE)
-	if test:
-		test.close()
 	return logs_abs
 
 func _generate_session_id() -> int:
