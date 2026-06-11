@@ -126,21 +126,9 @@ func _toggle_all():
 
 func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = null) -> void:
 	var date_str = Time.get_date_string_from_system()
-	var logs_dir = "user://logs/"
-	var dir = DirAccess.open("user://")
-	if dir and not dir.dir_exists("logs"):
-		dir.make_dir("logs")
-	var test_file = FileAccess.open(logs_dir + ".write_test", FileAccess.WRITE)
-	if test_file:
-		test_file.close()
-		DirAccess.remove_absolute(ProjectSettings.globalize_path(logs_dir + ".write_test"))
-	else:
-		var temp = OS.get_environment("TEMP")
-		if not temp.is_empty():
-			logs_dir = temp.path_join("first_game_dps_logs")
-			DirAccess.make_dir_recursive_absolute(logs_dir)
-	var abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
+	var logs_dir = _resolve_logs_dir()
 
+	var abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
 	var lines = []
 	if FileAccess.file_exists(abs_path):
 		var f = FileAccess.open(abs_path, FileAccess.READ)
@@ -153,25 +141,9 @@ func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = nu
 
 	var file = FileAccess.open(abs_path, FileAccess.WRITE)
 	if not file:
-		var temp = OS.get_environment("TEMP")
-		if not temp.is_empty():
-			logs_dir = temp.path_join("first_game_dps_logs")
-			DirAccess.make_dir_recursive_absolute(logs_dir)
-			abs_path = logs_dir.path_join("dps_%s.csv" % [date_str])
-			lines = []
-			if FileAccess.file_exists(abs_path):
-				var f = FileAccess.open(abs_path, FileAccess.READ)
-				if f:
-					while not f.eof_reached():
-						var l = f.get_line()
-						if not l.is_empty():
-							lines.append(l)
-					f.close()
-			file = FileAccess.open(abs_path, FileAccess.WRITE)
-	if not file:
-		push_error("❌ 无法创建DPS日志文件: ", abs_path)
 		if debug_panel and debug_panel.has_method("add_log"):
 			debug_panel.add_log("❌ 无法创建DPS日志文件")
+		push_error("❌ 无法创建DPS日志文件: ", abs_path)
 		return
 
 	if lines.is_empty():
@@ -197,3 +169,18 @@ func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = nu
 	print(msg)
 	if debug_panel and debug_panel.has_method("add_log"):
 		debug_panel.add_log(msg)
+
+func _resolve_logs_dir() -> String:
+	var base = OS.get_user_data_dir()
+	var logs_dir = base.path_join("logs")
+	var dir = DirAccess.open(base)
+	if dir and not dir.dir_exists("logs"):
+		dir.make_dir("logs")
+	if FileAccess.open(logs_dir.path_join("_w"), FileAccess.WRITE):
+		return logs_dir
+	var temp = OS.get_environment("TEMP")
+	if temp.is_empty():
+		return logs_dir
+	var fallback = temp.path_join("first_game_dps_logs")
+	DirAccess.make_dir_recursive_absolute(fallback)
+	return fallback
