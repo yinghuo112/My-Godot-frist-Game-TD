@@ -126,19 +126,16 @@ func _toggle_all():
 
 func dump_to_log(wave: int, session_id: int, test_type: String, debug_panel = null) -> void:
 	var date_str = Time.get_date_string_from_system()
-	var path = "user://logs/dps_%s.csv" % [date_str]
-	var dir = DirAccess.open("user://")
-	if dir and not dir.dir_exists("logs"):
-		dir.make_dir_recursive("logs")
+	var path = "user://dps_%s.csv" % [date_str]
 	var file = FileAccess.open(path, FileAccess.READ_WRITE)
-	var is_new = file == null
-	if is_new:
+	if not file:
 		file = FileAccess.open(path, FileAccess.WRITE)
-		if not file:
-			push_error("❌ 无法创建DPS日志文件: ", path)
-			if debug_panel and debug_panel.has_method("add_log"):
-				debug_panel.add_log("❌ 无法创建DPS日志文件")
-			return
+	if not file:
+		push_error("❌ 无法创建DPS日志文件: ", path)
+		if debug_panel and debug_panel.has_method("add_log"):
+			debug_panel.add_log("❌ 无法创建DPS日志文件")
+		return
+	if file.get_length() == 0:
 		file.store_line("会话,时间,波次,塔名,共计,实际秒伤,战斗时间,路线覆盖,峰值,现在的秒伤,备注")
 	else:
 		file.seek_end()

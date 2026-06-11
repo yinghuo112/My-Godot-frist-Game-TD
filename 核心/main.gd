@@ -98,10 +98,7 @@ func _ready() -> void:
 	add_child(_test_wave_3_timer)
 
 func _generate_session_id() -> int:
-	var path = "user://logs/session.txt"
-	var dir = DirAccess.open("user://")
-	if dir and not dir.dir_exists("logs"):
-		dir.make_dir_recursive("logs")
+	var path = "user://session.txt"
 	var id = 1
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file:
