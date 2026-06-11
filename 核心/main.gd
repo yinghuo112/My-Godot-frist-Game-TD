@@ -99,9 +99,9 @@ func _ready() -> void:
 
 func _generate_session_id() -> int:
 	var path = "user://logs/session.txt"
-	var logs_dir = OS.get_user_data_dir().path_join("logs")
-	if not DirAccess.dir_exists(logs_dir):
-		DirAccess.make_dir_recursive_absolute(logs_dir)
+	var dir = DirAccess.open("user://")
+	if dir and not dir.dir_exists("logs"):
+		dir.make_dir_recursive("logs")
 	var id = 1
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file:
