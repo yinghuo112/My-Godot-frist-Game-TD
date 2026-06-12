@@ -1,0 +1,19 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://Scene/tower_slot.gd" id="1_slot"]
+[ext_resource type="Texture2D" uid="uid://gy6lj4aqim4s" path="res://assets/tiles/tower_slot.png" id="2_tex"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
+size = Vector2(32, 32)
+
+[node name="TowerSlot" type="Node2D"]
+script = ExtResource("1_slot")
+
+[node name="Visual" type="Sprite2D" parent="."]
+texture = ExtResource("2_tex")
+self_modulate = Color(1, 1, 1, 0.35)
+
+[node name="ClickArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ClickArea"]
+shape = SubResource("RectangleShape2D_1")

@@ -9,6 +9,11 @@
       "id": "mq7dqivh",
       "text": "Rebalanced 4 towers per standard model (commit 8c07a7f): Arrow(50g) dmg8→10; Magic(70g) dmg30→24; Cannon(80g) dmg30→43 range60→120 + new AoE cannon_shell splash50/0.35; Mage(75g) unchanged",
       "retention": 5
+    },
+    {
+      "id": "mqan95vu",
+      "text": "Fixed `panel_level_select.gd:39` parse error: `label.theme_override_colors/font_color = Color(...)` → `label.add_theme_color_override(\"font_color\", Color(...))`. Removed `generate_mode` export from `game_level.gd` (auto-detect via `$TowerSlots.get_child_count() > 0`). Removed `root.set(\"generate_mode\", false)` from plugin.gd.",
+      "retention": 5
     }
   ]
 }

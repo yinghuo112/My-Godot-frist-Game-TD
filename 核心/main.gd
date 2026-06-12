@@ -21,7 +21,7 @@ var tower_types: Array[TowerType] = [
 var _build_panel: Panel
 var _debug_panel: Control
 var _build_buttons: Array[Button] = []
-var _pending_slot: Marker2D = null
+var _pending_slot: TowerSlot = null
 const _DEBUG_PANEL_SCENE = preload("res://UI/Debug_panel/debug_panel.tscn")
 const _DPS_METER_SCENE = preload("res://UI/panel_dps_meter.tscn")
 var _dps_meter: PanelContainer
@@ -121,7 +121,7 @@ func _generate_session_id() -> int:
 	return id
 
 func _generate_map(md: MapData):
-	var ts = load("res://assets/tiles/ground_tileset.tres")
+	var ts = load("res://data/tileSet/new_tile_set.tres")
 	var tilemap = map_manager.tile_map_layer
 	var path = map_manager.enemy_path
 	if ts and tilemap.tile_set != ts:
@@ -177,16 +177,16 @@ func _input(event: InputEvent) -> void:
 		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible) or info_plane.visible or skill_book_plane.visible:
 			return
 		var click_pos := get_global_mouse_position()
-		if map_manager.handle_slot_click(click_pos):
+		if map_manager.handle_tree_click(click_pos):
 			get_viewport().set_input_as_handled()
-			return
-		map_manager.handle_tree_click(click_pos)
 
-func _on_slot_clicked(slot: Marker2D, is_empty: bool):
+func _on_slot_clicked(slot: TowerSlot, is_empty: bool):
 	if is_empty:
 		_show_build_panel(slot)
 	else:
-		tower_ring.show_for_tower(slot.get_child(0))
+		var tower = slot.get_tower()
+		if tower:
+			tower_ring.show_for_tower(tower)
 
 func _on_tower_info_requested(tower: Node2D) -> void:
 	info_plane.show_for_tower(tower)
@@ -211,14 +211,12 @@ func _unhandled_input(event: InputEvent) -> void:
 		if skill_book_plane.visible:
 			skill_book_plane.close()
 
-func _place_tower(slot: Marker2D, tt: TowerType) -> void:
+func _place_tower(slot: TowerSlot, tt: TowerType) -> void:
 	if not GameManager.can_afford(tt.cost):
 		return
 	var tower = tt.scene.instantiate()
 	tower.init(tt)
 	tower.add_to_group("tower")
-	slot.add_child(tower)
-	tower.position = Vector2.ZERO
 	map_manager.build_tower_at(slot.global_position, tower)
 	GameManager.spend_gold(tt.cost)
 	AudioManager.play("place")
@@ -244,7 +242,7 @@ func _init_build_panel():
 		_build_buttons.append(btn)
 	_build_panel.size = Vector2(150, 34 * tower_types.size() + 12)
 
-func _show_build_panel(slot: Marker2D):
+func _show_build_panel(slot: TowerSlot):
 	if _pending_slot:
 		return
 	_pending_slot = slot

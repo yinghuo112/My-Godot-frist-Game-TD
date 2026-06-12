@@ -42,16 +42,20 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_l6fjp"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_llgc3"]
 resource_local_to_scene = true
 radius = 120.0
 
 [node name="ArrowTower" unique_id=2060410192 instance=ExtResource("1_5tcb5")]
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=741884957]
+position = Vector2(3, -30)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_l6fjp")
 
 [node name="CollisionShape2D" parent="RangeArea" parent_id_path=PackedInt32Array(1830428088) index="0" unique_id=2105987512]
-position = Vector2(-7, 0)
-shape = SubResource("CircleShape2D_l6fjp")
+position = Vector2(-1, 2)
+shape = SubResource("CircleShape2D_llgc3")
+
+[node name="BulletSpawn" parent="." index="3" unique_id=322126159]
+position = Vector2(33, -57)

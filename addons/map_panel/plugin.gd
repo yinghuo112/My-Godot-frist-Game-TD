@@ -30,6 +30,18 @@ func _enter_tree():
 	spin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	opt_hbox.add_child(spin)
 
+	opt_hbox.add_child(Label.new())
+	opt_hbox.get_child(-1).text = "  种子:"
+
+	var seed_spin := SpinBox.new()
+	seed_spin.name = "SeedSpinBox"
+	seed_spin.min_value = 0
+	seed_spin.max_value = 999999
+	seed_spin.step = 1
+	seed_spin.value = 0
+	seed_spin.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	opt_hbox.add_child(seed_spin)
+
 	var btn_hbox := HBoxContainer.new()
 	btn_hbox.name = "ButtonHBox"
 	vbox.add_child(btn_hbox)
@@ -46,6 +58,12 @@ func _enter_tree():
 	clear_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	btn_hbox.add_child(clear_btn)
 
+	var gen_btn := Button.new()
+	gen_btn.name = "GenBtn"
+	gen_btn.text = "🎲 生成新地图"
+	gen_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	btn_hbox.add_child(gen_btn)
+
 	var info := Label.new()
 	info.name = "InfoLabel"
 	info.text = "状态：未加载 TileMapLayer"
@@ -54,6 +72,7 @@ func _enter_tree():
 
 	expand_btn.pressed.connect(_on_expand.bind(spin, info))
 	clear_btn.pressed.connect(_on_clear.bind(info))
+	gen_btn.pressed.connect(_on_generate_map.bind(seed_spin, info))
 
 func _exit_tree():
 	if _dock:
@@ -67,7 +86,7 @@ func _on_expand(spin: SpinBox, info: Label):
 	var expand = spin.value
 	var core_bounds = _get_core_bounds(tilemap)
 	if core_bounds.size == Vector2i.ZERO:
-		info.text = "错误：未找到路径/墙壁图块"
+		info.text = "错误：未找到路径/塔槽图块"
 		return
 
 	var removed := 0
@@ -109,20 +128,86 @@ func _refresh_info(info: Label):
 	var total = tilemap.get_used_cells().size()
 	var grass = 0
 	var path = 0
-	var wall = 0
+	var slot = 0
 	for c in tilemap.get_used_cells():
 		var sid = tilemap.get_cell_source_id(c)
 		match sid:
 			0: grass += 1
 			1: path += 1
-			2: wall += 1
+			5: slot += 1
 	var core = _get_core_bounds(tilemap)
 	if core.size != Vector2i.ZERO:
-		info.text = "图块总数: %d  |  草地: %d  路径: %d  墙壁: %d\n核心区域: (%d, %d) - (%d, %d)" % [
-			total, grass, path, wall,
+		info.text = "图块总数: %d  |  草地: %d  路径: %d  塔槽: %d\n核心区域: (%d, %d) - (%d, %d)" % [
+			total, grass, path, slot,
 			core.position.x, core.position.y, core.end.x, core.end.y]
 	else:
-		info.text = "图块总数: %d  |  草地: %d  路径: %d  墙壁: %d" % [total, grass, path, wall]
+		info.text = "图块总数: %d  |  草地: %d  路径: %d  塔槽: %d" % [total, grass, path, slot]
+
+func _on_generate_map(seed_spin: SpinBox, info: Label):
+	var ts = load("res://data/tileSet/new_tile_set.tres")
+	var md = MapData.create_generated("editor_gen", "编辑器生成", int(seed_spin.value), Vector2i(80, 56), "serpentine", 8)
+	var tilemap = TileMapLayer.new()
+	tilemap.tile_set = ts
+	var gen = MapGenerator.new()
+	if not gen.generate(tilemap, md):
+		info.text = "生成失败"
+		return
+
+	seed_spin.value = md.map_seed
+
+	var root = Node2D.new()
+	root.name = "GameLevel"
+	root.script = load("res://Scene/game_level.gd")
+	tilemap.name = "TileMapLayer"
+	root.add_child(tilemap)
+
+	var enemy_path = Path2D.new()
+	enemy_path.name = "EnemyPath"
+	enemy_path.position = tilemap.position
+	enemy_path.curve = Curve2D.new()
+	if md.path_points.size() >= 2:
+		for i in md.path_points.size():
+			var p = md.path_points[i]
+			var pin = Vector2.ZERO
+			var pout = Vector2.ZERO
+			if i < md.path_points.size() - 1:
+				pout = (md.path_points[i + 1] - p) * 0.3
+			if i > 0:
+				pin = (md.path_points[i - 1] - p) * 0.3
+			enemy_path.curve.add_point(p, pin, pout)
+	root.add_child(enemy_path)
+
+	var slot_scene = load("res://Scene/tower_slot.tscn")
+	var slots_node = Node2D.new()
+	slots_node.name = "TowerSlots"
+	for i in md.slot_names.size():
+		var slot = slot_scene.instantiate()
+		slot.name = md.slot_names[i]
+		slot.position = md.slot_positions[i]
+		slot.add_to_group("interactive_slots")
+		slots_node.add_child(slot)
+	root.add_child(slots_node)
+
+	var tscn_path = "res://Scene/levels/map_gen_%d.tscn" % md.map_seed
+	var meta_path = "res://data/maps/map_gen_%d.tres" % md.map_seed
+
+	var pscene = PackedScene.new()
+	var pack_result = pscene.pack(root)
+	if pack_result != OK:
+		info.text = "打包场景失败：%d" % pack_result
+		return
+
+	var save_result = ResourceSaver.save(pscene, tscn_path)
+	if save_result != OK:
+		info.text = "保存场景失败：%d" % save_result
+		return
+
+	md.map_id = "map_gen_%d" % md.map_seed
+	md.map_name = "自动生成 #%d" % md.map_seed
+	ResourceSaver.save(md, meta_path)
+
+	EditorInterface.open_scene_from_path(tscn_path)
+	info.text = "已保存并打开：%s" % tscn_path.get_file()
 
 func find_tilemap() -> TileMapLayer:
 	var root = get_tree().edited_scene_root

@@ -28,7 +28,7 @@ func _on_generate():
 		"gen_%d" % [Time.get_ticks_usec()],
 		"随机地图",
 		sd,
-		Vector2i(_w_spin.value, _h_spin.value),
+		Vector2i(int(_w_spin.value), int(_h_spin.value)),
 		_style_opt.get_item_metadata(_style_opt.selected),
 		int(_slot_spin.value)
 	)
@@ -45,7 +45,7 @@ func _on_bg_click(event):
 
 func populate(md: MapData = null):
 	if md:
-		_seed_edit.text = str(md.seed) if md.seed != 0 else ""
+		_seed_edit.text = str(md.map_seed) if md.map_seed != 0 else ""
 		_w_spin.value = md.grid_size.x
 		_h_spin.value = md.grid_size.y
 		for i in _style_opt.item_count:

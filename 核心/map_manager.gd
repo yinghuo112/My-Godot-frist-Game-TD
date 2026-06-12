@@ -1,7 +1,9 @@
 extends Node
 class_name MapManager
 
-signal slot_clicked(slot: Marker2D, is_empty: bool)
+signal slot_clicked(slot: TowerSlot, is_empty: bool)
+
+const TOWER_SLOT_SCENE = preload("res://Scene/tower_slot.tscn")
 
 var tile_map_layer: TileMapLayer
 var enemy_path: Path2D
@@ -10,7 +12,6 @@ var play_area: Rect2 = Rect2(-1000, -1000, 4000, 4000)
 var play_area_margin: float = 100.0
 
 var current_map_data = null
-var _occupied_slots: Dictionary = {}
 var _baked_path_points: PackedVector2Array = []
 
 const CLICK_RADIUS_SQ: float = 400.0
@@ -41,16 +42,14 @@ func load_map(data):
 		push_error("load_map: data is null")
 		return
 	current_map_data = data
-	_occupied_slots.clear()
-	# 清空旧槽位节点
 	for child in $TowerSlots.get_children():
 		child.queue_free()
-	# 从数据创建槽位 Marker2D
 	for i in data.slot_names.size():
-		var marker = Marker2D.new()
-		marker.name = data.slot_names[i]
-		marker.position = data.slot_positions[i]
-		$TowerSlots.add_child(marker)
+		var slot = TOWER_SLOT_SCENE.instantiate()
+		slot.name = data.slot_names[i]
+		slot.position = data.slot_positions[i]
+		slot.clicked.connect(_on_tower_slot_clicked)
+		$TowerSlots.add_child(slot)
 
 func start_tree_spawning(delay: float = 3.0):
 	_tree_spawn_timer = Timer.new()
@@ -60,21 +59,21 @@ func start_tree_spawning(delay: float = 3.0):
 	add_child(_tree_spawn_timer)
 	_tree_spawn_timer.start(delay)
 
-func get_slots() -> Array[Marker2D]:
-	var result: Array[Marker2D] = []
+func get_slots() -> Array[TowerSlot]:
+	var result: Array[TowerSlot] = []
 	for child in $TowerSlots.get_children():
-		if child is Marker2D:
+		if child is TowerSlot:
 			result.append(child)
 	return result
 
-func get_slot_at(pos: Vector2) -> Marker2D:
+func get_slot_at(pos: Vector2) -> TowerSlot:
 	for slot in get_slots():
 		if slot.global_position.distance_squared_to(pos) < CLICK_RADIUS_SQ:
 			return slot
 	return null
 
-func is_slot_empty(slot: Marker2D) -> bool:
-	return not _occupied_slots.has(slot.name)
+func is_slot_empty(slot: TowerSlot) -> bool:
+	return slot.is_empty()
 
 func can_build_at(pos: Vector2) -> bool:
 	var slot = get_slot_at(pos)
@@ -84,14 +83,14 @@ func build_tower_at(pos: Vector2, tower_instance: Node2D) -> bool:
 	var slot = get_slot_at(pos)
 	if not slot or not is_slot_empty(slot):
 		return false
-	_occupied_slots[slot.name] = tower_instance
+	slot.place_tower(tower_instance)
 	return true
 
 func free_slot_at(pos: Vector2) -> bool:
 	var slot = get_slot_at(pos)
 	if not slot:
 		return false
-	_occupied_slots.erase(slot.name)
+	slot.remove_tower()
 	return true
 
 func get_slot_difficulty(pos: Vector2) -> float:
@@ -105,14 +104,18 @@ func get_slot_difficulty(pos: Vector2) -> float:
 func handle_slot_click(click_pos: Vector2) -> bool:
 	var slot = get_slot_at(click_pos)
 	if slot:
-		slot_clicked.emit(slot, is_slot_empty(slot))
+		var tower = slot.get_tower()
+		slot_clicked.emit(slot, tower == null)
 		return true
 	return false
+
+func _on_tower_slot_clicked(slot: TowerSlot, empty: bool):
+	slot_clicked.emit(slot, empty)
 
 func count_towers() -> int:
 	var count = 0
 	for slot in get_slots():
-		if _occupied_slots.has(slot.name):
+		if not slot.is_empty():
 			count += 1
 	return count
 
