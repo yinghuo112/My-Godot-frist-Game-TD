@@ -70,9 +70,27 @@ func _enter_tree():
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vbox.add_child(info)
 
+	vbox.add_child(HSeparator.new())
+
+	var import_label := Label.new()
+	import_label.text = "点阵导入（0=草地, 1=路径, 2=塔槽）:"
+	vbox.add_child(import_label)
+
+	var import_edit := TextEdit.new()
+	import_edit.name = "ImportEdit"
+	import_edit.minimum_size = Vector2(0, 120)
+	import_edit.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	vbox.add_child(import_edit)
+
+	var import_btn := Button.new()
+	import_btn.name = "ImportBtn"
+	import_btn.text = "📥 导入点阵"
+	vbox.add_child(import_btn)
+
 	expand_btn.pressed.connect(_on_expand.bind(spin, info))
 	clear_btn.pressed.connect(_on_clear.bind(info))
 	gen_btn.pressed.connect(_on_generate_map.bind(seed_spin, info))
+	import_btn.pressed.connect(_on_import_grid.bind(import_edit, info))
 
 func _exit_tree():
 	if _dock:
@@ -155,10 +173,6 @@ func _on_generate_map(seed_spin: SpinBox, info: Label):
 
 	seed_spin.value = md.map_seed
 
-	print("=== DEBUG 路径点 tilemap.pos=(%.1f, %.1f) tile_size=%s ===" % [tilemap.position.x, tilemap.position.y, tilemap.tile_set.tile_size])
-	for i in range(md.path_points.size()):
-		print("  [%d] (%.1f, %.1f)" % [i, md.path_points[i].x, md.path_points[i].y])
-
 	var root = Node2D.new()
 	root.name = "GameLevel"
 	root.script = load("res://Scene/game_level.gd")
@@ -205,6 +219,71 @@ func _on_generate_map(seed_spin: SpinBox, info: Label):
 
 	md.map_id = "map_gen_%d" % md.map_seed
 	md.map_name = "自动生成 #%d" % md.map_seed
+	ResourceSaver.save(md, meta_path)
+
+	EditorInterface.open_scene_from_path(tscn_path)
+	info.text = "已保存并打开：%s" % tscn_path.get_file()
+
+func _on_import_grid(import_edit: TextEdit, info: Label):
+	var text = import_edit.text.strip_edges()
+	if text.is_empty():
+		info.text = "错误：请输入点阵数据"
+		return
+	var ts = load("res://data/tileSet/new_tile_set.tres")
+	var md = MapData.create_generated("imported", "导入地图", 0, Vector2i(1, 1), "imported", 0)
+	var tilemap = TileMapLayer.new()
+	tilemap.tile_set = ts
+	if not MapGenerator.import_grid(tilemap, md, text):
+		info.text = "导入失败：点阵格式错误或路径不通"
+		return
+
+	var root = Node2D.new()
+	root.name = "GameLevel"
+	root.script = load("res://Scene/game_level.gd")
+	tilemap.name = "TileMapLayer"
+	root.add_child(tilemap)
+	tilemap.owner = root
+
+	var enemy_path = Path2D.new()
+	enemy_path.name = "EnemyPath"
+	enemy_path.position = tilemap.position
+	enemy_path.curve = Curve2D.new()
+	if md.path_points.size() >= 2:
+		for i in md.path_points.size():
+			enemy_path.curve.add_point(md.path_points[i])
+	root.add_child(enemy_path)
+	enemy_path.owner = root
+
+	var slot_scene = load("res://Scene/tower_slot.tscn")
+	var slots_node = Node2D.new()
+	slots_node.name = "TowerSlots"
+	root.add_child(slots_node)
+	slots_node.owner = root
+	for i in md.slot_names.size():
+		var slot = slot_scene.instantiate()
+		slot.name = md.slot_names[i]
+		slot.position = md.slot_positions[i]
+		slot.add_to_group("interactive_slots")
+		slots_node.add_child(slot)
+		slot.owner = root
+
+	var name_base = "map_import_%d" % Time.get_ticks_msec()
+	var tscn_path = "res://Scene/levels/%s.tscn" % name_base
+	var meta_path = "res://data/maps/%s.tres" % name_base
+
+	var pscene = PackedScene.new()
+	var pack_result = pscene.pack(root)
+	if pack_result != OK:
+		info.text = "打包场景失败：%d" % pack_result
+		return
+
+	var save_result = ResourceSaver.save(pscene, tscn_path)
+	if save_result != OK:
+		info.text = "保存场景失败：%d" % save_result
+		return
+
+	md.map_id = name_base
+	md.map_name = "导入地图 #%d" % Time.get_ticks_msec()
 	ResourceSaver.save(md, meta_path)
 
 	EditorInterface.open_scene_from_path(tscn_path)

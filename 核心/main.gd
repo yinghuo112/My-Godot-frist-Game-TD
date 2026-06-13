@@ -42,6 +42,10 @@ var _test_wave_3_remaining: int = 0
 var _test_wave_3_timer: Timer
 
 func _ready() -> void:
+	# 模拟手机视口
+	get_window().content_scale_size = Vector2i(960, 540)
+	_session_id = _generate_session_id()
+	
 	_session_id = _generate_session_id()
 	toolbar.wave_start_requested.connect(_on_start_wave)
 	toolbar.settings_requested.connect(_on_settings)
