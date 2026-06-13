@@ -160,6 +160,7 @@ func _on_generate_map(seed_spin: SpinBox, info: Label):
 	root.script = load("res://Scene/game_level.gd")
 	tilemap.name = "TileMapLayer"
 	root.add_child(tilemap)
+	tilemap.owner = root
 
 	var enemy_path = Path2D.new()
 	enemy_path.name = "EnemyPath"
@@ -176,17 +177,20 @@ func _on_generate_map(seed_spin: SpinBox, info: Label):
 				pin = (md.path_points[i - 1] - p) * 0.3
 			enemy_path.curve.add_point(p, pin, pout)
 	root.add_child(enemy_path)
+	enemy_path.owner = root
 
 	var slot_scene = load("res://Scene/tower_slot.tscn")
 	var slots_node = Node2D.new()
 	slots_node.name = "TowerSlots"
+	root.add_child(slots_node)
+	slots_node.owner = root
 	for i in md.slot_names.size():
 		var slot = slot_scene.instantiate()
 		slot.name = md.slot_names[i]
 		slot.position = md.slot_positions[i]
 		slot.add_to_group("interactive_slots")
 		slots_node.add_child(slot)
-	root.add_child(slots_node)
+		slot.owner = root
 
 	var tscn_path = "res://Scene/levels/map_gen_%d.tscn" % md.map_seed
 	var meta_path = "res://data/maps/map_gen_%d.tres" % md.map_seed
