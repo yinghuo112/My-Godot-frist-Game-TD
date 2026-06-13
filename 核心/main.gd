@@ -61,6 +61,10 @@ func _ready() -> void:
 	if MapGenerator.pending_gen:
 		_generate_map(MapGenerator.pending_gen)
 		MapGenerator.pending_gen = null
+	if MapGenerator.pending_level_path != "":
+		var lvl_path = MapGenerator.pending_level_path
+		MapGenerator.pending_level_path = ""
+		_load_level_from_tscn(lvl_path)
 	if dialogue_ui and dialogue_ui.visible:
 		dialogue_ui.connect("dialogue_finished", map_manager.start_tree_spawning)
 	else:
@@ -145,6 +149,55 @@ func _generate_map(md: MapData):
 				path.curve.add_point(pos, pin, pout)
 		map_manager._baked_path_points = path.curve.get_baked_points()
 	map_manager._calculate_play_area()
+
+func _load_level_from_tscn(tscn_path: String) -> void:
+	var packed = load(tscn_path) as PackedScene
+	if not packed:
+		push_error("无法加载关卡文件: %s" % tscn_path)
+		return
+	var inst = packed.instantiate()
+
+	var src_tilemap = inst.get_node("TileMapLayer") as TileMapLayer
+	var dst_tilemap = $TileMapLayer
+	if src_tilemap and dst_tilemap:
+		dst_tilemap.clear()
+		dst_tilemap.tile_map_data = src_tilemap.tile_map_data
+		dst_tilemap.position = Vector2.ZERO
+
+	var src_enemy_path = inst.get_node("EnemyPath") as Path2D
+	var dst_enemy_path = $EnemyPath
+	if src_enemy_path and dst_enemy_path and src_enemy_path.curve:
+		var nc = Curve2D.new()
+		for i in src_enemy_path.curve.point_count:
+			nc.add_point(src_enemy_path.curve.get_point_position(i))
+		dst_enemy_path.curve = nc
+		dst_enemy_path.position = Vector2.ZERO
+		map_manager._baked_path_points = nc.get_baked_points()
+
+	var md: MapData = null
+	var base = tscn_path.get_file().trim_suffix(".tscn")
+	var meta_path = "res://data/maps/" + base + ".tres"
+	if ResourceLoader.exists(meta_path):
+		md = load(meta_path) as MapData
+	if not md:
+		md = MapData.new()
+		md.map_id = base
+		md.map_name = base
+		var slots_node = inst.get_node("TowerSlots")
+		if slots_node:
+			for child in slots_node.get_children():
+				md.slot_names.append(child.name)
+				md.slot_positions.append(child.position)
+
+	inst.queue_free()
+	map_manager.load_map(md)
+	GameManager.reset()
+	_update_gold(1000)
+	_update_lives(20)
+	_update_wave(0)
+	AudioManager.play_music()
+	map_manager._calculate_play_area()
+	print("📂 已加载关卡: %s" % tscn_path)
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:

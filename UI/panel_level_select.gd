@@ -24,7 +24,7 @@ func populate():
 				var level_name = f.trim_suffix(".tscn")
 				var meta_path = "res://data/maps/" + level_name + ".tres"
 				var md = load(meta_path) as MapData if ResourceLoader.exists(meta_path) else null
-				var display = md.map_name if md and md.map_name != "" else name
+				var display = md.map_name if md and md.map_name != "" else level_name
 				var btn = Button.new()
 				btn.text = display
 				btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
@@ -66,4 +66,5 @@ func _on_level_selected(path: String):
 
 func _on_start():
 	if _selected_path != "":
-		get_tree().change_scene_to_file(_selected_path)
+		MapGenerator.pending_level_path = _selected_path
+		get_tree().change_scene_to_file("res://tower_defense.tscn")
