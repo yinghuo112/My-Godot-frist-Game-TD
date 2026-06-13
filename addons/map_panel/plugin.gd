@@ -155,6 +155,10 @@ func _on_generate_map(seed_spin: SpinBox, info: Label):
 
 	seed_spin.value = md.map_seed
 
+	print("=== DEBUG 路径点 tilemap.pos=(%.1f, %.1f) tile_size=%s ===" % [tilemap.position.x, tilemap.position.y, tilemap.tile_set.tile_size])
+	for i in range(md.path_points.size()):
+		print("  [%d] (%.1f, %.1f)" % [i, md.path_points[i].x, md.path_points[i].y])
+
 	var root = Node2D.new()
 	root.name = "GameLevel"
 	root.script = load("res://Scene/game_level.gd")
