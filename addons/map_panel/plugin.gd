@@ -78,7 +78,7 @@ func _enter_tree():
 
 	var import_edit := TextEdit.new()
 	import_edit.name = "ImportEdit"
-	import_edit.minimum_size = Vector2(0, 120)
+	import_edit.custom_minimum_size = Vector2(0, 120)
 	import_edit.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vbox.add_child(import_edit)
 
