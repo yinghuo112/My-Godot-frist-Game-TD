@@ -172,14 +172,7 @@ func _on_generate_map(seed_spin: SpinBox, info: Label):
 	enemy_path.curve = Curve2D.new()
 	if md.path_points.size() >= 2:
 		for i in md.path_points.size():
-			var p = md.path_points[i]
-			var pin = Vector2.ZERO
-			var pout = Vector2.ZERO
-			if i < md.path_points.size() - 1:
-				pout = (md.path_points[i + 1] - p) * 0.3
-			if i > 0:
-				pin = (md.path_points[i - 1] - p) * 0.3
-			enemy_path.curve.add_point(p, pin, pout)
+			enemy_path.curve.add_point(md.path_points[i])
 	root.add_child(enemy_path)
 	enemy_path.owner = root
 
