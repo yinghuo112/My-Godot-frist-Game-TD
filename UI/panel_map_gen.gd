@@ -5,6 +5,8 @@ var _w_spin: SpinBox
 var _h_spin: SpinBox
 var _style_opt: OptionButton
 var _slot_spin: SpinBox
+var _pw_spin: SpinBox
+var _cov_spin: SpinBox
 
 func _ready():
 	_seed_edit = $Dialog/VBox/SeedEdit
@@ -12,10 +14,14 @@ func _ready():
 	_h_spin = $Dialog/VBox/SizeHBox/GridH
 	_style_opt = $Dialog/VBox/StyleOpt
 	_slot_spin = $Dialog/VBox/SlotSpin
+	_pw_spin = $Dialog/VBox/PWSpin
+	_cov_spin = $Dialog/VBox/CovSpin
 	_style_opt.add_item("蛇形")
 	_style_opt.set_item_metadata(0, "serpentine")
 	_style_opt.add_item("随机漫步")
 	_style_opt.set_item_metadata(1, "random_walk")
+	_style_opt.add_item("双环路")
+	_style_opt.set_item_metadata(2, "figure8")
 	$Dialog/VBox/GenBtn.pressed.connect(_on_generate)
 	$Dialog/VBox/CloseBtn.pressed.connect(_on_close)
 	$Background.gui_input.connect(_on_bg_click)
@@ -24,13 +30,16 @@ func _on_generate():
 	var sd = 0
 	if _seed_edit.text.strip_edges() != "":
 		sd = _seed_edit.text.hash()
+	var n = MapGenerator.next_map_number()
 	var md = MapData.create_generated(
-		"gen_%d" % [Time.get_ticks_usec()],
-		"随机地图",
+		"map_%03d" % n,
+		"地图 #%d" % n,
 		sd,
 		Vector2i(int(_w_spin.value), int(_h_spin.value)),
 		_style_opt.get_item_metadata(_style_opt.selected),
-		int(_slot_spin.value)
+		int(_slot_spin.value),
+		int(_pw_spin.value),
+		float(_cov_spin.value)
 	)
 	MapGenerator.pending_gen = md
 	_on_close()
@@ -56,4 +65,6 @@ func populate(md: MapData = null):
 		_seed_edit.text = ""
 		_w_spin.value = 80
 		_h_spin.value = 56
+		_pw_spin.value = 2
+		_cov_spin.value = 0.3
 		_style_opt.selected = 0

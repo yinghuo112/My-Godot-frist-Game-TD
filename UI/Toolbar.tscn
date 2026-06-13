@@ -162,6 +162,20 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Start Wave"
 
+[node name="Route1Btn" type="Button" parent="MainHBox/CenterGroup"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "路线1"
+visible = false
+
+[node name="Route2Btn" type="Button" parent="MainHBox/CenterGroup"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "路线2"
+visible = false
+
 [node name="SpacerR" type="Control" parent="MainHBox" unique_id=1885545408]
 layout_mode = 2
 size_flags_horizontal = 3

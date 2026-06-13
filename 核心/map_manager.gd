@@ -7,12 +7,14 @@ const TOWER_SLOT_SCENE = preload("res://Scene/tower_slot.tscn")
 
 var tile_map_layer: TileMapLayer
 var enemy_path: Path2D
+var enemy_path_2: Path2D
 
 var play_area: Rect2 = Rect2(-1000, -1000, 4000, 4000)
 var play_area_margin: float = 100.0
 
 var current_map_data = null
 var _baked_path_points: PackedVector2Array = []
+var _baked_path_points_2: PackedVector2Array = []
 
 const CLICK_RADIUS_SQ: float = 400.0
 const TREE_CLICK_RADIUS_SQ: float = 625.0
@@ -32,8 +34,10 @@ func _ready():
 	enemy_path = get_node("../EnemyPath")
 	if enemy_path and enemy_path.curve:
 		_baked_path_points = enemy_path.curve.get_baked_points()
+	enemy_path_2 = get_node_or_null("../EnemyPath2")
+	if enemy_path_2 and enemy_path_2.curve:
+		_baked_path_points_2 = enemy_path_2.curve.get_baked_points()
 	_calculate_play_area()
-	# 加载默认地图数据
 	var default_map = load("res://data/maps/map_001.tres")
 	load_map(default_map)
 
@@ -165,7 +169,9 @@ func handle_tree_click(click_pos: Vector2) -> bool:
 		return true
 	return false
 
-func get_enemy_path() -> Path2D:
+func get_enemy_path(route: int = 0) -> Path2D:
+	if route == 2 and enemy_path_2:
+		return enemy_path_2
 	return enemy_path
 
 func get_path_coverage(pos: Vector2, radius: float) -> float:

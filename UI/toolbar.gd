@@ -10,17 +10,22 @@ extends Control
 signal wave_start_requested
 signal settings_requested
 signal debug_requested
+signal route_changed(route: int)
 
 var _current_speed: float = 1.0
 var _paused: bool = false
+var _current_route: int = 1
 
 func _ready():
 	Engine.time_scale = 1.0
 	_setup_buttons()
 	_update_speed_buttons()
+	_update_route_buttons()
 
 func _setup_buttons():
 	%StartWaveBtn.pressed.connect(_on_start_wave)
+	%Route1Btn.pressed.connect(_on_route.bind(1))
+	%Route2Btn.pressed.connect(_on_route.bind(2))
 	%Speed05xBtn.pressed.connect(_on_speed.bind(0.5))
 	%Speed1xBtn.pressed.connect(_on_speed.bind(1.0))
 	%Speed2xBtn.pressed.connect(_on_speed.bind(2.0))
@@ -50,6 +55,30 @@ func set_start_btn_text(text: String):
 
 func set_start_btn_visible(visible_state: bool):
 	%StartWaveBtn.visible = visible_state
+
+func set_dual_mode(enabled: bool, layout: String = ""):
+	%Route1Btn.visible = enabled
+	%Route2Btn.visible = enabled
+	if enabled:
+		if layout == "cross":
+			%Route1Btn.text = "上环"
+			%Route2Btn.text = "下环"
+		else:
+			%Route1Btn.text = "路线1"
+			%Route2Btn.text = "路线2"
+		if _current_route == 0:
+			_on_route(1)
+
+# ===== 路线选择 =====
+
+func _on_route(route: int):
+	_current_route = route
+	_update_route_buttons()
+	route_changed.emit(route)
+
+func _update_route_buttons():
+	%Route1Btn.disabled = _current_route == 1
+	%Route2Btn.disabled = _current_route == 2
 
 # ===== 速度控制 =====
 

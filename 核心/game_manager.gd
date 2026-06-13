@@ -12,14 +12,16 @@ signal lives_changed(amount)                             # 生命值变化
 var gold: int = 1000
 var lives: int = 20
 var wave: int = 0
-var enemies_to_spawn: int = 0       # 当前波次还未生成的敌人数
-var enemies_on_field: int = 0       # 当前在场上的敌人数
-var is_wave_active: bool = false    # 波次进行中锁定，防止重复点击
+var enemies_to_spawn: int = 0
+var enemies_on_field: int = 0
+var is_wave_active: bool = false
+
+var current_route: int = 1
 
 var total_waves: int = 0
-var timer: Timer                    # 生成定时器
-var _config         # 波次配置数据
-var _current_entry       # 当前波次配置条目
+var timer: Timer
+var _config
+var _current_entry
 const _GREEN_MONSTER = preload("res://怪物/green_monster.tscn")
 
 # 初始化生成计时器和波次配置
@@ -117,7 +119,10 @@ func _spawn_enemy():
 		enemy.died.connect(_on_enemy_died)
 		enemy.reached_end.connect(_on_enemy_reached_end)
 		var mm = get_tree().get_first_node_in_group("map_manager")
-		var path = mm.get_enemy_path() if mm else get_tree().root.get_node("TowerDefense/EnemyPath")
+		var route = current_route
+		if route == 0:
+			route = 1 + (i % 2)
+		var path = mm.get_enemy_path(route) if mm else get_tree().root.get_node("TowerDefense/EnemyPath")
 		path.add_child(enemy)
 		# 沿路径分散位置，避免全部堆叠在起点
 		enemy.progress = i * 60 + randf_range(0, 30)

@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="MapData" format=4 uid="uid://1xsmqjdc23nr"]
+[gd_resource type="Resource" script_class="MapData" format=4 uid="uid://bneiiqeo44wfj"]
 
-[ext_resource type="Script" uid="uid://vrfche0mj3bb" path="res://config/MapData.gd" id="1_fu81p"]
+[ext_resource type="Script" uid="uid://vrfche0mj3bb" path="res://config/MapData.gd" id="1_o2v4k"]
 
 [resource]
-script = ExtResource("1_fu81p")
-map_id = "map_001"
-map_name = "地图 #1"
+script = ExtResource("1_o2v4k")
+map_id = "map_003"
+map_name = "地图 #3"
 slot_names = Array[String](["Slot1", "Slot2", "Slot3", "Slot4", "Slot5", "Slot6", "Slot7", "Slot8"])
 slot_positions = Array[Vector2]([Vector2(272, 560), Vector2(176, 848), Vector2(496, 832), Vector2(400, 464), Vector2(832, 464), Vector2(752, 800), Vector2(1040, 800), Vector2(960, 496)])
 slot_difficulties = Array[float]([1.0625, 1.125, 1.1875, 1.25, 1.3125, 1.375, 1.4375, 1.5])

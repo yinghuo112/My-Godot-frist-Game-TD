@@ -50,6 +50,7 @@ func _ready() -> void:
 	toolbar.wave_start_requested.connect(_on_start_wave)
 	toolbar.settings_requested.connect(_on_settings)
 	toolbar.debug_requested.connect(_toggle_debug_panel)
+	toolbar.route_changed.connect(_on_route_changed)
 	GameManager.reset()
 	GameManager.gold_changed.connect(_update_gold)
 	GameManager.lives_changed.connect(_update_lives)
@@ -142,16 +143,22 @@ func _generate_map(md: MapData):
 		path.curve = Curve2D.new()
 		if md.path_points.size() >= 2:
 			for i in md.path_points.size():
-				var p = md.path_points[i]
-				var pos = Vector2(p.x, p.y)
-				var pin = Vector2.ZERO
-				var pout = Vector2.ZERO
-				if i < md.path_points.size() - 1:
-					pout = (md.path_points[i + 1] - pos) * 0.3
-				if i > 0:
-					pin = (md.path_points[i - 1] - pos) * 0.3
-				path.curve.add_point(pos, pin, pout)
+				path.curve.add_point(md.path_points[i], Vector2.ZERO, Vector2.ZERO)
 		map_manager._baked_path_points = path.curve.get_baked_points()
+	var has_dual = md.alt_path_points.size() >= 2
+	if has_dual:
+		var path2 = Path2D.new()
+		path2.name = "EnemyPath2"
+		path2.position = tilemap.position
+		path2.curve = Curve2D.new()
+		for i in md.alt_path_points.size():
+			path2.curve.add_point(md.alt_path_points[i], Vector2.ZERO, Vector2.ZERO)
+		add_child(path2)
+		map_manager.enemy_path_2 = path2
+		map_manager._baked_path_points_2 = path2.curve.get_baked_points()
+		toolbar.set_dual_mode(true, md.figure8_layout)
+	else:
+		toolbar.set_dual_mode(false)
 	map_manager._calculate_play_area()
 
 func _load_level_from_tscn(tscn_path: String) -> void:
@@ -178,6 +185,21 @@ func _load_level_from_tscn(tscn_path: String) -> void:
 		dst_enemy_path.position = Vector2.ZERO
 		map_manager._baked_path_points = nc.get_baked_points()
 
+	var src_enemy_path_2 = inst.get_node_or_null("EnemyPath2") as Path2D
+	if src_enemy_path_2 and src_enemy_path_2.curve:
+		var nc2 = Curve2D.new()
+		for i in src_enemy_path_2.curve.point_count:
+			nc2.add_point(src_enemy_path_2.curve.get_point_position(i))
+		var dst_path2 = get_node_or_null("EnemyPath2")
+		if not dst_path2:
+			dst_path2 = Path2D.new()
+			dst_path2.name = "EnemyPath2"
+			add_child(dst_path2)
+		dst_path2.curve = nc2
+		dst_path2.position = Vector2.ZERO
+		map_manager.enemy_path_2 = dst_path2
+		map_manager._baked_path_points_2 = nc2.get_baked_points()
+
 	var md: MapData = null
 	var base = tscn_path.get_file().trim_suffix(".tscn")
 	var meta_path = "res://data/maps/" + base + ".tres"
@@ -195,6 +217,7 @@ func _load_level_from_tscn(tscn_path: String) -> void:
 
 	inst.queue_free()
 	map_manager.load_map(md)
+	toolbar.set_dual_mode(md.alt_path_points.size() >= 2, md.figure8_layout)
 	GameManager.reset()
 	_update_gold(1000)
 	_update_lives(20)
@@ -345,7 +368,7 @@ func _spawn_one_test_enemy():
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
 	enemy.reached_end.connect(_on_test_enemy_reached_end)
-	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
+	var path = map_manager.get_enemy_path(GameManager.current_route)
 	path.add_child(enemy)
 	_test_wave_remaining -= 1
 	print("测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_remaining, debug_type.max_hp, debug_type.speed])
@@ -370,7 +393,7 @@ func _spawn_one_test_enemy_2():
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
 	enemy.reached_end.connect(_on_test_enemy_reached_end)
-	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
+	var path = map_manager.get_enemy_path(GameManager.current_route)
 	path.add_child(enemy)
 	_test_wave_2_remaining -= 1
 	print("2塔测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_2_remaining, debug_type.max_hp, debug_type.speed])
@@ -395,10 +418,13 @@ func _spawn_one_test_enemy_3():
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
 	enemy.reached_end.connect(_on_test_enemy_reached_end)
-	var path = get_tree().root.get_node("TowerDefense/EnemyPath")
+	var path = map_manager.get_enemy_path(GameManager.current_route)
 	path.add_child(enemy)
 	_test_wave_3_remaining -= 1
 	print("3号测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_3_remaining, debug_type.max_hp, debug_type.speed])
+
+func _on_route_changed(route: int) -> void:
+	GameManager.current_route = route
 
 func _on_test_enemy_died(enemy):
 	print(">>> Debug Monster 被击杀，剩余血量: %.0f / %.0f，金币奖励: %d" % [enemy.current_hp, enemy.max_hp, enemy.gold_reward])
