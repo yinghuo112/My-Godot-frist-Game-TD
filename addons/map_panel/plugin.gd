@@ -66,6 +66,7 @@ func _enter_tree():
 	# === 生成地图标签页 ===
 	var _gen_tab := VBoxContainer.new()
 	_gen_tab.name = "GenTab"
+	_gen_tab.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vbox.add_child(_gen_tab)
 
 	var opt_hbox := HBoxContainer.new()
@@ -215,6 +216,7 @@ func _enter_tree():
 	var _import_tab := VBoxContainer.new()
 	_import_tab.name = "ImportTab"
 	_import_tab.visible = false
+	_import_tab.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vbox.add_child(_import_tab)
 
 	var import_label := Label.new()
@@ -236,6 +238,7 @@ func _enter_tree():
 	var _manage_tab := VBoxContainer.new()
 	_manage_tab.name = "ManageTab"
 	_manage_tab.visible = false
+	_manage_tab.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vbox.add_child(_manage_tab)
 
 	var list_header := HBoxContainer.new()
