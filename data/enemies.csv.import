@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://b8kvbfxq4rmdw"
+
+[deps]
+
+files=["res://data/enemies.display.translation", "res://data/enemies.max.translation", "res://data/enemies.speed.translation", "res://data/enemies.gold.translation", "res://data/enemies.lane.translation", "res://data/enemies.lane.translation", "res://data/enemies.scene.translation", "res://data/enemies.armor.translation", "res://data/enemies.armor.translation", "res://data/enemies.dodge.translation"]
+
+source_file="res://data/enemies.csv"
+dest_files=["res://data/enemies.display.translation", "res://data/enemies.max.translation", "res://data/enemies.speed.translation", "res://data/enemies.gold.translation", "res://data/enemies.lane.translation", "res://data/enemies.lane.translation", "res://data/enemies.scene.translation", "res://data/enemies.armor.translation", "res://data/enemies.armor.translation", "res://data/enemies.dodge.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

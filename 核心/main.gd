@@ -27,17 +27,17 @@ const _DPS_METER_SCENE = preload("res://UI/panel_dps_meter.tscn")
 var _dps_meter: PanelContainer
 var _session_id: int = 0
 var _last_test_type: String = ""
-const _DEBUG_MONSTER_TYPE = preload("res://config/test_enemy.tres")
+const _DEBUG_MONSTER_TYPE = preload("res://config/legacy/test_enemy.tres")
 const _TEST_WAVE_COUNT = 5
 const _TEST_WAVE_INTERVAL = 1.27
 var _test_wave_remaining: int = 0
 var _test_wave_timer: Timer
 
-const _DEBUG_MONSTER_TYPE_2 = preload("res://config/test_enemy_2.tres")
+const _DEBUG_MONSTER_TYPE_2 = preload("res://config/legacy/test_enemy_2.tres")
 var _test_wave_2_remaining: int = 0
 var _test_wave_2_timer: Timer
 
-const _DEBUG_MONSTER_TYPE_3 = preload("res://config/test_enemy_3.tres")
+const _DEBUG_MONSTER_TYPE_3 = preload("res://config/legacy/test_enemy_3.tres")
 var _test_wave_3_remaining: int = 0
 var _test_wave_3_timer: Timer
 
