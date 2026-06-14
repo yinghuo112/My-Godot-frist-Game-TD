@@ -4,6 +4,7 @@ var _seed_edit: LineEdit
 var _w_spin: SpinBox
 var _h_spin: SpinBox
 var _style_opt: OptionButton
+var _fig_opt: OptionButton
 var _slot_spin: SpinBox
 var _pw_spin: SpinBox
 var _cov_spin: SpinBox
@@ -13,6 +14,13 @@ func _ready():
 	_w_spin = $Dialog/VBox/SizeHBox/GridW
 	_h_spin = $Dialog/VBox/SizeHBox/GridH
 	_style_opt = $Dialog/VBox/StyleOpt
+	_fig_opt = $Dialog/VBox/FigureOpt
+	_fig_opt.add_item("随机")
+	_fig_opt.set_item_metadata(0, "")
+	_fig_opt.add_item("分离式")
+	_fig_opt.set_item_metadata(1, "split")
+	_fig_opt.add_item("交叉式")
+	_fig_opt.set_item_metadata(2, "cross")
 	_slot_spin = $Dialog/VBox/SlotSpin
 	_pw_spin = $Dialog/VBox/PWSpin
 	_cov_spin = $Dialog/VBox/CovSpin
@@ -22,9 +30,14 @@ func _ready():
 	_style_opt.set_item_metadata(1, "random_walk")
 	_style_opt.add_item("双环路")
 	_style_opt.set_item_metadata(2, "figure8")
+	_style_opt.item_selected.connect(_on_style_changed)
+	_fig_opt.visible = false
 	$Dialog/VBox/GenBtn.pressed.connect(_on_generate)
 	$Dialog/VBox/CloseBtn.pressed.connect(_on_close)
 	$Background.gui_input.connect(_on_bg_click)
+
+func _on_style_changed(idx: int):
+	_fig_opt.visible = _style_opt.get_item_metadata(idx) == "figure8"
 
 func _on_generate():
 	var sd = 0
@@ -41,6 +54,7 @@ func _on_generate():
 		int(_pw_spin.value),
 		float(_cov_spin.value)
 	)
+	md.figure8_layout = _fig_opt.get_item_metadata(_fig_opt.selected)
 	MapGenerator.pending_gen = md
 	_on_close()
 	get_tree().change_scene_to_file("res://tower_defense.tscn")

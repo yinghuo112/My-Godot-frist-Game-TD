@@ -5,9 +5,10 @@
 # MCP 插件（不上传）
 addons/*
 
-# 保留 mobile_adapter 模块
+# 保留自定义模块
 !addons/mobile_adapter/
 !addons/map_panel/
+!addons/map_generator/
 
 # 文档不上传
 *.txt

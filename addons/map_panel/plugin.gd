@@ -2,6 +2,9 @@
 extends EditorPlugin
 
 var _dock: Control
+var _map_list: ItemList
+var _map_list_label: Label
+var _select_all_btn: Button
 
 func _enter_tree():
 	_dock = Control.new()
@@ -108,6 +111,27 @@ func _enter_tree():
 	style_opt.set_item_metadata(2, "figure8")
 	style_hbox.add_child(style_opt)
 
+	var fig_hbox := HBoxContainer.new()
+	fig_hbox.name = "FigureHBox"
+	fig_hbox.visible = false
+	vbox.add_child(fig_hbox)
+
+	fig_hbox.add_child(Label.new())
+	fig_hbox.get_child(-1).text = "双环路布局:"
+
+	var fig_opt := OptionButton.new()
+	fig_opt.name = "FigureOpt"
+	fig_opt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	fig_opt.add_item("随机")
+	fig_opt.set_item_metadata(0, "")
+	fig_opt.add_item("分离式")
+	fig_opt.set_item_metadata(1, "split")
+	fig_opt.add_item("交叉式")
+	fig_opt.set_item_metadata(2, "cross")
+	fig_hbox.add_child(fig_opt)
+
+	style_opt.item_selected.connect(func(idx): fig_hbox.visible = (style_opt.get_item_metadata(idx) == "figure8"))
+
 	var btn_hbox := HBoxContainer.new()
 	btn_hbox.name = "ButtonHBox"
 	vbox.add_child(btn_hbox)
@@ -144,7 +168,7 @@ func _enter_tree():
 
 	var import_edit := TextEdit.new()
 	import_edit.name = "ImportEdit"
-	import_edit.custom_minimum_size = Vector2(0, 120)
+	import_edit.custom_minimum_size = Vector2(0, 60)
 	import_edit.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	vbox.add_child(import_edit)
 
@@ -153,10 +177,59 @@ func _enter_tree():
 	import_btn.text = "📥 导入点阵"
 	vbox.add_child(import_btn)
 
+	vbox.add_child(HSeparator.new())
+
+	var list_header := HBoxContainer.new()
+	vbox.add_child(list_header)
+
+	_map_list_label = Label.new()
+	_map_list_label.name = "MapListLabel"
+	_map_list_label.text = "📋 已生成地图:"
+	_map_list_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	list_header.add_child(_map_list_label)
+
+	var open_btn := Button.new()
+	open_btn.name = "OpenBtn"
+	open_btn.text = "🔍 打开选中"
+	list_header.add_child(open_btn)
+
+	_select_all_btn = Button.new()
+	_select_all_btn.name = "SelectAllBtn"
+	_select_all_btn.text = "☐ 全选"
+	list_header.add_child(_select_all_btn)
+
+	var delete_btn := Button.new()
+	delete_btn.name = "DeleteBtn"
+	delete_btn.text = "🗑 删除选中"
+	list_header.add_child(delete_btn)
+
+	var refresh_btn := Button.new()
+	refresh_btn.name = "RefreshBtn"
+	refresh_btn.text = "🔄 刷新"
+	list_header.add_child(refresh_btn)
+
+	_map_list = ItemList.new()
+	_map_list.name = "MapList"
+	_map_list.select_mode = ItemList.SELECT_MULTI
+	_map_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	_map_list.size_flags_stretch_ratio = 1.0
+	vbox.add_child(_map_list)
+
+	var list_spacer := Control.new()
+	list_spacer.custom_minimum_size = Vector2(0, 4)
+	vbox.add_child(list_spacer)
+
 	expand_btn.pressed.connect(_on_expand.bind(spin, info))
 	clear_btn.pressed.connect(_on_clear.bind(info))
-	gen_btn.pressed.connect(_on_generate_map.bind(seed_spin, w_spin, h_spin, pw_spin, cov_spin, style_opt, info))
+	gen_btn.pressed.connect(_on_generate_map.bind(seed_spin, w_spin, h_spin, pw_spin, cov_spin, style_opt, fig_opt, info))
 	import_btn.pressed.connect(_on_import_grid.bind(import_edit, info))
+	open_btn.pressed.connect(_open_selected)
+	_select_all_btn.pressed.connect(_toggle_select_all)
+	delete_btn.pressed.connect(_delete_selected)
+	refresh_btn.pressed.connect(_refresh_map_list)
+	_map_list.item_activated.connect(_on_item_activated)
+
+	_refresh_map_list()
 
 func _exit_tree():
 	if _dock:
@@ -227,11 +300,12 @@ func _refresh_info(info: Label):
 	else:
 		info.text = "图块总数: %d  |  草地: %d  路径: %d  塔槽: %d" % [total, grass, path, slot]
 
-func _on_generate_map(seed_spin: SpinBox, w_spin: SpinBox, h_spin: SpinBox, pw_spin: SpinBox, cov_spin: SpinBox, style_opt: OptionButton, info: Label):
+func _on_generate_map(seed_spin: SpinBox, w_spin: SpinBox, h_spin: SpinBox, pw_spin: SpinBox, cov_spin: SpinBox, style_opt: OptionButton, fig_opt: OptionButton, info: Label):
 	var ts = load("res://data/tileSet/new_tile_set.tres")
 	var n = MapGenerator.next_map_number()
 	var style = style_opt.get_item_metadata(style_opt.selected)
 	var md = MapData.create_generated("map_%03d" % n, "地图 #%d" % n, int(seed_spin.value), Vector2i(int(w_spin.value), int(h_spin.value)), style, 8, int(pw_spin.value), float(cov_spin.value))
+	md.figure8_layout = fig_opt.get_item_metadata(fig_opt.selected)
 	var tilemap = TileMapLayer.new()
 	tilemap.tile_set = ts
 	var gen = MapGenerator.new()
@@ -301,6 +375,7 @@ func _on_generate_map(seed_spin: SpinBox, w_spin: SpinBox, h_spin: SpinBox, pw_s
 
 	EditorInterface.open_scene_from_path(tscn_path)
 	info.text = "已保存并打开：%s" % tscn_path.get_file()
+	_refresh_map_list()
 
 func _on_import_grid(import_edit: TextEdit, info: Label):
 	var text = import_edit.text.strip_edges()
@@ -376,6 +451,7 @@ func _on_import_grid(import_edit: TextEdit, info: Label):
 
 	EditorInterface.open_scene_from_path(tscn_path)
 	info.text = "已保存并打开：%s" % tscn_path.get_file()
+	_refresh_map_list()
 
 func find_tilemap() -> TileMapLayer:
 	var root = get_tree().edited_scene_root
@@ -401,3 +477,108 @@ func _get_core_bounds(tilemap):
 		min_c = Vector2i(min(min_c.x, c.x), min(min_c.y, c.y))
 		max_c = Vector2i(max(max_c.x, c.x), max(max_c.y, c.y))
 	return Rect2i(min_c, max_c - min_c + Vector2i(1, 1))
+
+# ===== 地图列表管理 =====
+
+func _refresh_map_list():
+	_map_list.clear()
+	if not DirAccess.dir_exists_absolute("res://Scene/levels/"):
+		_map_list_label.text = "📋 已生成地图: 0"
+		return
+	var dir = DirAccess.open("res://Scene/levels/")
+	if not dir:
+		return
+	dir.list_dir_begin()
+	var count = 0
+	var f = dir.get_next()
+	while f != "":
+		if f.ends_with(".tscn"):
+			var base = f.trim_suffix(".tscn")
+			var meta_path = "res://data/maps/" + base + ".tres"
+			var label = base
+			var layout_info = ""
+			if ResourceLoader.exists(meta_path):
+				var md = load(meta_path)
+				if md and md.get("map_name"):
+					label = md.map_name
+				if md and md.get("path_style") and md.path_style == "figure8":
+					if md.get("figure8_layout") and md.figure8_layout != "":
+						if md.figure8_layout == "split":
+							layout_info = " | 分离式"
+						else:
+							layout_info = " | 交叉式"
+				if md and md.get("path_style"):
+					var style_names = {"serpentine": "蛇形", "random_walk": "随机漫步", "figure8": "双环路", "imported": "点阵"}
+					var sn = style_names.get(md.path_style, md.path_style)
+					if layout_info == "":
+						layout_info = " | " + sn
+					else:
+						layout_info = " | " + sn + layout_info
+				if md and md.get("map_seed"):
+					layout_info += "  🎲" + str(md.map_seed)
+			var idx = _map_list.add_item(label + layout_info)
+			_map_list.set_item_metadata(idx, {"tscn": "res://Scene/levels/" + f, "meta": meta_path})
+			count += 1
+		f = dir.get_next()
+	dir.list_dir_end()
+	_map_list_label.text = "📋 已生成地图: %d" % count
+
+func _on_item_activated(_idx: int):
+	_open_selected()
+
+func _open_selected():
+	var selected = _map_list.get_selected_items()
+	if selected.size() != 1:
+		return
+	var meta = _map_list.get_item_metadata(selected[0])
+	if not (meta is Dictionary):
+		return
+	if not meta.has("tscn"):
+		return
+	var p = meta["tscn"]
+	if not ResourceLoader.exists(p):
+		return
+	EditorInterface.open_scene_from_path(p)
+
+func _toggle_select_all():
+	var all_selected = true
+	for i in _map_list.item_count:
+		if not _map_list.is_selected(i):
+			all_selected = false
+			break
+	if all_selected:
+		for i in _map_list.item_count:
+			_map_list.deselect(i)
+		_select_all_btn.text = "☐ 全选"
+	else:
+		for i in _map_list.item_count:
+			_map_list.select(i)
+		_select_all_btn.text = "☑ 全选"
+
+func _delete_selected():
+	var selected = _map_list.get_selected_items()
+	if selected.is_empty():
+		return
+	var snapshot = selected
+	var dialog = AcceptDialog.new()
+	dialog.dialog_text = "确认删除选中的 %d 个地图？\n将同时删除 .tscn 和 .tres 文件。" % snapshot.size()
+	dialog.ok_button_text = "删除"
+	dialog.exclusive = true
+	dialog.set_meta("items", snapshot)
+	dialog.confirmed.connect(_do_delete.bind(dialog))
+	dialog.canceled.connect(dialog.queue_free)
+	_dock.add_child(dialog)
+	dialog.popup_centered()
+
+func _do_delete(dialog: AcceptDialog):
+	var snapshot = dialog.get_meta("items", PackedInt32Array())
+	for idx in snapshot:
+		var meta = _map_list.get_item_metadata(idx)
+		if meta:
+			if meta.has("tscn"):
+				DirAccess.remove_absolute(meta["tscn"])
+			if meta.has("meta"):
+				DirAccess.remove_absolute(meta["meta"])
+	_refresh_map_list()
+	_select_all_btn.text = "☐ 全选"
+	dialog.queue_free()

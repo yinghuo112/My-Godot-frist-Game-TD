@@ -83,6 +83,9 @@ text = "路径风格"
 [node name="StyleOpt" type="OptionButton" parent="Dialog/VBox"]
 layout_mode = 2
 
+[node name="FigureOpt" type="OptionButton" parent="Dialog/VBox"]
+layout_mode = 2
+
 [node name="SlotLabel" type="Label" parent="Dialog/VBox"]
 layout_mode = 2
 text = "塔槽位数"
