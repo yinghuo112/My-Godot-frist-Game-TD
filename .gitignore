@@ -23,3 +23,7 @@ Log/
 # 根目录测试文件
 /test.csv
 /test.csv.import
+
+# CSV 导入缓存（Godot 自动生成）
+data/*.translation
+data/*.csv.import
