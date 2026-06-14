@@ -18,6 +18,8 @@ class_name MapData
 @export var alt_path_points: PackedVector2Array = []
 @export var figure8_layout: String = ""
 @export var slot_count: int = 8
+@export var difficulty_score: float = 0.0
+@export var difficulty_data: Dictionary = {}
 
 static func create_generated(id: String, name: String, sd: int, size: Vector2i, style: String, slots: int = 8, pw: int = 2, cov: float = 0.3) -> MapData:
 	var d = MapData.new()

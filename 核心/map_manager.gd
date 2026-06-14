@@ -219,6 +219,57 @@ func _spawn_tree():
 func _on_tree_died(reward: int):
 	GameManager.add_gold(reward)
 
+static func calc_difficulty(md: MapData) -> Dictionary:
+	var base_range = 150.0
+	var slot_positions = md.slot_positions
+	var waypoints = md.path_points
+	var result = {}
+
+	if waypoints.size() < 2:
+		result["error"] = "路径点不足"
+		return result
+
+	var step = 16.0
+	var sampled_path: PackedVector2Array = []
+	for i in range(1, waypoints.size()):
+		var a = waypoints[i - 1]
+		var b = waypoints[i]
+		var seg_len = a.distance_to(b)
+		var steps = maxi(1, int(seg_len / step))
+		for s in range(steps + 1):
+			sampled_path.append(a.lerp(b, float(s) / steps))
+
+	var path_length = 0.0
+	for i in range(1, waypoints.size()):
+		path_length += waypoints[i - 1].distance_to(waypoints[i])
+
+	var range_sq = base_range * base_range
+	var total_hits = 0
+	var unique_hits = 0
+
+	for sp in sampled_path:
+		var hit = false
+		for slot_pos in slot_positions:
+			if slot_pos.distance_squared_to(sp) <= range_sq:
+				total_hits += 1
+				if not hit:
+					unique_hits += 1
+					hit = true
+
+	var total_covered = total_hits * step
+	var unique_covered = unique_hits * step
+	var avg_per_slot = total_covered / max(slot_positions.size(), 1)
+	var fire_density = total_covered / max(unique_covered, 1.0)
+	var difficulty = (total_covered / max(path_length, 1.0)) * 100.0
+
+	result["difficulty_score"] = difficulty
+	result["path_length"] = path_length
+	result["slot_count"] = slot_positions.size()
+	result["avg_coverage_per_slot"] = avg_per_slot
+	result["fire_density"] = fire_density
+	result["path_width"] = md.path_width * 2 + 1
+	return result
+
 func _show_floating_text(world_pos: Vector2, msg: String = "金币不足..."):
 	var camera = get_viewport().get_camera_2d()
 	if not camera:

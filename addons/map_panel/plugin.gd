@@ -456,7 +456,14 @@ func _on_generate_map(seed_spin: SpinBox, w_spin: SpinBox, h_spin: SpinBox, pw_s
 	ResourceSaver.save(md, meta_path)
 
 	EditorInterface.open_scene_from_path(tscn_path)
-	info.text = "已保存并打开：%s" % tscn_path
+	var diff = MapManager.calc_difficulty(md)
+	md.difficulty_score = diff.get("difficulty_score", 0.0)
+	md.difficulty_data = diff
+	var diff_text = ""
+	if diff.has("path_length"):
+		diff_text = " | 难度: %.1f | 路径: %.0fpx | %d槽 | 火力密度: %.2f" % [
+			diff.difficulty_score, diff.path_length, diff.slot_count, diff.fire_density]
+	info.text = "已保存并打开：%s%s" % [tscn_path, diff_text]
 	_refresh_map_list()
 
 func _on_import_grid(import_edit: TextEdit, info: Label):
@@ -529,10 +536,17 @@ func _on_import_grid(import_edit: TextEdit, info: Label):
 
 	md.map_id = "map_%03d" % n
 	md.map_name = "地图 #%d" % n
+	var diff = MapManager.calc_difficulty(md)
+	md.difficulty_score = diff.get("difficulty_score", 0.0)
+	md.difficulty_data = diff
 	ResourceSaver.save(md, meta_path)
 
 	EditorInterface.open_scene_from_path(tscn_path)
-	info.text = "已保存并打开：%s" % tscn_path
+	var diff_text = ""
+	if diff.has("path_length"):
+		diff_text = " | 难度: %.1f | 路径: %.0fpx | %d槽 | 火力密度: %.2f" % [
+			diff.difficulty_score, diff.path_length, diff.slot_count, diff.fire_density]
+	info.text = "已保存并打开：%s%s" % [tscn_path, diff_text]
 	_refresh_map_list()
 
 func find_tilemap() -> TileMapLayer:
