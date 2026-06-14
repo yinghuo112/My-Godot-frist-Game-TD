@@ -66,8 +66,8 @@ func start_wave():
 # --- 加载波次配置 ---
 # 从 CSV 加载波次配置，失败时用默认配置
 func _load_config() -> Array:
-	_enemies_db = CSVLoader.load_enemies("res://data/enemies.csvt")
-	var waves = CSVLoader.load_waves("res://data/waves.csvt", _enemies_db)
+	_enemies_db = CSVLoader.load_enemies("res://data/enemies.csv")
+	var waves = CSVLoader.load_waves("res://data/waves.csv", _enemies_db)
 	if waves.is_empty():
 		push_warning("CSV 波次为空，使用默认配置")
 		var entry = preload("res://config/wave_entry.gd").new()
