@@ -15,6 +15,7 @@ func _enter_tree():
 	vbox.name = "VBox"
 	vbox.anchor_right = 1.0
 	vbox.anchor_bottom = 1.0
+	vbox.add_theme_constant_override("separation", 0)
 	_dock.add_child(vbox)
 
 	# === 标签栏 ===
@@ -44,6 +45,28 @@ func _enter_tree():
 	manage_tab_btn.button_group = tab_group
 	manage_tab_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tab_hbox.add_child(manage_tab_btn)
+
+	var spacer := Control.new()
+	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tab_hbox.add_child(spacer)
+
+	var sb_none := StyleBoxEmpty.new()
+	var sb_hover := StyleBoxFlat.new()
+	sb_hover.bg_color = Color8(144, 144, 144, 25)
+	var sb_active := StyleBoxFlat.new()
+	sb_active.bg_color = Color8(144, 144, 144, 40)
+	sb_active.border_width_bottom = 2
+	sb_active.border_color = Color8(201, 201, 201)
+
+	var normal_color := Color8(123, 123, 123)
+	var active_color := Color8(201, 201, 201)
+
+	for btn in [gen_tab_btn, import_tab_btn, manage_tab_btn]:
+		btn.add_theme_stylebox_override("normal", sb_none)
+		btn.add_theme_stylebox_override("hover", sb_hover)
+		btn.add_theme_stylebox_override("pressed", sb_active)
+		btn.add_theme_stylebox_override("focus", sb_none)
+		btn.add_theme_color_override("font_color", active_color if btn == gen_tab_btn else normal_color)
 
 	# === 生成地图标签页 ===
 	var _gen_tab := VBoxContainer.new()
@@ -270,10 +293,25 @@ func _enter_tree():
 	refresh_btn.pressed.connect(_refresh_map_list)
 	_map_list.item_activated.connect(_on_item_activated)
 
-	# 标签切换
-	gen_tab_btn.toggled.connect(func(on): _gen_tab.visible = on)
-	import_tab_btn.toggled.connect(func(on): _import_tab.visible = on)
-	manage_tab_btn.toggled.connect(func(on): _manage_tab.visible = on)
+	# 标签切换 + 文字颜色
+	gen_tab_btn.toggled.connect(func(on):
+		_gen_tab.visible = on
+		if on:
+			gen_tab_btn.add_theme_color_override("font_color", Color8(201, 201, 201))
+			import_tab_btn.add_theme_color_override("font_color", Color8(123, 123, 123))
+			manage_tab_btn.add_theme_color_override("font_color", Color8(123, 123, 123)))
+	import_tab_btn.toggled.connect(func(on):
+		_import_tab.visible = on
+		if on:
+			import_tab_btn.add_theme_color_override("font_color", Color8(201, 201, 201))
+			gen_tab_btn.add_theme_color_override("font_color", Color8(123, 123, 123))
+			manage_tab_btn.add_theme_color_override("font_color", Color8(123, 123, 123)))
+	manage_tab_btn.toggled.connect(func(on):
+		_manage_tab.visible = on
+		if on:
+			manage_tab_btn.add_theme_color_override("font_color", Color8(201, 201, 201))
+			gen_tab_btn.add_theme_color_override("font_color", Color8(123, 123, 123))
+			import_tab_btn.add_theme_color_override("font_color", Color8(123, 123, 123)))
 
 	_refresh_map_list()
 
