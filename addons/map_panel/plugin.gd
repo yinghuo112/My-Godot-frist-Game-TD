@@ -420,7 +420,7 @@ func _on_generate_map(seed_spin: SpinBox, w_spin: SpinBox, h_spin: SpinBox, pw_s
 	ResourceSaver.save(md, meta_path)
 
 	EditorInterface.open_scene_from_path(tscn_path)
-	info.text = "已保存并打开：%s" % tscn_path.get_file()
+	info.text = "已保存并打开：%s" % tscn_path
 	_refresh_map_list()
 
 func _on_import_grid(import_edit: TextEdit, info: Label):
@@ -496,7 +496,7 @@ func _on_import_grid(import_edit: TextEdit, info: Label):
 	ResourceSaver.save(md, meta_path)
 
 	EditorInterface.open_scene_from_path(tscn_path)
-	info.text = "已保存并打开：%s" % tscn_path.get_file()
+	info.text = "已保存并打开：%s" % tscn_path
 	_refresh_map_list()
 
 func find_tilemap() -> TileMapLayer:
