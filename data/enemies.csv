@@ -1,0 +1,6 @@
+id,display_name,max_hp,speed,gold_reward,lane_width,lane_change_speed,scene_path,armor_physical,armor_magic,dodge_chance
+goblin,哥布林,30,120,15,40,120,res://怪物/哥布林/gbl.tscn,0,0,0
+redskin,红皮小怪,20,200,12,40,120,res://怪物/红皮小怪/红皮怪.tscn,0.05,0,0.1
+test1,TestEnemy,20,100,10,40,120,res://怪物/红皮小怪/红皮怪.tscn,0,0,0
+test2,TestEnemy2,40,100,10,40,120,res://怪物/红皮小怪/红皮怪.tscn,0,0,0
+test3,TestEnemy3,1000,100,10,40,120,res://怪物/红皮小怪/红皮怪.tscn,0,0,0
