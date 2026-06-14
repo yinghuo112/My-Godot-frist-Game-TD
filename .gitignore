@@ -24,6 +24,6 @@ Log/
 /test.csv
 /test.csv.import
 
-# CSV 导入缓存（Godot 自动生成）
+# 数据 + 导入缓存（Godot 自动生成）
 data/*.translation
-data/*.csv.import
+data/*.import
