@@ -28,7 +28,6 @@ func _enter_tree():
 	gen_tab_btn.text = "生成地图"
 	gen_tab_btn.toggle_mode = true
 	gen_tab_btn.button_group = tab_group
-	gen_tab_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	gen_tab_btn.set_pressed(true)
 	tab_hbox.add_child(gen_tab_btn)
 	var import_tab_btn := Button.new()
@@ -36,14 +35,12 @@ func _enter_tree():
 	import_tab_btn.text = "导入点阵"
 	import_tab_btn.toggle_mode = true
 	import_tab_btn.button_group = tab_group
-	import_tab_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tab_hbox.add_child(import_tab_btn)
 	var manage_tab_btn := Button.new()
 	manage_tab_btn.name = "ManageTabBtn"
 	manage_tab_btn.text = "地图管理"
 	manage_tab_btn.toggle_mode = true
 	manage_tab_btn.button_group = tab_group
-	manage_tab_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	tab_hbox.add_child(manage_tab_btn)
 
 	var spacer := Control.new()
@@ -55,8 +52,6 @@ func _enter_tree():
 	sb_hover.bg_color = Color8(144, 144, 144, 25)
 	var sb_active := StyleBoxFlat.new()
 	sb_active.bg_color = Color8(144, 144, 144, 40)
-	sb_active.border_width_bottom = 2
-	sb_active.border_color = Color8(201, 201, 201)
 
 	var normal_color := Color8(123, 123, 123)
 	var active_color := Color8(201, 201, 201)
