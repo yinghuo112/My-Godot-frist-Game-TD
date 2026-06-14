@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://pu5rbq4aimut"
+
+[deps]
+
+files=["res://data/waves.enemy.translation", "res://data/waves.level.translation", "res://data/waves.count.translation", "res://data/waves.spawn.translation", "res://data/waves.route.translation"]
+
+source_file="res://data/waves.csv"
+dest_files=["res://data/waves.enemy.translation", "res://data/waves.level.translation", "res://data/waves.count.translation", "res://data/waves.spawn.translation", "res://data/waves.route.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true

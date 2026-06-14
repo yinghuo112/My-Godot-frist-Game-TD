@@ -1,0 +1,46 @@
+[gd_resource type="Resource" script_class="WaveConfigData" format=3 uid="uid://i4ftsui4p1u6"]
+
+[ext_resource type="Script" uid="uid://casgng1xf7drw" path="res://config/wave_config_data.gd" id="1_abc"]
+[ext_resource type="Script" uid="uid://caxj6t0ay7o4b" path="res://config/wave_entry.gd" id="2_def"]
+[ext_resource type="Script" uid="uid://c67ocaxkc0vfl" path="res://config/enemy_type.gd" id="4_56b4y"]
+[ext_resource type="PackedScene" uid="uid://dv66tjrfyg6cv" path="res://怪物/哥布林/gbl.tscn" id="4_xeexf"]
+[ext_resource type="Resource" uid="uid://cwupnufgigbix" path="res://config/怪物属性/哥布林.tres" id="5_upcrd"]
+
+[sub_resource type="Resource" id="Resource_xeexf"]
+script = ExtResource("4_56b4y")
+display_name = "小小怪"
+speed = 300.0
+scene = ExtResource("4_xeexf")
+metadata/_custom_type_script = "uid://c67ocaxkc0vfl"
+
+[sub_resource type="Resource" id="Resource_1"]
+script = ExtResource("2_def")
+enemy_type = SubResource("Resource_xeexf")
+count = 20
+spawn_interval = 3.0
+
+[sub_resource type="Resource" id="Resource_dx4xr"]
+script = ExtResource("2_def")
+count = 5
+spawn_interval = 3.0
+
+[sub_resource type="Resource" id="Resource_upcrd"]
+script = ExtResource("2_def")
+enemy_type = ExtResource("5_upcrd")
+metadata/_custom_type_script = "uid://caxj6t0ay7o4b"
+
+[sub_resource type="Resource" id="Resource_cxjlh"]
+script = ExtResource("2_def")
+metadata/_custom_type_script = "uid://caxj6t0ay7o4b"
+
+[sub_resource type="Resource" id="Resource_ba5wv"]
+script = ExtResource("2_def")
+metadata/_custom_type_script = "uid://caxj6t0ay7o4b"
+
+[sub_resource type="Resource" id="Resource_ml0l1"]
+script = ExtResource("2_def")
+metadata/_custom_type_script = "uid://caxj6t0ay7o4b"
+
+[resource]
+script = ExtResource("1_abc")
+waves = Array[ExtResource("2_def")]([SubResource("Resource_1"), SubResource("Resource_dx4xr"), SubResource("Resource_upcrd"), SubResource("Resource_cxjlh"), SubResource("Resource_ba5wv"), SubResource("Resource_ml0l1")])

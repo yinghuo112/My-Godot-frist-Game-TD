@@ -12,14 +12,17 @@ enum AttackType { PHYSICAL, MAGIC }
 @export var fire_rate: float = 1.0               # 射速（秒），每次攻击的冷却时间
 @export var range_radius: float = 120.0          # 射程（像素），防御塔的攻击范围半径
 @export var cost: int = 50                       # 购买价格
-@export var scene: PackedScene                   # 塔场景文件（拖入 .tscn）
-@export var bullet_scene: PackedScene            # 弹道场景（null=使用默认子弹）
+## 塔场景文件（拖入 .tscn）
+@export var scene: PackedScene
+## 弹道场景（null=使用默认子弹）
+@export var bullet_scene: PackedScene
 @export var attack_type: AttackType = AttackType.PHYSICAL  # 攻击类型
 @export var crit_chance: float = 0.1             # 暴击率
 @export var crit_multiplier: float = 2.0         # 暴击倍率
 @export var hit_chance: float = 0.95             # 命中率
 @export var description: String = ""              # 技能描述（支持 BBCode）
-@export var skill_book: Resource                   # 技能书
+## 技能书 Resource
+@export var skill_book: Resource
 @export var skill_categories: Array = []           # 技能分类标签
 @export var chain_jumps: int = 0                   # 链式跳跃次数（0=无连锁）
 @export var chain_falloff: float = 1.0             # 跳跃伤害衰减系数

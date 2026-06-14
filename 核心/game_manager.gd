@@ -20,9 +20,9 @@ var current_route: int = 1
 
 var total_waves: int = 0
 var timer: Timer
-var _config
+var _config: Array
 var _current_entry
-const _GREEN_MONSTER = preload("res://怪物/green_monster.tscn")
+var _enemies_db: Dictionary = {}
 
 # 初始化生成计时器和波次配置
 func _ready():
@@ -64,38 +64,32 @@ func start_wave():
 	wave_started.emit(wave, _current_entry.count, _current_entry.spawn_interval)
 
 # --- 加载波次配置 ---
-# 从文件加载波次配置，失败时用默认配置
-func _load_config():
-	print("尝试加载波次配置: res://config/wave_config.tres")
-	if ResourceLoader.exists("res://config/wave_config.tres"):
-		var data = load("res://config/wave_config.tres")
-		if data and data.waves.size() > 0:
-			total_waves = data.waves.size()
-			print("波次配置加载成功: %d 个波次" % data.waves.size())
-			return data
-		print("配置文件存在但数据无效，使用默认配置")
-	else:
-		print("配置文件不存在，使用默认配置")
-	var entry = preload("res://config/wave_entry.gd").new()
-	entry.enemy_scene = _GREEN_MONSTER
-	entry.count = 12
-	entry.spawn_interval = 0.5
-	var fallback = preload("res://config/wave_config_data.gd").new()
-	fallback.waves = [entry]
-	print("使用默认配置: 敌人=12, 间隔=0.5s")
-	return fallback
+# 从 CSV 加载波次配置，失败时用默认配置
+func _load_config() -> Array:
+	_enemies_db = CSVLoader.load_enemies("res://data/enemies.csv")
+	var waves = CSVLoader.load_waves("res://data/waves.csv", _enemies_db)
+	if waves.is_empty():
+		push_warning("CSV 波次为空，使用默认配置")
+		var entry = preload("res://config/wave_entry.gd").new()
+		entry.enemy_type = _enemies_db.get("goblin", null)
+		entry.count = 12
+		entry.spawn_interval = 0.5
+		waves = [entry]
+	total_waves = waves.size()
+	print("波次配置加载成功: %d 个波次" % total_waves)
+	return waves
 
 # 根据波次号获取配置条目，超出则复用最后一波
 func _get_wave_entry(wave_number: int):
 	var idx = wave_number - 1
-	if idx >= 0 and idx < _config.waves.size():
-		return _config.waves[idx]
-	return _config.waves[-1] if _config.waves.size() > 0 else _fallback_entry()
+	if idx >= 0 and idx < _config.size():
+		return _config[idx]
+	return _config[-1] if _config.size() > 0 else _fallback_entry()
 
 # 创建默认波次配置条目作为后备
 func _fallback_entry():
 	var entry = preload("res://config/wave_entry.gd").new()
-	entry.enemy_scene = _GREEN_MONSTER
+	entry.enemy_type = _enemies_db.get("goblin", null)
 	entry.count = 12
 	entry.spawn_interval = 0.5
 	return entry

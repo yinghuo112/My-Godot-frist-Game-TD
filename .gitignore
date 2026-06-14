@@ -19,3 +19,6 @@ assets/
 # 调试日志
 Log/
 *.log
+
+# 根目录测试文件
+/test.csv

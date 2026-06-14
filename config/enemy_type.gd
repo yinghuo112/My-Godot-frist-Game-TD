@@ -9,7 +9,8 @@ class_name EnemyType
 @export var gold_reward: int = 10                # 击杀奖励金币
 @export var lane_width: float = 40.0             # 变道宽度
 @export var lane_change_speed: float = 120.0     # 超车速度
-@export var scene: PackedScene                   # 怪物场景文件（拖入 .tscn）
+## 怪物场景文件（拖入 .tscn）
+@export var scene: PackedScene
 @export var armor_physical: float = 0.0          # 物理减伤 (0~1)
 @export var armor_magic: float = 0.0             # 魔法减伤 (0~1)
 @export var dodge_chance: float = 0.0            # 闪避率 (0~1)
