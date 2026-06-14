@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://d0m5nf5jiy18e" path="res://Scene/game_level.gd" id="1_sgeo0"]
 [ext_resource type="TileSet" uid="uid://dmx6wrley15e4" path="res://data/tileSet/new_tile_set.tres" id="2_ejr8j"]
 [ext_resource type="PackedScene" path="res://Scene/tower_slot.tscn" id="3_agmaa"]
-[ext_resource type="Script" uid="uid://b2wn8njbonfjc" path="res://Scene/tower_slot.gd" id="4_6sihq"]
 
 [sub_resource type="Curve2D" id="Curve2D_05buk"]
 _data = {
@@ -32,22 +31,17 @@ curve = SubResource("Curve2D_ehf24")
 
 [node name="TowerSlots" type="Node2D" parent="." unique_id=1844855879]
 
-[node name="Slot1" type="Node2D" parent="TowerSlots" unique_id=2010069159 instance=ExtResource("3_agmaa")]
+[node name="Slot1" parent="TowerSlots" unique_id=2010069159 instance=ExtResource("3_agmaa")]
 position = Vector2(576, 496)
-script = ExtResource("4_6sihq")
 
-[node name="Slot2" type="Node2D" parent="TowerSlots" unique_id=310314647 instance=ExtResource("3_agmaa")]
+[node name="Slot2" parent="TowerSlots" unique_id=310314647 instance=ExtResource("3_agmaa")]
 position = Vector2(960, 512)
-script = ExtResource("4_6sihq")
 
-[node name="Slot3" type="Node2D" parent="TowerSlots" unique_id=937347830 instance=ExtResource("3_agmaa")]
+[node name="Slot3" parent="TowerSlots" unique_id=937347830 instance=ExtResource("3_agmaa")]
 position = Vector2(912, 128)
-script = ExtResource("4_6sihq")
 
-[node name="Slot4" type="Node2D" parent="TowerSlots" unique_id=1796548552 instance=ExtResource("3_agmaa")]
+[node name="Slot4" parent="TowerSlots" unique_id=1796548552 instance=ExtResource("3_agmaa")]
 position = Vector2(240, 128)
-script = ExtResource("4_6sihq")
 
-[node name="Slot5" type="Node2D" parent="TowerSlots" unique_id=558738305 instance=ExtResource("3_agmaa")]
+[node name="Slot5" parent="TowerSlots" unique_id=558738305 instance=ExtResource("3_agmaa")]
 position = Vector2(1184, 496)
-script = ExtResource("4_6sihq")
