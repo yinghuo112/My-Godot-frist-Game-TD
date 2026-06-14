@@ -17,9 +17,42 @@ func _enter_tree():
 	vbox.anchor_bottom = 1.0
 	_dock.add_child(vbox)
 
+	# === 标签栏 ===
+	var tab_hbox := HBoxContainer.new()
+	tab_hbox.name = "TabHBox"
+	vbox.add_child(tab_hbox)
+	var tab_group := ButtonGroup.new()
+	var gen_tab_btn := Button.new()
+	gen_tab_btn.name = "GenTabBtn"
+	gen_tab_btn.text = "生成地图"
+	gen_tab_btn.toggle_mode = true
+	gen_tab_btn.button_group = tab_group
+	gen_tab_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	gen_tab_btn.set_pressed(true)
+	tab_hbox.add_child(gen_tab_btn)
+	var import_tab_btn := Button.new()
+	import_tab_btn.name = "ImportTabBtn"
+	import_tab_btn.text = "导入点阵"
+	import_tab_btn.toggle_mode = true
+	import_tab_btn.button_group = tab_group
+	import_tab_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tab_hbox.add_child(import_tab_btn)
+	var manage_tab_btn := Button.new()
+	manage_tab_btn.name = "ManageTabBtn"
+	manage_tab_btn.text = "地图管理"
+	manage_tab_btn.toggle_mode = true
+	manage_tab_btn.button_group = tab_group
+	manage_tab_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	tab_hbox.add_child(manage_tab_btn)
+
+	# === 生成地图标签页 ===
+	var _gen_tab := VBoxContainer.new()
+	_gen_tab.name = "GenTab"
+	vbox.add_child(_gen_tab)
+
 	var opt_hbox := HBoxContainer.new()
 	opt_hbox.name = "OptionsHBox"
-	vbox.add_child(opt_hbox)
+	_gen_tab.add_child(opt_hbox)
 
 	opt_hbox.add_child(Label.new())
 	opt_hbox.get_child(-1).text = "草地扩展格数:"
@@ -49,7 +82,7 @@ func _enter_tree():
 	param_grid.name = "ParamGrid"
 	param_grid.columns = 4
 	param_grid.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	vbox.add_child(param_grid)
+	_gen_tab.add_child(param_grid)
 
 	param_grid.add_child(Label.new())
 	param_grid.get_child(-1).text = "地图宽:"
@@ -95,7 +128,7 @@ func _enter_tree():
 
 	var style_hbox := HBoxContainer.new()
 	style_hbox.name = "StyleHBox"
-	vbox.add_child(style_hbox)
+	_gen_tab.add_child(style_hbox)
 
 	style_hbox.add_child(Label.new())
 	style_hbox.get_child(-1).text = "路径风格:"
@@ -114,7 +147,7 @@ func _enter_tree():
 	var fig_hbox := HBoxContainer.new()
 	fig_hbox.name = "FigureHBox"
 	fig_hbox.visible = false
-	vbox.add_child(fig_hbox)
+	_gen_tab.add_child(fig_hbox)
 
 	fig_hbox.add_child(Label.new())
 	fig_hbox.get_child(-1).text = "双环路布局:"
@@ -134,7 +167,7 @@ func _enter_tree():
 
 	var btn_hbox := HBoxContainer.new()
 	btn_hbox.name = "ButtonHBox"
-	vbox.add_child(btn_hbox)
+	_gen_tab.add_child(btn_hbox)
 
 	var expand_btn := Button.new()
 	expand_btn.name = "ExpandBtn"
@@ -158,29 +191,37 @@ func _enter_tree():
 	info.name = "InfoLabel"
 	info.text = "状态：未加载 TileMapLayer"
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	vbox.add_child(info)
+	_gen_tab.add_child(info)
 
-	vbox.add_child(HSeparator.new())
+	# === 导入点阵标签页 ===
+	var _import_tab := VBoxContainer.new()
+	_import_tab.name = "ImportTab"
+	_import_tab.visible = false
+	vbox.add_child(_import_tab)
 
 	var import_label := Label.new()
 	import_label.text = "点阵导入（0=草地, 1=路径, 2=塔槽）:"
-	vbox.add_child(import_label)
+	_import_tab.add_child(import_label)
 
 	var import_edit := TextEdit.new()
 	import_edit.name = "ImportEdit"
 	import_edit.custom_minimum_size = Vector2(0, 60)
 	import_edit.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	vbox.add_child(import_edit)
+	_import_tab.add_child(import_edit)
 
 	var import_btn := Button.new()
 	import_btn.name = "ImportBtn"
 	import_btn.text = "📥 导入点阵"
-	vbox.add_child(import_btn)
+	_import_tab.add_child(import_btn)
 
-	vbox.add_child(HSeparator.new())
+	# === 地图管理标签页 ===
+	var _manage_tab := VBoxContainer.new()
+	_manage_tab.name = "ManageTab"
+	_manage_tab.visible = false
+	vbox.add_child(_manage_tab)
 
 	var list_header := HBoxContainer.new()
-	vbox.add_child(list_header)
+	_manage_tab.add_child(list_header)
 
 	_map_list_label = Label.new()
 	_map_list_label.name = "MapListLabel"
@@ -213,11 +254,11 @@ func _enter_tree():
 	_map_list.select_mode = ItemList.SELECT_MULTI
 	_map_list.size_flags_vertical = Control.SIZE_EXPAND_FILL
 	_map_list.size_flags_stretch_ratio = 1.0
-	vbox.add_child(_map_list)
+	_manage_tab.add_child(_map_list)
 
 	var list_spacer := Control.new()
 	list_spacer.custom_minimum_size = Vector2(0, 4)
-	vbox.add_child(list_spacer)
+	_manage_tab.add_child(list_spacer)
 
 	expand_btn.pressed.connect(_on_expand.bind(spin, info))
 	clear_btn.pressed.connect(_on_clear.bind(info))
@@ -228,6 +269,11 @@ func _enter_tree():
 	delete_btn.pressed.connect(_delete_selected)
 	refresh_btn.pressed.connect(_refresh_map_list)
 	_map_list.item_activated.connect(_on_item_activated)
+
+	# 标签切换
+	gen_tab_btn.toggled.connect(func(on): _gen_tab.visible = on)
+	import_tab_btn.toggled.connect(func(on): _import_tab.visible = on)
+	manage_tab_btn.toggled.connect(func(on): _manage_tab.visible = on)
 
 	_refresh_map_list()
 
