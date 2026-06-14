@@ -453,16 +453,34 @@ func _on_generate_map(seed_spin: SpinBox, w_spin: SpinBox, h_spin: SpinBox, pw_s
 
 	md.map_id = "map_%03d" % n
 	md.map_name = "地图 #%d" % n
-	ResourceSaver.save(md, meta_path)
-
-	EditorInterface.open_scene_from_path(tscn_path)
 	var diff = MapManager.calc_difficulty(md)
 	md.difficulty_score = diff.get("difficulty_score", 0.0)
 	md.difficulty_data = diff
-	var diff_text = ""
-	if diff.has("path_length"):
-		diff_text = " | 难度: %.1f | 路径: %.0fpx | %d槽 | 火力密度: %.2f" % [
-			diff.difficulty_score, diff.path_length, diff.slot_count, diff.fire_density]
+	var dps = MapManager.simulate_dps(md)
+	md.difficulty_data["dps_benchmark"] = dps
+	ResourceSaver.save(md, meta_path)
+
+	EditorInterface.open_scene_from_path(tscn_path)
+	var txt = """地图: %s
+难度分: %.1f
+路径长: %.0fpx
+塔槽数: %d
+火力密度: %.2f
+---- DPS 模拟 (TestTower %.0fdmg/%.1ffr/%.0frng, 敌速 %.0fpx/s) ----
+总伤害: %.0f HP
+每塔贡献: %.0f HP
+杀敌阈值: %.0f HP
+耗时: %.1fs
+""" % [md.map_name, diff.difficulty_score, diff.path_length,
+	diff.slot_count, diff.fire_density,
+	dps.base_tower_dps, 1.0, 150.0, dps.enemy_speed,
+	dps.dps_total, dps.dps_per_slot, dps.kill_threshold_hp, dps.travel_time]
+	var f = FileAccess.open("res://地图难度.txt", FileAccess.WRITE)
+	f.store_string(txt)
+	f.close()
+
+	var diff_text = " | 难度: %.1f | 路径: %.0fpx | %d槽 | 火力密度: %.2f | DPS: %.0fHP" % [
+		diff.difficulty_score, diff.path_length, diff.slot_count, diff.fire_density, dps.dps_total]
 	info.text = "已保存并打开：%s%s" % [tscn_path, diff_text]
 	_refresh_map_list()
 
@@ -539,13 +557,31 @@ func _on_import_grid(import_edit: TextEdit, info: Label):
 	var diff = MapManager.calc_difficulty(md)
 	md.difficulty_score = diff.get("difficulty_score", 0.0)
 	md.difficulty_data = diff
+	var dps = MapManager.simulate_dps(md)
+	md.difficulty_data["dps_benchmark"] = dps
 	ResourceSaver.save(md, meta_path)
 
 	EditorInterface.open_scene_from_path(tscn_path)
-	var diff_text = ""
-	if diff.has("path_length"):
-		diff_text = " | 难度: %.1f | 路径: %.0fpx | %d槽 | 火力密度: %.2f" % [
-			diff.difficulty_score, diff.path_length, diff.slot_count, diff.fire_density]
+	var txt = """地图: %s
+难度分: %.1f
+路径长: %.0fpx
+塔槽数: %d
+火力密度: %.2f
+---- DPS 模拟 (TestTower %.0fdmg/%.1ffr/%.0frng, 敌速 %.0fpx/s) ----
+总伤害: %.0f HP
+每塔贡献: %.0f HP
+杀敌阈值: %.0f HP
+耗时: %.1fs
+""" % [md.map_name, diff.difficulty_score, diff.path_length,
+	diff.slot_count, diff.fire_density,
+	dps.base_tower_dps, 1.0, 150.0, dps.enemy_speed,
+	dps.dps_total, dps.dps_per_slot, dps.kill_threshold_hp, dps.travel_time]
+	var f = FileAccess.open("res://地图难度.txt", FileAccess.WRITE)
+	f.store_string(txt)
+	f.close()
+
+	var diff_text = " | 难度: %.1f | 路径: %.0fpx | %d槽 | 火力密度: %.2f | DPS: %.0fHP" % [
+		diff.difficulty_score, diff.path_length, diff.slot_count, diff.fire_density, dps.dps_total]
 	info.text = "已保存并打开：%s%s" % [tscn_path, diff_text]
 	_refresh_map_list()
 

@@ -270,6 +270,44 @@ static func calc_difficulty(md: MapData) -> Dictionary:
 	result["path_width"] = md.path_width * 2 + 1
 	return result
 
+static func simulate_dps(md: MapData, enemy_speed: float = 100.0) -> Dictionary:
+	var base_damage = 5.0
+	var base_fire_rate = 1.0
+	var base_range = 150.0
+	var base_dps = base_damage / base_fire_rate
+	var waypoints = md.path_points
+	var slot_positions = md.slot_positions
+	var step = 16.0
+	var range_sq = base_range * base_range
+
+	var total_damage = 0.0
+	var path_length = 0.0
+
+	for i in range(1, waypoints.size()):
+		var a = waypoints[i - 1]
+		var b = waypoints[i]
+		var seg_len = a.distance_to(b)
+		path_length += seg_len
+		var steps = maxi(1, int(seg_len / step))
+		for s in range(steps):
+			var p = a.lerp(b, float(s) / steps)
+			var towers = 0
+			for slot_pos in slot_positions:
+				if slot_pos.distance_squared_to(p) <= range_sq:
+					towers += 1
+			var seg_dps = towers * base_dps
+			total_damage += seg_dps * (step / enemy_speed)
+
+	var travel_time = path_length / enemy_speed
+	return {
+		"dps_total": total_damage,
+		"dps_per_slot": total_damage / max(slot_positions.size(), 1),
+		"kill_threshold_hp": total_damage,
+		"travel_time": travel_time,
+		"enemy_speed": enemy_speed,
+		"base_tower_dps": base_dps
+	}
+
 func _show_floating_text(world_pos: Vector2, msg: String = "金币不足..."):
 	var camera = get_viewport().get_camera_2d()
 	if not camera:

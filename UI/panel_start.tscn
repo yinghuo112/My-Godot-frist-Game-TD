@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://g8cbsiyg2464"]
 
-[ext_resource type="Script" path="res://UI/panel_start.gd" id="1"]
+[ext_resource type="Script" uid="uid://dhjt3bh6sdwev" path="res://UI/panel_start.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://cpfuaeo4uvigo" path="res://UI/panel_settings.tscn" id="2"]
+[ext_resource type="Theme" uid="uid://c70anje2poj2g" path="res://UI/MY_UI/Button-blue.tres" id="2_jeeaa"]
 [ext_resource type="PackedScene" path="res://UI/panel_level_select.tscn" id="3"]
 
 [node name="StartPanel" type="PanelContainer" unique_id=636662596]
-layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -15,19 +15,12 @@ mouse_filter = 1
 script = ExtResource("1")
 
 [node name="Background" type="ColorRect" parent="." unique_id=858755105]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
+layout_mode = 2
 mouse_filter = 2
 color = Color(0.06, 0.06, 0.12, 1)
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=556829991]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+layout_mode = 2
 
 [node name="VBox" type="VBoxContainer" parent="CenterContainer" unique_id=248491915]
 custom_minimum_size = Vector2(320, 0)
@@ -54,6 +47,7 @@ layout_mode = 2
 [node name="StartBtn" type="Button" parent="CenterContainer/VBox" unique_id=1873596300]
 custom_minimum_size = Vector2(220, 48)
 layout_mode = 2
+theme = ExtResource("2_jeeaa")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
@@ -63,28 +57,31 @@ text = "开 始 游 戏"
 [node name="LevelBtn" type="Button" parent="CenterContainer/VBox" unique_id=31671885]
 custom_minimum_size = Vector2(220, 40)
 layout_mode = 2
+theme = ExtResource("2_jeeaa")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 22
 text = "关 卡 选 择"
 
 [node name="SettingsBtn" type="Button" parent="CenterContainer/VBox" unique_id=599940804]
 custom_minimum_size = Vector2(220, 40)
 layout_mode = 2
+theme = ExtResource("2_jeeaa")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 22
 text = "设 置"
 
 [node name="QuitBtn" type="Button" parent="CenterContainer/VBox" unique_id=253705819]
 custom_minimum_size = Vector2(220, 40)
 layout_mode = 2
+theme = ExtResource("2_jeeaa")
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_pressed_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_font_sizes/font_size = 22
 text = "退 出 游 戏"
 
 [node name="Spacer2" type="Control" parent="CenterContainer/VBox" unique_id=654460616]
@@ -100,22 +97,8 @@ horizontal_alignment = 1
 
 [node name="SettingsPanel" parent="." unique_id=1796971923 instance=ExtResource("2")]
 visible = false
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 1280.0
-offset_bottom = 720.0
-grow_horizontal = 1
-grow_vertical = 1
+layout_mode = 2
 
 [node name="LevelSelectPanel" parent="." unique_id=1591845569 instance=ExtResource("3")]
 visible = false
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_right = 1280.0
-offset_bottom = 720.0
-grow_horizontal = 1
-grow_vertical = 1
+layout_mode = 2
