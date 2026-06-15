@@ -24,12 +24,15 @@ static func load_enemies(path: String) -> Dictionary:
 	for r in rows:
 		var e = EnemyType.new()
 		e.display_name = r["display_name"]
-		e.max_hp = float(r["max_hp"])
+		e.max_hp = float(r["max_hp"]) if not r["max_hp"].is_empty() else 1.0
 		e.speed = float(r["speed"])
 		e.gold_reward = int(r["gold_reward"])
 		e.lane_width = float(r["lane_width"])
 		e.lane_change_speed = float(r["lane_change_speed"])
-		e.scene = load(r["scene_path"])
+		var scene_path = r["scene_path"]
+		e.scene = load(scene_path)
+		if not e.scene:
+			push_warning("CSVLoader: 场景不存在 ", scene_path, " 使用默认")
 		e.armor_physical = float(r["armor_physical"])
 		e.armor_magic = float(r["armor_magic"])
 		e.dodge_chance = float(r["dodge_chance"])

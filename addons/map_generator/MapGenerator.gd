@@ -144,7 +144,7 @@ static func import_grid(tilemap: TileMapLayer, md: MapData, grid_text: String) -
 
 	var cell_path = PackedVector2Array()
 	for p in pts:
-		cell_path.append(tilemap.map_to_local(Vector2i(p.x, p.y)))
+		cell_path.append(tilemap.map_to_local(Vector2i(p.x, p.y)) + tsh)
 	md.path_points = cell_path
 
 	md.slot_names = slot_names
@@ -283,12 +283,12 @@ func _render_to_tilemap(pts: Array[Vector2i], md: MapData):
 		var alt_world = PackedVector2Array()
 		for i in range(md.alt_path_points.size()):
 			var gp = md.alt_path_points[i]
-			alt_world.append(_tilemap.map_to_local(Vector2i(gp.x, gp.y)))
+			alt_world.append(_tilemap.map_to_local(Vector2i(gp.x, gp.y)) + _tile_size_half)
 		md.alt_path_points = alt_world
 
 	var cell_path = PackedVector2Array()
 	for p in pts:
-		cell_path.append(_tilemap.map_to_local(Vector2i(p.x, p.y)))
+		cell_path.append(_tilemap.map_to_local(Vector2i(p.x, p.y)) + _tile_size_half)
 	md.path_points = cell_path
 	md.tile_data = _grid
 
