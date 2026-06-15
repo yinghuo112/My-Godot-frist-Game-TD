@@ -27,21 +27,23 @@ const _DPS_METER_SCENE = preload("res://UI/panel_dps_meter.tscn")
 var _dps_meter: PanelContainer
 var _session_id: int = 0
 var _last_test_type: String = ""
-const _DEBUG_MONSTER_TYPE = preload("res://config/legacy/test_enemy.tres")
+var _test_enemy: EnemyType
+var _test_enemy_2: EnemyType
+var _test_enemy_3: EnemyType
 const _TEST_WAVE_COUNT = 5
 const _TEST_WAVE_INTERVAL = 1.27
 var _test_wave_remaining: int = 0
 var _test_wave_timer: Timer
-
-const _DEBUG_MONSTER_TYPE_2 = preload("res://config/legacy/test_enemy_2.tres")
 var _test_wave_2_remaining: int = 0
 var _test_wave_2_timer: Timer
-
-const _DEBUG_MONSTER_TYPE_3 = preload("res://config/legacy/test_enemy_3.tres")
 var _test_wave_3_remaining: int = 0
 var _test_wave_3_timer: Timer
 
 func _ready() -> void:
+	var enemies_db = CSVLoader.load_enemies("res://data/enemies.csv")
+	_test_enemy = enemies_db.get("test1")
+	_test_enemy_2 = enemies_db.get("test2")
+	_test_enemy_3 = enemies_db.get("test3")
 	# 模拟手机视口
 	get_window().content_scale_size = Vector2i(960, 540)
 	_session_id = _generate_session_id()
@@ -363,7 +365,7 @@ func _spawn_one_test_enemy():
 	if _test_wave_remaining <= 0:
 		_test_wave_timer.stop()
 		return
-	var debug_type = _DEBUG_MONSTER_TYPE
+	var debug_type = _test_enemy
 	var enemy = debug_type.scene.instantiate()
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
@@ -388,7 +390,7 @@ func _spawn_one_test_enemy_2():
 	if _test_wave_2_remaining <= 0:
 		_test_wave_2_timer.stop()
 		return
-	var debug_type = _DEBUG_MONSTER_TYPE_2
+	var debug_type = _test_enemy_2
 	var enemy = debug_type.scene.instantiate()
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
@@ -413,7 +415,7 @@ func _spawn_one_test_enemy_3():
 	if _test_wave_3_remaining <= 0:
 		_test_wave_3_timer.stop()
 		return
-	var debug_type = _DEBUG_MONSTER_TYPE_3
+	var debug_type = _test_enemy_3
 	var enemy = debug_type.scene.instantiate()
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)

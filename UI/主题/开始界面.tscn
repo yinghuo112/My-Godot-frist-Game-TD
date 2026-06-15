@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://48dobf0wud5k"]
+
+[ext_resource type="Theme" uid="uid://c70anje2poj2g" path="res://UI/MY_UI/Button-blue.tres" id="1_dgibt"]
+
+[node name="Node2D" type="Node2D" unique_id=737772419]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=467239483]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=1327741041]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="背景" type="ColorRect" parent="CanvasLayer/Control" unique_id=2121157417]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.19607843, 0.16078432, 0.30980393, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="CanvasLayer/Control" unique_id=1941509967]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 7.0
+offset_top = -7.0
+offset_right = 7.0
+offset_bottom = -7.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control/CenterContainer" unique_id=650058934]
+layout_mode = 2
+
+[node name="TitleContainer" type="VBoxContainer" parent="CanvasLayer/Control/CenterContainer/VBoxContainer" unique_id=1140200915]
+layout_mode = 2
+
+[node name="Title" type="Label" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/TitleContainer" unique_id=930351307]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.8901961, 0.34901962, 1)
+theme_override_font_sizes/font_size = 64
+text = "塔防游戏"
+
+[node name="SubTitle" type="Label" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/TitleContainer" unique_id=907227063]
+layout_mode = 2
+
+[node name="ButtonContainer" type="VBoxContainer" parent="CanvasLayer/Control/CenterContainer/VBoxContainer" unique_id=231496320]
+layout_mode = 2
+theme = ExtResource("1_dgibt")
+theme_override_constants/separation = 17
+
+[node name="StartBtn" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/ButtonContainer" unique_id=1893978284]
+layout_mode = 2
+text = "开始游戏"
+
+[node name="LevelBtn" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/ButtonContainer" unique_id=148892035]
+layout_mode = 2
+text = "关卡选择"
+
+[node name="SettingBtn" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/ButtonContainer" unique_id=1053809859]
+layout_mode = 2
+text = "设置"
+
+[node name="ExitBtn" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/ButtonContainer" unique_id=18557535]
+layout_mode = 2
+text = "退出游戏"
