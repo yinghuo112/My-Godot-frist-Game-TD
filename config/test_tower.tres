@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="TowerType" format=3]
+[gd_resource type="Resource" script_class="TowerType" format=3 uid="uid://u1a3ihg0shc5"]
 
 [ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://config/tower_type.gd" id="1_jhvrw"]
 [ext_resource type="PackedScene" uid="uid://de5m5ivccvuh2" path="res://Tower/弓箭手塔/ArrowTower.tscn" id="2_arrow"]
@@ -7,14 +7,12 @@
 [resource]
 script = ExtResource("1_jhvrw")
 display_name = "TestTower"
-chinese_type = ""
-name_prefixes = ["调试弓箭手"]
+name_prefixes = Array[String](["调试弓箭手"])
 damage = 10.0
 fire_rate = 0.8
 range_radius = 150.0
 scene = ExtResource("2_arrow")
 crit_chance = 0.0
-crit_multiplier = 2.0
 hit_chance = 1.0
 description = "测试塔：攻击10，暴击0，命中100，范围150"
 skill_book = ExtResource("3_skillbook")

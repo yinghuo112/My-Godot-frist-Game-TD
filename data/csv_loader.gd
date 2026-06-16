@@ -39,6 +39,31 @@ static func load_enemies(path: String) -> Dictionary:
 		db[r["id"]] = e
 	return db
 
+static func save_enemies(path: String, test_db: Dictionary) -> void:
+	var rows = _parse(path)
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if not file:
+		push_error("CSVLoader: 无法写入文件 ", path)
+		return
+	var headers = ["id","display_name","max_hp","speed","gold_reward","lane_width","lane_change_speed","scene_path","armor_physical","armor_magic","dodge_chance"]
+	file.store_csv_line(headers)
+	for r in rows:
+		var id = r["id"]
+		if id in test_db:
+			var e = test_db[id]
+			file.store_csv_line(PackedStringArray([
+				id, e.display_name, str(e.max_hp), str(e.speed), str(e.gold_reward),
+				str(e.lane_width), str(e.lane_change_speed), r["scene_path"],
+				str(e.armor_physical), str(e.armor_magic), str(e.dodge_chance)
+			]))
+		else:
+			file.store_csv_line(PackedStringArray([
+				r["id"], r["display_name"], r["max_hp"], r["speed"], r["gold_reward"],
+				r["lane_width"], r["lane_change_speed"], r["scene_path"],
+				r["armor_physical"], r["armor_magic"], r["dodge_chance"]
+			]))
+	file.close()
+
 static func load_waves(path: String, enemies: Dictionary) -> Array:
 	var rows = _parse(path)
 	var waves = []

@@ -9,16 +9,13 @@
 script = ExtResource("1_jhvrw")
 display_name = "Cannon"
 chinese_type = "炮塔"
-name_prefixes = ["雷霆", "震地", "碎岩", "灭世", "怒焰"]
+name_prefixes = Array[String](["雷霆", "震地", "碎岩", "灭世", "怒焰"])
 damage = 43.0
 fire_rate = 2.0
-range_radius = 120.0
 cost = 80
 scene = ExtResource("1_mnci3")
 bullet_scene = ExtResource("2_shell")
-attack_type = 0
 crit_chance = 0.05
-crit_multiplier = 2.0
 hit_chance = 0.9
 description = "重型炮塔。范围物理伤害，低攻速高伤害，适合对付群体敌人。"
 skill_book = ExtResource("3_skillbook")

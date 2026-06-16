@@ -19,7 +19,6 @@ var tower_types: Array[TowerType] = [
 	preload("res://config/test_tower.tres"),
 ]
 var _build_panel: Panel
-var _debug_panel: Control
 var _build_buttons: Array[Button] = []
 var _pending_slot: TowerSlot = null
 const _DEBUG_PANEL_SCENE = preload("res://UI/Debug_panel/debug_panel.tscn")
@@ -39,11 +38,15 @@ var _test_wave_2_timer: Timer
 var _test_wave_3_remaining: int = 0
 var _test_wave_3_timer: Timer
 
+var _debug_console: Control
+var _info_overlay: Control
+const _DEBUG_CONSOLE_SCENE = preload("res://UI/DebugConsole/DebugConsole.tscn")
+
 func _ready() -> void:
 	var enemies_db = CSVLoader.load_enemies("res://data/enemies.csv")
-	_test_enemy = enemies_db.get("test1")
-	_test_enemy_2 = enemies_db.get("test2")
-	_test_enemy_3 = enemies_db.get("test3")
+	_test_enemy = enemies_db.get("test_T")
+	_test_enemy_2 = enemies_db.get("test_Y")
+	_test_enemy_3 = enemies_db.get("test_U")
 	# 模拟手机视口
 	get_window().content_scale_size = Vector2i(960, 540)
 	_session_id = _generate_session_id()
@@ -51,7 +54,7 @@ func _ready() -> void:
 	_session_id = _generate_session_id()
 	toolbar.wave_start_requested.connect(_on_start_wave)
 	toolbar.settings_requested.connect(_on_settings)
-	toolbar.debug_requested.connect(_toggle_debug_panel)
+	toolbar.debug_requested.connect(_toggle_console)
 	toolbar.route_changed.connect(_on_route_changed)
 	GameManager.reset()
 	GameManager.gold_changed.connect(_update_gold)
@@ -82,10 +85,15 @@ func _ready() -> void:
 	info_plane.skill_book_requested.connect(_on_skill_book_requested)
 	skill_book_plane.closed.connect(_on_skill_book_plane_closed)
 
-	_debug_panel = _DEBUG_PANEL_SCENE.instantiate()
-	_debug_panel.name = "DebugPanel"
-	$UI.add_child(_debug_panel)
-	_debug_panel.hide()
+	_info_overlay = _DEBUG_PANEL_SCENE.instantiate()
+	_info_overlay.name = "DebugInfoOverlay"
+	$UI.add_child(_info_overlay)
+	_info_overlay.hide()
+
+	_debug_console = _DEBUG_CONSOLE_SCENE.instantiate()
+	_debug_console.name = "DebugConsole"
+	_debug_console.hide()
+	$UI.add_child(_debug_console)
 
 	_dps_meter = _DPS_METER_SCENE.instantiate()
 	_dps_meter.name = "DPSMeter"
@@ -230,15 +238,15 @@ func _load_level_from_tscn(tscn_path: String) -> void:
 
 func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_F3:
-		_toggle_debug_panel()
+		_toggle_console()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_T:
-		_last_test_type = "T(20HP)"
+		_last_test_type = "T(TestT)"
 		_spawn_test_enemy()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_Y:
-		_last_test_type = "Y(40HP)"
+		_last_test_type = "Y(TestY)"
 		_spawn_test_enemy_2()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_U:
-		_last_test_type = "U(1000HP)"
+		_last_test_type = "U(TestU)"
 		_spawn_test_enemy_3()
 	if event is InputEventKey and event.pressed and event.keycode == KEY_G:
 		$Camera2D.position = Vector2.ZERO
@@ -251,9 +259,9 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and event.keycode == KEY_3:
 		AudioManager.set_sfx_set("3")
 	if event is InputEventKey and event.pressed and event.keycode == KEY_L:
-		if _debug_panel and _debug_panel.has_method("add_log"):
-			_debug_panel.add_log("📝 DPS数据记录中...")
-		_dps_meter.dump_to_log(GameManager.wave + 1, _session_id, _last_test_type, _debug_panel)
+		if _info_overlay and _info_overlay.has_method("add_log"):
+			_info_overlay.add_log("📝 DPS数据记录中...")
+		_dps_meter.dump_to_log(GameManager.wave + 1, _session_id, _last_test_type, _info_overlay)
 		_last_test_type = ""
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		if tower_ring.visible or _build_panel.visible or (dialogue_ui and dialogue_ui.visible) or info_plane.visible or skill_book_plane.visible:
@@ -346,9 +354,12 @@ func _on_build_selected(idx: int):
 	if slot and is_instance_valid(slot) and map_manager.is_slot_empty(slot):
 		_place_tower(slot, tower_types[idx])
 
-func _toggle_debug_panel() -> void:
-	if _debug_panel and _debug_panel.has_method("toggle"):
-		_debug_panel.toggle()
+func _toggle_console() -> void:
+	if not _debug_console:
+		return
+	_debug_console.visible = not _debug_console.visible
+	if _debug_console.visible:
+		_debug_console.call("refresh_data", _test_enemy, _test_enemy_2, _test_enemy_3, _info_overlay)
 
 func _spawn_test_enemy() -> void:
 	if _test_wave_timer.is_stopped():

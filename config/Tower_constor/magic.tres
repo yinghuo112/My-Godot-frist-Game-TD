@@ -9,7 +9,7 @@
 script = ExtResource("2_xhu2c")
 display_name = "Magic"
 chinese_type = "魔法塔"
-name_prefixes = ["烈焰", "寒冰", "奥术", "秘法", "虚空"]
+name_prefixes = Array[String](["烈焰", "寒冰", "奥术", "秘法", "虚空"])
 damage = 24.0
 fire_rate = 1.2
 range_radius = 100.0

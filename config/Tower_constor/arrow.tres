@@ -9,16 +9,13 @@
 script = ExtResource("1_jhvrw")
 display_name = "Arrow"
 chinese_type = "弓箭塔"
-name_prefixes = ["疾风", "穿云", "追风", "破空", "流星"]
+name_prefixes = Array[String](["疾风", "穿云", "追风", "破空", "流星"])
 damage = 10.0
 fire_rate = 0.8
 range_radius = 150.0
-cost = 50
 scene = ExtResource("2_arrow")
 bullet_scene = ExtResource("4_arrow_bullet")
 crit_chance = 0.15
-crit_multiplier = 2.0
-hit_chance = 0.95
 description = "基础弓箭塔。远程物理攻击，高命中率，适合稳定输出。"
 skill_book = ExtResource("3_skillbook")
 skill_categories = ["通用", "弹道"]
