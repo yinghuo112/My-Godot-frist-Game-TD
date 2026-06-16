@@ -23,13 +23,20 @@ var _info_active: bool = false
 func _ready():
 	_build_ui()
 	visible = false
+	call_deferred("_center_panel")
+
+func _center_panel():
+	var panel = get_node_or_null("BgPanel")
+	if not panel:
+		return
+	var parent_size = get_rect().size
+	panel.position = (parent_size - panel.size) / 2
 
 func _build_ui():
 	mouse_filter = Control.MOUSE_FILTER_PASS
 
 	var panel = Panel.new()
 	panel.name = "BgPanel"
-	panel.anchors_preset = Control.PRESET_CENTER
 	var panel_size = Vector2(440, 340)
 	panel.custom_minimum_size = panel_size
 	panel.size = panel_size

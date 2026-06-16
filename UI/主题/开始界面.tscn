@@ -12,6 +12,18 @@ height = 256
 fill = 2
 fill_from = Vector2(0.5, 0.4)
 
+[sub_resource type="Gradient" id="Gradient_0ckk4"]
+offsets = PackedFloat32Array(0.004796163, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ihbub"]
+gradient = SubResource("Gradient_0ckk4")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 1)
+
 [sub_resource type="Gradient" id="Gradient_arn5o"]
 offsets = PackedFloat32Array(0, 0.2, 1)
 colors = PackedColorArray(1, 0.8901961, 0.34901962, 0.15686275, 1, 0.91764706, 0.50980395, 0.88235295, 1, 0.8901961, 0.34901962, 0)
@@ -40,6 +52,7 @@ texture = SubResource("GradientTexture2D_arn5o")
 [node name="CPUParticles2D" type="CPUParticles2D" parent="CanvasLayer/Control/背景" unique_id=1579285270]
 position = Vector2(960, 540)
 amount = 300
+texture = SubResource("GradientTexture2D_ihbub")
 lifetime = 8.0
 preprocess = 8.0
 emission_shape = 3
@@ -48,8 +61,8 @@ spread = 180.0
 gravity = Vector2(0, 0)
 linear_accel_min = 2.0
 linear_accel_max = 8.0
-scale_amount_min = 2.0
-scale_amount_max = 5.0
+scale_amount_min = 0.1
+scale_amount_max = 0.3
 color = Color(1, 0.8901961, 0.34901962, 1)
 color_ramp = SubResource("Gradient_arn5o")
 

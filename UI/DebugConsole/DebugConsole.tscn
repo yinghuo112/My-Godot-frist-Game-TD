@@ -1,12 +1,15 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://y64dewstrwj5"]
 
-[ext_resource type="Script" path="res://UI/DebugConsole/debug_console.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://dlheylviwt6ep" path="res://UI/DebugConsole/debug_console.gd" id="1_script"]
 
-[node name="DebugConsole" type="Control"]
-anchors_preset = 0
-anchor_left = 0.0
-anchor_top = 0.0
-anchor_right = 1.0
-anchor_bottom = 1.0
+[node name="DebugConsole" type="Control" unique_id=1507828678]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 mouse_filter = 1
 script = ExtResource("1_script")
