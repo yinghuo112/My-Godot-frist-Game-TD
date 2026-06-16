@@ -20,8 +20,11 @@ var _test_btn: Button
 var _test_expanded: bool = false
 var _info_active: bool = false
 
+const _CONFIG_PATH = "user://debug_settings.cfg"
+
 func _ready():
 	_build_ui()
+	_load_settings()
 	visible = false
 	call_deferred("_center_panel")
 
@@ -250,8 +253,7 @@ func _on_save_csv():
 	_save_status.text = "✓ 已保存"
 	_save_status.add_theme_color_override("font_color", Color(0.5, 0.8, 0.5, 1))
 
-func _on_info_toggle():
-	_info_active = not _info_active
+func _apply_info_state():
 	_info_btn.button_pressed = _info_active
 	if _info_active:
 		_info_btn.add_theme_color_override("font_color", Color(0.5, 0.8, 1, 1))
@@ -259,6 +261,22 @@ func _on_info_toggle():
 		_info_btn.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
 	if _info_overlay:
 		_info_overlay.visible = _info_active
+
+func _load_settings():
+	var cfg = ConfigFile.new()
+	if cfg.load(_CONFIG_PATH) == OK:
+		_info_active = cfg.get_value("debug", "info_overlay", false)
+	_apply_info_state()
+
+func _save_settings():
+	var cfg = ConfigFile.new()
+	cfg.set_value("debug", "info_overlay", _info_active)
+	cfg.save(_CONFIG_PATH)
+
+func _on_info_toggle():
+	_info_active = not _info_active
+	_apply_info_state()
+	_save_settings()
 
 func _on_test_toggle():
 	_test_expanded = not _test_expanded
@@ -271,10 +289,6 @@ func _on_test_toggle():
 
 func _on_close():
 	visible = false
-	_info_active = false
-	_info_btn.button_pressed = false
-	_info_btn.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
-	_info_btn.add_theme_color_override("font_hover_pressed_color", Color(0.6, 0.6, 0.6, 1))
 	_test_expanded = false
 	_test_btn.button_pressed = false
 	_test_btn.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
@@ -284,6 +298,7 @@ func _on_close():
 
 func refresh_data(e1: EnemyType, e2: EnemyType, e3: EnemyType, info: Control):
 	_info_overlay = info
+	_apply_info_state()
 	_test_enemies = {"test_T": e1, "test_Y": e2, "test_U": e3}
 	_enemy_selector.clear()
 	for id in _test_enemies.keys():
