@@ -1,11 +1,17 @@
 extends Control
 
+const _CONFIG_PATH = "user://debug_settings.cfg"
+
 var _info_overlay: Control
+var _map_manager_ref: Node = null
 var _test_enemies: Dictionary = {}
 var _current_id: String = "test_T"
 var _current_enemy: EnemyType = null
+var _info_active: bool = false
+var _active_tab: String = "test"
 
 var _test_section: VBoxContainer
+var _map_section: VBoxContainer
 var _enemy_selector: OptionButton
 var _hp_input: SpinBox
 var _speed_input: SpinBox
@@ -14,13 +20,11 @@ var _phys_armor_input: SpinBox
 var _magic_armor_input: SpinBox
 var _dodge_input: SpinBox
 var _save_status: Label
-
 var _info_btn: Button
-var _test_btn: Button
-var _test_expanded: bool = false
-var _info_active: bool = false
-
-const _CONFIG_PATH = "user://debug_settings.cfg"
+var _info_dot: ColorRect
+var _tab_test: Button
+var _tab_map: Button
+var _map_labels: Dictionary = {}
 
 func _ready():
 	_build_ui()
@@ -40,21 +44,21 @@ func _build_ui():
 
 	var panel = Panel.new()
 	panel.name = "BgPanel"
-	var panel_size = Vector2(440, 340)
+	var panel_size = Vector2(440, 360)
 	panel.custom_minimum_size = panel_size
 	panel.size = panel_size
-	var panel_style = StyleBoxFlat.new()
-	panel_style.bg_color = Color(0.1, 0.1, 0.15, 0.92)
-	panel_style.border_width_left = 1
-	panel_style.border_width_top = 1
-	panel_style.border_width_right = 1
-	panel_style.border_width_bottom = 1
-	panel_style.border_color = Color(0.3, 0.3, 0.4, 1)
-	panel_style.corner_radius_top_left = 8
-	panel_style.corner_radius_top_right = 8
-	panel_style.corner_radius_bottom_left = 8
-	panel_style.corner_radius_bottom_right = 8
-	panel.add_theme_stylebox_override("panel", panel_style)
+	var ps = StyleBoxFlat.new()
+	ps.bg_color = Color(0.1, 0.1, 0.15, 0.92)
+	ps.border_width_left = 1
+	ps.border_width_top = 1
+	ps.border_width_right = 1
+	ps.border_width_bottom = 1
+	ps.border_color = Color(0.3, 0.3, 0.4, 1)
+	ps.corner_radius_top_left = 8
+	ps.corner_radius_top_right = 8
+	ps.corner_radius_bottom_left = 8
+	ps.corner_radius_bottom_right = 8
+	panel.add_theme_stylebox_override("panel", ps)
 	add_child(panel)
 
 	var vbox = VBoxContainer.new()
@@ -64,31 +68,45 @@ func _build_ui():
 	vbox.offset_top = 8
 	vbox.offset_right = -12
 	vbox.offset_bottom = -8
-	vbox.add_theme_constant_override("separation", 6)
+	vbox.add_theme_constant_override("separation", 4)
 	panel.add_child(vbox)
 
 	_title_bar(vbox)
-	vbox.add_child(_make_separator())
-	_tool_bar(vbox)
-	vbox.add_child(_make_separator())
-	_test_section = _test_editor(vbox)
+	vbox.add_child(_sep())
+	_info_row(vbox)
+	vbox.add_child(_sep())
+	_tab_bar(vbox)
+	vbox.add_child(_sep())
+
+	var content = VBoxContainer.new()
+	content.name = "Content"
+	content.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	content.add_theme_constant_override("separation", 0)
+	vbox.add_child(content)
+
+	_test_section = _build_test_editor()
 	_test_section.visible = false
+	content.add_child(_test_section)
+
+	_map_section = _build_map_info()
+	_map_section.visible = false
+	content.add_child(_map_section)
+
+func _sep() -> HSeparator:
+	var s = HSeparator.new()
+	s.modulate = Color(1, 1, 1, 0.12)
+	return s
 
 func _title_bar(parent: VBoxContainer):
 	var hbox = HBoxContainer.new()
-	hbox.name = "TitleBar"
-	hbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
 	var title = Label.new()
 	title.text = "调试面板"
 	title.add_theme_font_size_override("font_size", 14)
 	title.add_theme_color_override("font_color", Color(1, 1, 1, 0.9))
 	hbox.add_child(title)
-
-	var spacer = Control.new()
-	spacer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	hbox.add_child(spacer)
-
+	var sp = Control.new()
+	sp.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbox.add_child(sp)
 	var close_btn = Button.new()
 	close_btn.text = "×"
 	close_btn.flat = true
@@ -97,41 +115,98 @@ func _title_bar(parent: VBoxContainer):
 	close_btn.add_theme_color_override("font_hover_color", Color(1, 0.3, 0.3, 1))
 	close_btn.pressed.connect(_on_close)
 	hbox.add_child(close_btn)
-
 	parent.add_child(hbox)
 
-func _tool_bar(parent: VBoxContainer):
+func _info_row(parent: VBoxContainer):
 	var hbox = HBoxContainer.new()
-	hbox.name = "ToolBar"
 	hbox.add_theme_constant_override("separation", 8)
 
-	_info_btn = _make_toggle_btn("信息")
+	_info_btn = Button.new()
+	_info_btn.text = "信息"
+	_info_btn.flat = true
+	_info_btn.toggle_mode = true
+	_info_btn.add_theme_font_size_override("font_size", 12)
+	_info_btn.custom_minimum_size = Vector2(50, 24)
 	_info_btn.pressed.connect(_on_info_toggle)
 	hbox.add_child(_info_btn)
 
-	_test_btn = _make_toggle_btn("测试")
-	_test_btn.pressed.connect(_on_test_toggle)
-	hbox.add_child(_test_btn)
+	_info_dot = ColorRect.new()
+	_info_dot.custom_minimum_size = Vector2(8, 8)
+	_info_dot.size = Vector2(8, 8)
+	_info_dot.color = Color(0.4, 0.4, 0.4, 1)
+	hbox.add_child(_info_dot)
+
+	hbox.add_child(Control.new())
+	parent.add_child(hbox)
+
+func _tab_bar(parent: VBoxContainer):
+	var hbox = HBoxContainer.new()
+	hbox.add_theme_constant_override("separation", 0)
+	hbox.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+
+	var group = ButtonGroup.new()
+
+	_tab_test = Button.new()
+	_tab_test.text = "测试"
+	_tab_test.flat = true
+	_tab_test.toggle_mode = true
+	_tab_test.button_group = group
+	_tab_test.custom_minimum_size = Vector2(80, 28)
+	var stl = StyleBoxFlat.new()
+	stl.bg_color = Color(0.15, 0.15, 0.2, 1)
+	stl.border_width_left = 1
+	stl.border_width_top = 1
+	stl.border_width_bottom = 1
+	stl.border_color = Color(0.3, 0.3, 0.4, 1)
+	stl.corner_radius_top_left = 4
+	stl.corner_radius_bottom_left = 4
+	_tab_test.add_theme_stylebox_override("normal", stl)
+	var stl_p = StyleBoxFlat.new()
+	stl_p.bg_color = Color(0.2, 0.4, 0.7, 1)
+	stl_p.border_width_left = 1
+	stl_p.border_width_top = 1
+	stl_p.border_width_bottom = 1
+	stl_p.border_color = Color(0.3, 0.3, 0.4, 1)
+	stl_p.corner_radius_top_left = 4
+	stl_p.corner_radius_bottom_left = 4
+	_tab_test.add_theme_stylebox_override("pressed", stl_p)
+	_tab_test.add_theme_stylebox_override("hover_pressed", stl_p)
+	_tab_test.pressed.connect(_on_tab_changed.bind("test"))
+	hbox.add_child(_tab_test)
+
+	_tab_map = Button.new()
+	_tab_map.text = "地图"
+	_tab_map.flat = true
+	_tab_map.toggle_mode = true
+	_tab_map.button_group = group
+	_tab_map.custom_minimum_size = Vector2(80, 28)
+	var stl2 = StyleBoxFlat.new()
+	stl2.bg_color = Color(0.15, 0.15, 0.2, 1)
+	stl2.border_width_left = 1
+	stl2.border_width_top = 1
+	stl2.border_width_right = 1
+	stl2.border_width_bottom = 1
+	stl2.border_color = Color(0.3, 0.3, 0.4, 1)
+	stl2.corner_radius_top_right = 4
+	stl2.corner_radius_bottom_right = 4
+	_tab_map.add_theme_stylebox_override("normal", stl2)
+	var stl2_p = StyleBoxFlat.new()
+	stl2_p.bg_color = Color(0.2, 0.4, 0.7, 1)
+	stl2_p.border_width_left = 1
+	stl2_p.border_width_top = 1
+	stl2_p.border_width_right = 1
+	stl2_p.border_width_bottom = 1
+	stl2_p.border_color = Color(0.3, 0.3, 0.4, 1)
+	stl2_p.corner_radius_top_right = 4
+	stl2_p.corner_radius_bottom_right = 4
+	_tab_map.add_theme_stylebox_override("pressed", stl2_p)
+	_tab_map.add_theme_stylebox_override("hover_pressed", stl2_p)
+	_tab_map.pressed.connect(_on_tab_changed.bind("map"))
+	hbox.add_child(_tab_map)
 
 	parent.add_child(hbox)
 
-func _make_toggle_btn(text: String) -> Button:
-	var btn = Button.new()
-	btn.text = text
-	btn.flat = true
-	btn.toggle_mode = true
-	btn.add_theme_font_size_override("font_size", 13)
-	btn.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
-	btn.add_theme_color_override("font_hover_color", Color(1, 1, 1, 1))
-	btn.custom_minimum_size = Vector2(60, 24)
-	return btn
-
-func _make_separator() -> HSeparator:
-	var sep = HSeparator.new()
-	sep.modulate = Color(1, 1, 1, 0.15)
-	return sep
-
-func _test_editor(parent: VBoxContainer) -> VBoxContainer:
+func _build_test_editor() -> VBoxContainer:
 	var vbox = VBoxContainer.new()
 	vbox.name = "TestEditor"
 	vbox.add_theme_constant_override("separation", 6)
@@ -160,67 +235,84 @@ func _test_editor(parent: VBoxContainer) -> VBoxContainer:
 	grid.add_theme_constant_override("h_separation", 12)
 	grid.add_theme_constant_override("v_separation", 4)
 
-	_hp_input = _make_spin(0, 99999, 1, 20)
-	_speed_input = _make_spin(0, 9999, 1, 100)
-	_gold_input = _make_spin(0, 9999, 1, 10)
-	_phys_armor_input = _make_spin(0, 1, 0.01, 0)
-	_magic_armor_input = _make_spin(0, 1, 0.01, 0)
-	_dodge_input = _make_spin(0, 1, 0.01, 0)
+	_hp_input = _sp(0, 99999, 1, 20)
+	_speed_input = _sp(0, 9999, 1, 100)
+	_gold_input = _sp(0, 9999, 1, 10)
+	_phys_armor_input = _sp(0, 1, 0.01, 0)
+	_magic_armor_input = _sp(0, 1, 0.01, 0)
+	_dodge_input = _sp(0, 1, 0.01, 0)
 
-	grid.add_child(_make_field_label("HP"))
-	grid.add_child(_hp_input)
-	grid.add_child(_make_field_label("速度"))
-	grid.add_child(_speed_input)
-	grid.add_child(_make_field_label("金币"))
-	grid.add_child(_gold_input)
-	grid.add_child(_make_field_label("物甲"))
-	grid.add_child(_phys_armor_input)
-	grid.add_child(_make_field_label("魔甲"))
-	grid.add_child(_magic_armor_input)
-	grid.add_child(_make_field_label("闪避"))
-	grid.add_child(_dodge_input)
-
+	for pair in [["HP", _hp_input], ["速度", _speed_input], ["金币", _gold_input], ["物甲", _phys_armor_input], ["魔甲", _magic_armor_input], ["闪避", _dodge_input]]:
+		grid.add_child(_fl(pair[0]))
+		grid.add_child(pair[1])
 	vbox.add_child(grid)
 
-	var btn_hbox = HBoxContainer.new()
-	btn_hbox.add_theme_constant_override("separation", 8)
-
+	var bh = HBoxContainer.new()
+	bh.add_theme_constant_override("separation", 8)
 	var save_btn = Button.new()
 	save_btn.text = "写入 CSV"
 	save_btn.add_theme_font_size_override("font_size", 11)
 	save_btn.pressed.connect(_on_save_csv)
-	btn_hbox.add_child(save_btn)
-
+	bh.add_child(save_btn)
 	_save_status = Label.new()
 	_save_status.add_theme_font_size_override("font_size", 10)
-	_save_status.add_theme_color_override("font_color", Color(0.5, 0.8, 0.5, 1))
 	_save_status.text = ""
-	btn_hbox.add_child(_save_status)
-	btn_hbox.add_child(Control.new())
-
-	vbox.add_child(btn_hbox)
-
-	parent.add_child(vbox)
+	bh.add_child(_save_status)
+	bh.add_child(Control.new())
+	vbox.add_child(bh)
 	return vbox
 
-func _make_field_label(text: String) -> Label:
-	var label = Label.new()
-	label.text = text
-	label.add_theme_font_size_override("font_size", 11)
-	label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 1))
-	label.custom_minimum_size = Vector2(40, 20)
-	return label
+func _fl(text: String) -> Label:
+	var l = Label.new()
+	l.text = text
+	l.add_theme_font_size_override("font_size", 11)
+	l.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7, 1))
+	l.custom_minimum_size = Vector2(40, 20)
+	return l
 
-func _make_spin(min_val: float, max_val: float, step: float, default: float) -> SpinBox:
+func _sp(min: float, max: float, step: float, default: float) -> SpinBox:
 	var sp = SpinBox.new()
-	sp.min_value = min_val
-	sp.max_value = max_val
+	sp.min_value = min
+	sp.max_value = max
 	sp.step = step
 	sp.value = default
 	sp.custom_minimum_size = Vector2(100, 24)
 	sp.add_theme_font_size_override("font_size", 11)
 	sp.value_changed.connect(_on_field_changed)
 	return sp
+
+func _build_map_info() -> VBoxContainer:
+	var vbox = VBoxContainer.new()
+	vbox.name = "MapInfo"
+	vbox.add_theme_constant_override("separation", 4)
+
+	var header = Label.new()
+	header.text = "当前地图信息"
+	header.add_theme_font_size_override("font_size", 12)
+	header.add_theme_color_override("font_color", Color(0.8, 0.8, 1, 0.9))
+	vbox.add_child(header)
+
+	var labels = ["name", "seed", "size", "style", "path", "slots", "difficulty", "density", "dps", "dps_per_slot"]
+	var keys = ["名称:", "种子:", "尺寸:", "风格:", "路径长:", "塔槽数:", "难度分:", "火力密度:", "总伤害:", "每塔伤害:"]
+
+	for i in labels.size():
+		var row = HBoxContainer.new()
+		var key = Label.new()
+		key.text = keys[i]
+		key.add_theme_font_size_override("font_size", 11)
+		key.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
+		key.custom_minimum_size = Vector2(70, 20)
+		row.add_child(key)
+		var val = Label.new()
+		val.name = "V_" + labels[i]
+		val.add_theme_font_size_override("font_size", 11)
+		val.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9, 1))
+		row.add_child(val)
+		row.add_child(Control.new())
+		_map_labels[labels[i]] = val
+		vbox.add_child(row)
+
+	return vbox
 
 func _on_enemy_selected(idx: int):
 	var ids = _test_enemies.keys()
@@ -255,22 +347,65 @@ func _on_save_csv():
 
 func _apply_info_state():
 	_info_btn.button_pressed = _info_active
-	if _info_active:
-		_info_btn.add_theme_color_override("font_color", Color(0.5, 0.8, 1, 1))
-	else:
-		_info_btn.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
+	_info_dot.color = Color(0.3, 0.8, 0.3, 1) if _info_active else Color(0.4, 0.4, 0.4, 1)
+	_info_btn.add_theme_color_override("font_color", Color(0.5, 0.8, 1, 1) if _info_active else Color(0.6, 0.6, 0.6, 1))
 	if _info_overlay:
 		_info_overlay.visible = _info_active
+
+func _apply_tab_state():
+	_tab_test.button_pressed = _active_tab == "test"
+	_tab_map.button_pressed = _active_tab == "map"
+	_test_section.visible = _active_tab == "test"
+	_map_section.visible = _active_tab == "map"
+	if _active_tab == "map":
+		_refresh_map_info()
+
+func _refresh_map_info():
+	if not _map_manager_ref:
+		_map_manager_ref = get_tree().get_first_node_in_group("map_manager")
+	var mm = _map_manager_ref
+	if not mm or not mm.current_map_data:
+		_set_map_val("name", "无地图")
+		return
+	var md = mm.current_map_data
+	_set_map_val("name", md.map_name if md.map_name != "" else md.map_id)
+	_set_map_val("seed", str(md.map_seed))
+	_set_map_val("size", "%d×%d" % [md.grid_size.x, md.grid_size.y])
+	_set_map_val("style", md.path_style if md.path_style != "" else md.figure8_layout)
+	_set_map_val("slots", str(md.slot_positions.size()))
+
+	var diff = MapManager.calc_difficulty(md)
+	if diff.has("error"):
+		_set_map_val("path", diff.error)
+		_set_map_val("difficulty", "-")
+		_set_map_val("density", "-")
+		_set_map_val("dps", "-")
+		_set_map_val("dps_per_slot", "-")
+		return
+	_set_map_val("path", "%.0fpx" % diff["path_length"])
+	_set_map_val("difficulty", "%.1f" % diff["difficulty_score"])
+	_set_map_val("density", "%.2f" % diff["fire_density"])
+
+	var dps = MapManager.simulate_dps(md)
+	_set_map_val("dps", "%.0f HP" % dps["dps_total"])
+	_set_map_val("dps_per_slot", "%.0f HP" % dps["dps_per_slot"])
+
+func _set_map_val(key: String, text: String):
+	if key in _map_labels:
+		_map_labels[key].text = text
 
 func _load_settings():
 	var cfg = ConfigFile.new()
 	if cfg.load(_CONFIG_PATH) == OK:
 		_info_active = cfg.get_value("debug", "info_overlay", false)
+		_active_tab = cfg.get_value("debug", "active_tab", "test")
 	_apply_info_state()
+	_apply_tab_state()
 
 func _save_settings():
 	var cfg = ConfigFile.new()
 	cfg.set_value("debug", "info_overlay", _info_active)
+	cfg.set_value("debug", "active_tab", _active_tab)
 	cfg.save(_CONFIG_PATH)
 
 func _on_info_toggle():
@@ -278,23 +413,16 @@ func _on_info_toggle():
 	_apply_info_state()
 	_save_settings()
 
-func _on_test_toggle():
-	_test_expanded = not _test_expanded
-	_test_btn.button_pressed = _test_expanded
-	_test_section.visible = _test_expanded
-	if _test_expanded:
-		_test_btn.add_theme_color_override("font_color", Color(0.5, 0.8, 1, 1))
-	else:
-		_test_btn.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
+func _on_tab_changed(tab: String):
+	_active_tab = tab
+	_apply_tab_state()
+	_save_settings()
 
 func _on_close():
 	visible = false
-	_test_expanded = false
-	_test_btn.button_pressed = false
-	_test_btn.add_theme_color_override("font_color", Color(0.6, 0.6, 0.6, 1))
-	_test_section.visible = false
 	if _info_overlay:
 		_info_overlay.visible = false
+	_save_settings()
 
 func refresh_data(e1: EnemyType, e2: EnemyType, e3: EnemyType, info: Control):
 	_info_overlay = info
@@ -305,3 +433,4 @@ func refresh_data(e1: EnemyType, e2: EnemyType, e3: EnemyType, info: Control):
 		_enemy_selector.add_item(id)
 	_enemy_selector.select(0)
 	_on_enemy_selected(0)
+	_apply_tab_state()

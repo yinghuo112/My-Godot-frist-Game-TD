@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://48dobf0wud5k"]
 
+[ext_resource type="FontFile" uid="uid://rin1egjnb28e" path="res://UI/Font/联盟起艺卢帅正锐黑体.ttf" id="1_arn5o"]
 [ext_resource type="Theme" uid="uid://c70anje2poj2g" path="res://UI/MY_UI/Button-blue.tres" id="1_dgibt"]
+[ext_resource type="Texture2D" uid="uid://mwk1rctahf6o" path="res://assets/UI/图标-皮肤.jpg" id="3_0ckk4"]
 
 [sub_resource type="Gradient" id="Gradient_dgibt"]
 colors = PackedColorArray(0.1764706, 0.13333334, 0.3019608, 1, 0.039215688, 0.023529412, 0.078431375, 1)
@@ -71,10 +73,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 7.0
-offset_top = -7.0
-offset_right = 7.0
-offset_bottom = -7.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -88,6 +86,7 @@ layout_mode = 2
 [node name="Title" type="Label" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/TitleContainer" unique_id=930351307]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.8901961, 0.34901962, 1)
+theme_override_fonts/font = ExtResource("1_arn5o")
 theme_override_font_sizes/font_size = 64
 text = "塔防游戏"
 
@@ -118,3 +117,18 @@ text = "设置"
 [node name="ExitBtn" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/ButtonContainer" unique_id=18557535]
 layout_mode = 2
 text = "退出游戏"
+
+[node name="TopRight皮肤UI" type="MarginContainer" parent="CanvasLayer/Control" unique_id=1457265520]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -280.0
+offset_bottom = 230.0
+grow_horizontal = 0
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 30
+
+[node name="SkinBtn" type="TextureButton" parent="CanvasLayer/Control/TopRight皮肤UI" unique_id=557403160]
+layout_mode = 2
+texture_normal = ExtResource("3_0ckk4")
