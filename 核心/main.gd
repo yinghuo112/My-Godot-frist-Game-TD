@@ -29,8 +29,9 @@ var _last_test_type: String = ""
 var _test_enemy: EnemyType
 var _test_enemy_2: EnemyType
 var _test_enemy_3: EnemyType
-const _TEST_WAVE_COUNT = 5
-const _TEST_WAVE_INTERVAL = 1.27
+var test_wave_count: int = 5
+var test_wave_interval: float = 1.27
+var test_wave_route: int = 1
 var _test_wave_remaining: int = 0
 var _test_wave_timer: Timer
 var _test_wave_2_remaining: int = 0
@@ -363,10 +364,10 @@ func _toggle_console() -> void:
 
 func _spawn_test_enemy() -> void:
 	if _test_wave_timer.is_stopped():
-		_test_wave_remaining = _TEST_WAVE_COUNT
-		_test_wave_timer.wait_time = _TEST_WAVE_INTERVAL
+		_test_wave_remaining = test_wave_count
+		_test_wave_timer.wait_time = test_wave_interval
 		_test_wave_timer.start()
-		print("=== 测试波次开始: %d 只, 间隔 %.2fs ===" % [_TEST_WAVE_COUNT, _TEST_WAVE_INTERVAL])
+		print("=== 测试波次开始: %d 只, 间隔 %.2fs ===" % [test_wave_count, test_wave_interval])
 		_spawn_one_test_enemy()
 
 func _on_test_wave_spawn():
@@ -381,17 +382,17 @@ func _spawn_one_test_enemy():
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
 	enemy.reached_end.connect(_on_test_enemy_reached_end)
-	var path = map_manager.get_enemy_path(GameManager.current_route)
+	var path = map_manager.get_enemy_path(test_wave_route)
 	path.add_child(enemy)
 	_test_wave_remaining -= 1
 	print("测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_remaining, debug_type.max_hp, debug_type.speed])
 
 func _spawn_test_enemy_2() -> void:
 	if _test_wave_2_timer.is_stopped():
-		_test_wave_2_remaining = _TEST_WAVE_COUNT
-		_test_wave_2_timer.wait_time = _TEST_WAVE_INTERVAL
+		_test_wave_2_remaining = test_wave_count
+		_test_wave_2_timer.wait_time = test_wave_interval
 		_test_wave_2_timer.start()
-		print("=== 2塔测试波次开始: %d 只, 间隔 %.2fs, HP=40 ===" % [_TEST_WAVE_COUNT, _TEST_WAVE_INTERVAL])
+		print("=== 2塔测试波次开始: %d 只, 间隔 %.2fs, HP=40 ===" % [test_wave_count, test_wave_interval])
 		_spawn_one_test_enemy_2()
 
 func _on_test_wave_2_spawn():
@@ -406,17 +407,17 @@ func _spawn_one_test_enemy_2():
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
 	enemy.reached_end.connect(_on_test_enemy_reached_end)
-	var path = map_manager.get_enemy_path(GameManager.current_route)
+	var path = map_manager.get_enemy_path(test_wave_route)
 	path.add_child(enemy)
 	_test_wave_2_remaining -= 1
 	print("2塔测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_2_remaining, debug_type.max_hp, debug_type.speed])
 
 func _spawn_test_enemy_3() -> void:
 	if _test_wave_3_timer.is_stopped():
-		_test_wave_3_remaining = _TEST_WAVE_COUNT
-		_test_wave_3_timer.wait_time = _TEST_WAVE_INTERVAL
+		_test_wave_3_remaining = test_wave_count
+		_test_wave_3_timer.wait_time = test_wave_interval
 		_test_wave_3_timer.start()
-		print("=== 3号测试波次开始: %d 只, 间隔 %.2fs, HP=1000 ===" % [_TEST_WAVE_COUNT, _TEST_WAVE_INTERVAL])
+		print("=== 3号测试波次开始: %d 只, 间隔 %.2fs, HP=1000 ===" % [test_wave_count, test_wave_interval])
 		_spawn_one_test_enemy_3()
 
 func _on_test_wave_3_spawn():
@@ -431,7 +432,7 @@ func _spawn_one_test_enemy_3():
 	enemy.init(debug_type)
 	enemy.died.connect(_on_test_enemy_died)
 	enemy.reached_end.connect(_on_test_enemy_reached_end)
-	var path = map_manager.get_enemy_path(GameManager.current_route)
+	var path = map_manager.get_enemy_path(test_wave_route)
 	path.add_child(enemy)
 	_test_wave_3_remaining -= 1
 	print("3号测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_3_remaining, debug_type.max_hp, debug_type.speed])

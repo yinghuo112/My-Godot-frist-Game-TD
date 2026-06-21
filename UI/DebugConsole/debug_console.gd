@@ -20,6 +20,9 @@ var _phys_armor_input: SpinBox
 var _magic_armor_input: SpinBox
 var _dodge_input: SpinBox
 var _save_status: Label
+var _count_input: SpinBox
+var _interval_input: SpinBox
+var _route_input: SpinBox
 var _info_btn: Button
 var _info_dot: ColorRect
 var _tab_test: Button
@@ -247,6 +250,18 @@ func _build_test_editor() -> VBoxContainer:
 		grid.add_child(pair[1])
 	vbox.add_child(grid)
 
+	var wave_grid = GridContainer.new()
+	wave_grid.columns = 2
+	wave_grid.add_theme_constant_override("h_separation", 12)
+	wave_grid.add_theme_constant_override("v_separation", 4)
+	_count_input = _sp_wave(1, 999, 1, 5, "count")
+	_interval_input = _sp_wave(0.1, 99, 0.01, 1.27, "interval")
+	_route_input = _sp_wave(1, 2, 1, 1, "route")
+	for pair in [["数量", _count_input], ["间隔", _interval_input], ["路线", _route_input]]:
+		wave_grid.add_child(_fl(pair[0]))
+		wave_grid.add_child(pair[1])
+	vbox.add_child(wave_grid)
+
 	var bh = HBoxContainer.new()
 	bh.add_theme_constant_override("separation", 8)
 	var save_btn = Button.new()
@@ -270,15 +285,26 @@ func _fl(text: String) -> Label:
 	l.custom_minimum_size = Vector2(40, 20)
 	return l
 
-func _sp(min: float, max: float, step: float, default: float) -> SpinBox:
+func _sp(min_val: float, max_val: float, step: float, default_val: float) -> SpinBox:
 	var sp = SpinBox.new()
-	sp.min_value = min
-	sp.max_value = max
+	sp.min_value = min_val
+	sp.max_value = max_val
 	sp.step = step
-	sp.value = default
+	sp.value = default_val
 	sp.custom_minimum_size = Vector2(100, 24)
 	sp.add_theme_font_size_override("font_size", 11)
 	sp.value_changed.connect(_on_field_changed)
+	return sp
+
+func _sp_wave(min_val: float, max_val: float, step: float, default_val: float, param: String) -> SpinBox:
+	var sp = SpinBox.new()
+	sp.min_value = min_val
+	sp.max_value = max_val
+	sp.step = step
+	sp.value = default_val
+	sp.custom_minimum_size = Vector2(100, 24)
+	sp.add_theme_font_size_override("font_size", 11)
+	sp.value_changed.connect(_on_wave_param_changed.bind(param))
 	return sp
 
 func _build_map_info() -> VBoxContainer:
@@ -399,14 +425,42 @@ func _load_settings():
 	if cfg.load(_CONFIG_PATH) == OK:
 		_info_active = cfg.get_value("debug", "info_overlay", false)
 		_active_tab = cfg.get_value("debug", "active_tab", "test")
+		_count_input.set_value_no_signal(cfg.get_value("debug", "wave_count", 5))
+		_interval_input.set_value_no_signal(cfg.get_value("debug", "wave_interval", 1.27))
+		_route_input.set_value_no_signal(cfg.get_value("debug", "wave_route", 1))
 	_apply_info_state()
 	_apply_tab_state()
+	_sync_wave_params()
 
 func _save_settings():
 	var cfg = ConfigFile.new()
 	cfg.set_value("debug", "info_overlay", _info_active)
 	cfg.set_value("debug", "active_tab", _active_tab)
+	cfg.set_value("debug", "wave_count", _count_input.value)
+	cfg.set_value("debug", "wave_interval", _interval_input.value)
+	cfg.set_value("debug", "wave_route", _route_input.value)
 	cfg.save(_CONFIG_PATH)
+
+func _sync_wave_params():
+	var main = get_tree().current_scene
+	if not main:
+		return
+	main.test_wave_count = int(_count_input.value)
+	main.test_wave_interval = _interval_input.value
+	main.test_wave_route = int(_route_input.value)
+
+func _on_wave_param_changed(_val, param: String):
+	var main = get_tree().current_scene
+	if not main:
+		return
+	match param:
+		"count":
+			main.test_wave_count = int(_count_input.value)
+		"interval":
+			main.test_wave_interval = _interval_input.value
+		"route":
+			main.test_wave_route = int(_route_input.value)
+	_save_settings()
 
 func _on_info_toggle():
 	_info_active = not _info_active
@@ -420,8 +474,6 @@ func _on_tab_changed(tab: String):
 
 func _on_close():
 	visible = false
-	if _info_overlay:
-		_info_overlay.visible = false
 	_save_settings()
 
 func refresh_data(e1: EnemyType, e2: EnemyType, e3: EnemyType, info: Control):
@@ -433,4 +485,9 @@ func refresh_data(e1: EnemyType, e2: EnemyType, e3: EnemyType, info: Control):
 		_enemy_selector.add_item(id)
 	_enemy_selector.select(0)
 	_on_enemy_selected(0)
+	var main = get_tree().current_scene
+	if main:
+		_count_input.set_value_no_signal(main.test_wave_count)
+		_interval_input.set_value_no_signal(main.test_wave_interval)
+		_route_input.set_value_no_signal(main.test_wave_route)
 	_apply_tab_state()

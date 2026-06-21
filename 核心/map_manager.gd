@@ -15,6 +15,7 @@ var play_area_margin: float = 100.0
 var current_map_data = null
 var _baked_path_points: PackedVector2Array = []
 var _baked_path_points_2: PackedVector2Array = []
+var _path_coverage_cache: Dictionary = {}
 
 const CLICK_RADIUS_SQ: float = 400.0
 const TREE_CLICK_RADIUS_SQ: float = 625.0
@@ -37,6 +38,7 @@ func _ready():
 	enemy_path_2 = get_node_or_null("../EnemyPath2")
 	if enemy_path_2 and enemy_path_2.curve:
 		_baked_path_points_2 = enemy_path_2.curve.get_baked_points()
+	_path_coverage_cache.clear()
 	_calculate_play_area()
 	var default_map = load("res://data/maps/map_001.tres")
 	load_map(default_map)
@@ -46,6 +48,7 @@ func load_map(data):
 		push_error("load_map: data is null")
 		return
 	current_map_data = data
+	_path_coverage_cache.clear()
 	for child in $TowerSlots.get_children():
 		child.queue_free()
 	for i in data.slot_names.size():
@@ -175,6 +178,9 @@ func get_enemy_path(route: int = 0) -> Path2D:
 	return enemy_path
 
 func get_path_coverage(pos: Vector2, radius: float) -> float:
+	var key = "%d_%d_%d" % [pos.x, pos.y, radius]
+	if _path_coverage_cache.has(key):
+		return _path_coverage_cache[key]
 	if _baked_path_points.is_empty():
 		return 0.0
 	var count = 0
@@ -182,7 +188,9 @@ func get_path_coverage(pos: Vector2, radius: float) -> float:
 	for p in _baked_path_points:
 		if pos.distance_squared_to(p) <= radius_sq:
 			count += 1
-	return float(count) / float(_baked_path_points.size()) * 100.0
+	var result = float(count) / float(_baked_path_points.size()) * 100.0
+	_path_coverage_cache[key] = result
+	return result
 
 func get_tile_map() -> TileMapLayer:
 	return tile_map_layer

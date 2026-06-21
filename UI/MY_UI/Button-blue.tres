@@ -40,7 +40,7 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [resource]
-Button/colors/font_color = Color(0.46183717, 0.472427, 0.4830169, 1)
+Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
 Button/colors/font_pressed_color = Color(0.1764706, 0.19607843, 0.21568628, 1)
 Button/font_sizes/font_size = 22

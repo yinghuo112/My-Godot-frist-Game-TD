@@ -24,6 +24,7 @@ var skill_points: int = 0
 var skill_unlocked_indices: Array = []
 var skill_states: Dictionary = {}
 var _last_skills: Array = []
+var _skill_cache_valid: bool = false
 var _tick_accum: float = 0.0
 # ===== 爆发射击系统（用于三连射等多发技能）=====
 var _burst_remaining: int = 0           # 爆发中还剩几箭（>0 = 爆发中，_process 跳过主动射击）
@@ -76,12 +77,6 @@ func init(data: TowerType):
 	cost = data.cost
 	if data.bullet_scene:
 		bullet_scene = data.bullet_scene
-	var sb = data.get("skill_book")
-	if sb and sb.skills.size() > 0:
-		skill_unlocked_indices.append(0)
-		var root_skill = sb.skills[0]
-		skill_states[root_skill.resource_path] = {"level": 1, "proficiency": 0}
-		_last_skills = _get_active_skills()
 
 # 初始化范围碰撞体、射击计时器、范围检测和等级标签
 func _ready():
@@ -359,6 +354,7 @@ func do_upgrade() -> bool:
 		level_label.text = "Lv." + str(level)
 	if _range_indicator:
 		_range_indicator.set_range(_cached_range)
+	invalidate_skill_cache()
 	return true
 
 # ===== 技能系统接口 =====
@@ -374,6 +370,8 @@ func get_skill_level(skill) -> int:
 
 # 获取所有已解锁且等级 > 0 的技能列表（用于技能回调遍历）
 func _get_active_skills() -> Array:
+	if _skill_cache_valid:
+		return _last_skills
 	var sb = tower_type.get("skill_book") if tower_type else null
 	if not sb:
 		return []
@@ -384,7 +382,12 @@ func _get_active_skills() -> Array:
 		var skill = sb.skills[idx]
 		if get_skill_level(skill) > 0:
 			result.append(skill)
+	_last_skills = result
+	_skill_cache_valid = true
 	return result
+
+func invalidate_skill_cache():
+	_skill_cache_valid = false
 
 func get_current_damage() -> float:
 	return damage * pow(1.4, level - 1)

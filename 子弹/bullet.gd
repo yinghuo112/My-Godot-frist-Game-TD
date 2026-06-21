@@ -162,6 +162,8 @@ func _release() -> void:
 # 复用前的重置：清空命中锁 → 恢复可见/逻辑/碰撞
 func reset() -> void:
 	_has_hit = false
+	target = null
+	modulate = Color.WHITE
 	visible = true
 	set_process(true)
 	set_physics_process(true)

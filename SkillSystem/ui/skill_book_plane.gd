@@ -226,6 +226,8 @@ func _on_unlock_skill(tower: Node2D, skill_idx: int) -> void:
 	var states: Dictionary = tower.get("skill_states") if "skill_states" in tower else {}
 	states[skill.resource_path] = {"level": 1, "proficiency": 0}
 	tower.skill_states = states
+	if tower.has_method("invalidate_skill_cache"):
+		tower.invalidate_skill_cache()
 	_populate(tower)
 
 # 升级技能
@@ -257,4 +259,6 @@ func _on_upgrade_skill(tower: Node2D, skill_idx: int) -> void:
 		AudioManager.play("upgrade")
 		states[path] = state
 		tower.skill_states = states
+		if tower.has_method("invalidate_skill_cache"):
+			tower.invalidate_skill_cache()
 		_populate(tower)
