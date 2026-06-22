@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://48dobf0wud5k"]
 
-[ext_resource type="Script" path="res://UI/主题/开始界面.gd" id="0"]
+[ext_resource type="Script" uid="uid://br6v6tqpkeb4g" path="res://UI/主题/开始界面.gd" id="0"]
 [ext_resource type="PackedScene" uid="uid://cpfuaeo4uvigo" path="res://UI/panel_settings.tscn" id="0_fm6ru"]
-[ext_resource type="PackedScene" path="res://UI/panel_level_select.tscn" id="0_g4n5d"]
+[ext_resource type="PackedScene" uid="uid://csd2mqbkqnw86" path="res://UI/panel_level_select.tscn" id="0_g4n5d"]
 [ext_resource type="FontFile" uid="uid://rin1egjnb28e" path="res://UI/Font/联盟起艺卢帅正锐黑体.ttf" id="1_arn5o"]
 [ext_resource type="Theme" uid="uid://c70anje2poj2g" path="res://UI/MY_UI/Button-blue.tres" id="1_dgibt"]
 [ext_resource type="Texture2D" uid="uid://mwk1rctahf6o" path="res://assets/UI/图标-皮肤.jpg" id="3_0ckk4"]
+[ext_resource type="PackedScene" uid="uid://bs305m0l53k1f" path="res://UI/主题/关卡选择/关卡选择.tscn" id="7_yu6tx"]
 
 [sub_resource type="Gradient" id="Gradient_dgibt"]
 colors = PackedColorArray(0.1764706, 0.13333334, 0.3019608, 1, 0.039215688, 0.023529412, 0.078431375, 1)
@@ -141,8 +142,11 @@ layout_mode = 2
 size_flags_stretch_ratio = 1.18
 texture = ExtResource("3_0ckk4")
 
-[node name="SettingsPanel" parent="CanvasLayer/Control" instance=ExtResource("0_fm6ru")]
+[node name="SettingsPanel" parent="CanvasLayer/Control" unique_id=704353829 instance=ExtResource("0_fm6ru")]
 visible = false
+layout_mode = 1
 
-[node name="LevelSelectPanel" parent="CanvasLayer/Control" instance=ExtResource("0_g4n5d")]
+[node name="关卡选择" parent="CanvasLayer/Control" unique_id=822911077 instance=ExtResource("7_yu6tx")]
 visible = false
+position = Vector2(428, 99)
+scale = Vector2(0.5, 0.5)

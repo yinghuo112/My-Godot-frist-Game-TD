@@ -1,0 +1,359 @@
+[gd_scene format=3 uid="uid://bs305m0l53k1f"]
+
+[ext_resource type="Script" uid="uid://siwcokmlc7wq" path="res://UI/主题/关卡选择/level_selection_ui.gd" id="1_5efq8"]
+[ext_resource type="Texture2D" uid="uid://gf8aolx1g6a8" path="res://assets/UI/Plance_Level_select/主体.png" id="1_7hohw"]
+[ext_resource type="Script" uid="uid://jxiok00os2t3" path="res://UI/主题/关卡选择/scrollbar.gd" id="2_0fgwt"]
+[ext_resource type="Texture2D" uid="uid://f4e1gpk5wpbc" path="res://assets/UI/Plance_Level_select/主框_2.png" id="2_ij4an"]
+[ext_resource type="PackedScene" uid="uid://qd8w0ipjpuo7" path="res://UI/主题/关卡选择/MapItem.tscn" id="2_nvncb"]
+[ext_resource type="Texture2D" uid="uid://suvuw3af4vv2" path="res://assets/UI/Plance_Level_select/滑块上.png" id="2_qmmlf"]
+[ext_resource type="Texture2D" uid="uid://c6vt2qmqco4tf" path="res://assets/UI/Plance_Level_select/滑板.png" id="3_0fgwt"]
+[ext_resource type="Texture2D" uid="uid://chfh1oo1qrlbv" path="res://assets/UI/Plance_Level_select/按钮底框.png" id="3_pbg6l"]
+[ext_resource type="Texture2D" uid="uid://bckq1m88lxxif" path="res://assets/UI/Plance_Level_select/滑块.png" id="4_5efq8"]
+[ext_resource type="Texture2D" uid="uid://ckx5gc2fg57jk" path="res://assets/UI/Plance_Level_select/骰子.png" id="4_fpce8"]
+[ext_resource type="Texture2D" uid="uid://dhr7nepjspntb" path="res://assets/UI/Plance_Level_select/滑块下.png" id="5_nvncb"]
+[ext_resource type="FontFile" uid="uid://rin1egjnb28e" path="res://UI/Font/联盟起艺卢帅正锐黑体.ttf" id="5_qmmlf"]
+[ext_resource type="Texture2D" uid="uid://bgmb7ri7j8ga0" path="res://assets/UI/Plance_Level_select/segment_019.png" id="6_0fgwt"]
+[ext_resource type="Texture2D" uid="uid://drkbnpcbcfhgo" path="res://assets/UI/Plance_Level_select/segment_005.png" id="7_5efq8"]
+[ext_resource type="Texture2D" uid="uid://cxpag0um8k350" path="res://assets/UI/Plance_Level_select/segment_011.png" id="8_nvncb"]
+[ext_resource type="Texture2D" uid="uid://cdwcuk5rjrpm6" path="res://assets/UI/Plance_Level_select/segment_021.png" id="9_rc0q4"]
+[ext_resource type="Script" uid="uid://duhy5f67ldgjh" path="res://UI/主题/关卡选择/exit_game_btn.gd" id="16_rc0q4"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qmmlf"]
+texture = ExtResource("3_0fgwt")
+expand_margin_left = 34.0
+expand_margin_right = 34.0
+
+[node name="关卡选择" type="Node2D" unique_id=822911077]
+
+[node name="LevelSelectionUI" type="Control" parent="." unique_id=730588995]
+custom_minimum_size = Vector2(900, 1200)
+layout_mode = 3
+anchors_preset = 0
+size_flags_vertical = 4
+script = ExtResource("1_5efq8")
+map_item_scene = ExtResource("2_nvncb")
+
+[node name="BackgroundLayer" type="Control" parent="LevelSelectionUI" unique_id=1168153752]
+anchors_preset = 0
+offset_right = 878.0
+
+[node name="TextureRect" type="TextureRect" parent="LevelSelectionUI/BackgroundLayer" unique_id=509206431]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MagicCircle" type="TextureRect" parent="LevelSelectionUI/BackgroundLayer" unique_id=360500208]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MainPanel" type="TextureRect" parent="LevelSelectionUI" unique_id=52626191]
+layout_mode = 0
+offset_top = 4.0
+offset_right = 878.0
+offset_bottom = 860.0
+texture = ExtResource("1_7hohw")
+
+[node name="TitleHead" type="TextureRect" parent="LevelSelectionUI/MainPanel" unique_id=184255425]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_top = 40.295
+offset_right = 20.0
+offset_bottom = 80.29504
+grow_horizontal = 2
+
+[node name="TitleText" type="Label" parent="LevelSelectionUI/MainPanel/TitleHead" unique_id=1379617913]
+layout_mode = 0
+offset_left = -101.0
+offset_top = -16.294998
+offset_right = 135.0
+offset_bottom = 65.705
+theme_override_colors/font_color = Color(0.9019608, 0.77254903, 0.47843137, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_colors/font_outline_color = Color(0.12941177, 0.09411765, 0.05882353, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 59
+text = "关卡选择"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LevelSelectionUI/MainPanel" unique_id=2124514220]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -346.0
+offset_top = -277.0
+offset_right = 354.0
+offset_bottom = 315.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_0fgwt")
+
+[node name="MapScroll" type="ScrollContainer" parent="LevelSelectionUI/MainPanel/HBoxContainer" unique_id=170148803]
+custom_minimum_size = Vector2(620, 200)
+layout_mode = 2
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="MapSevent" type="VBoxContainer" parent="LevelSelectionUI/MainPanel/HBoxContainer/MapScroll" unique_id=2086420501]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TextureButton" type="TextureButton" parent="LevelSelectionUI/MainPanel/HBoxContainer/MapScroll/MapSevent" unique_id=1449618912]
+layout_mode = 2
+
+[node name="TextureButton2" type="TextureButton" parent="LevelSelectionUI/MainPanel/HBoxContainer/MapScroll/MapSevent" unique_id=307860604]
+layout_mode = 2
+
+[node name="TextureButton3" type="TextureButton" parent="LevelSelectionUI/MainPanel/HBoxContainer/MapScroll/MapSevent" unique_id=1139698022]
+layout_mode = 2
+
+[node name="TextureButton4" type="TextureButton" parent="LevelSelectionUI/MainPanel/HBoxContainer/MapScroll/MapSevent" unique_id=1127056993]
+layout_mode = 2
+
+[node name="MapItem" parent="LevelSelectionUI/MainPanel/HBoxContainer/MapScroll/MapSevent" unique_id=1026106258 instance=ExtResource("2_nvncb")]
+layout_mode = 2
+
+[node name="MapItem2" parent="LevelSelectionUI/MainPanel/HBoxContainer/MapScroll/MapSevent" unique_id=1959830901 instance=ExtResource("2_nvncb")]
+layout_mode = 2
+
+[node name="CustomVScrollBar" type="VBoxContainer" parent="LevelSelectionUI/MainPanel/HBoxContainer" unique_id=1367142201]
+layout_mode = 2
+size_flags_horizontal = 10
+size_flags_stretch_ratio = 0.0
+theme_override_constants/separation = -5
+
+[node name="ScrollUpBtn" type="TextureButton" parent="LevelSelectionUI/MainPanel/HBoxContainer/CustomVScrollBar" unique_id=1493330932]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+texture_normal = ExtResource("2_qmmlf")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="VSlider" type="VSlider" parent="LevelSelectionUI/MainPanel/HBoxContainer/CustomVScrollBar" unique_id=274160688]
+custom_minimum_size = Vector2(68, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
+theme_override_icons/grabber = ExtResource("4_5efq8")
+theme_override_icons/grabber_highlight = ExtResource("4_5efq8")
+theme_override_icons/grabber_disabled = ExtResource("4_5efq8")
+theme_override_styles/slider = SubResource("StyleBoxTexture_qmmlf")
+page = 40.0
+
+[node name="ScrollDownBtn" type="TextureButton" parent="LevelSelectionUI/MainPanel/HBoxContainer/CustomVScrollBar" unique_id=597331527]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+texture_normal = ExtResource("5_nvncb")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="TextureRect" type="TextureRect" parent="LevelSelectionUI" unique_id=712864947]
+layout_mode = 0
+offset_left = -7.0
+offset_top = 857.0
+offset_right = 874.0
+offset_bottom = 1084.0
+texture = ExtResource("2_ij4an")
+
+[node name="BottomButtons" type="HBoxContainer" parent="LevelSelectionUI/TextureRect" unique_id=2034608430]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -408.0
+offset_top = -72.0
+offset_right = 408.0
+offset_bottom = 72.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="GenerateBtn" type="TextureButton" parent="LevelSelectionUI/TextureRect/BottomButtons" unique_id=224435982]
+custom_minimum_size = Vector2(280, 50)
+layout_mode = 2
+texture_normal = ExtResource("3_pbg6l")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Icon" type="TextureRect" parent="LevelSelectionUI/TextureRect/BottomButtons/GenerateBtn" unique_id=792352877]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -117.5
+offset_top = -25.5
+offset_right = -11.5
+offset_bottom = 87.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("4_fpce8")
+
+[node name="Text" type="Label" parent="LevelSelectionUI/TextureRect/BottomButtons/GenerateBtn" unique_id=1296813509]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -51.5
+offset_top = -13.5
+offset_right = 140.5
+offset_bottom = 32.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.8862745, 0.92941177, 0.96862745, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7058824)
+theme_override_colors/font_outline_color = Color(0.09411765, 0.14901961, 0.20784314, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 3
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("5_qmmlf")
+theme_override_font_sizes/font_size = 30
+text = "创建新地图"
+
+[node name="TextureRect" type="TextureRect" parent="LevelSelectionUI/TextureRect/BottomButtons" unique_id=1562922241]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="CloseBtn" type="TextureButton" parent="LevelSelectionUI/TextureRect/BottomButtons" unique_id=1273039431]
+custom_minimum_size = Vector2(280, 50)
+layout_mode = 2
+texture_normal = ExtResource("3_pbg6l")
+texture_hover = ExtResource("3_pbg6l")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Icon" type="TextureRect" parent="LevelSelectionUI/TextureRect/BottomButtons/CloseBtn" unique_id=1853940189]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 42.5
+offset_top = -16.5
+offset_right = 130.5
+offset_bottom = 71.5
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("6_0fgwt")
+
+[node name="Text" type="Label" parent="LevelSelectionUI/TextureRect/BottomButtons/CloseBtn" unique_id=502571093]
+layout_mode = 0
+offset_left = 132.5
+offset_top = 43.5
+offset_right = 240.5
+offset_bottom = 98.5
+theme_override_colors/font_color = Color(0.8862745, 0.92941177, 0.96862745, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7058824)
+theme_override_colors/font_outline_color = Color(0.09411765, 0.14901961, 0.20784314, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("5_qmmlf")
+theme_override_font_sizes/font_size = 40
+text = "关  闭"
+
+[node name="StartButton" type="TextureButton" parent="LevelSelectionUI/TextureRect" unique_id=900438664]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.48800004
+anchor_top = 1.0
+anchor_right = 0.48800004
+anchor_bottom = 1.0
+offset_left = -162.32004
+offset_top = -264.0
+offset_right = 543.68
+offset_bottom = -99.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("7_5efq8")
+
+[node name="Text" type="Label" parent="LevelSelectionUI/TextureRect/StartButton" unique_id=816325360]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -131.5
+offset_top = -72.5
+offset_right = 177.0
+offset_bottom = 72.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9019608, 0.77254903, 0.47843137, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_colors/font_outline_color = Color(0.12941177, 0.09411765, 0.05882353, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 6
+theme_override_font_sizes/font_size = 105
+text = "开  始"
+
+[node name="ExitGameBtn" type="TextureButton" parent="LevelSelectionUI" unique_id=1761389123]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.48100004
+anchor_top = 0.966
+anchor_right = 0.48100004
+anchor_bottom = 0.966
+offset_left = -139.01404
+offset_top = -33.62805
+offset_right = 416.98596
+offset_bottom = 102.37195
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("8_nvncb")
+script = ExtResource("16_rc0q4")
+
+[node name="Icon" type="TextureRect" parent="LevelSelectionUI/ExitGameBtn" unique_id=252301169]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 84.0
+offset_top = -26.0
+offset_right = 187.0
+offset_bottom = 83.0
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("9_rc0q4")
+
+[node name="Text" type="Label" parent="LevelSelectionUI/ExitGameBtn" unique_id=37851083]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -88.0
+offset_top = -41.5
+offset_right = 152.0
+offset_bottom = 41.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.9019608, 0.77254903, 0.47843137, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.5882353)
+theme_override_colors/font_outline_color = Color(0.12941177, 0.09411765, 0.05882353, 1)
+theme_override_constants/shadow_offset_x = -2
+theme_override_constants/shadow_offset_y = 2
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 6
+theme_override_font_sizes/font_size = 60
+text = "退出游戏"

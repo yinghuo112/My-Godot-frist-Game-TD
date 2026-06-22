@@ -1,0 +1,129 @@
+[gd_scene format=3 uid="uid://qd8w0ipjpuo7"]
+
+[ext_resource type="Texture2D" uid="uid://chfh1oo1qrlbv" path="res://assets/UI/Plance_Level_select/按钮底框.png" id="1_2ikwg"]
+[ext_resource type="Texture2D" uid="uid://bwgfb7vp5ykfy" path="res://assets/UI/Plance_Level_select/segment_007.png" id="2_b4hde"]
+[ext_resource type="Script" uid="uid://dotouor5jhxuf" path="res://UI/主题/关卡选择/map_item.gd" id="2_ddael"]
+[ext_resource type="Texture2D" uid="uid://cq0g1a4e5inj1" path="res://assets/UI/Plance_Level_select/选中特效.png" id="2_yaayl"]
+[ext_resource type="Texture2D" uid="uid://kuk4eo2rkgv5" path="res://assets/UI/Plance_Level_select/segment_024.png" id="3_ddael"]
+[ext_resource type="Texture2D" uid="uid://c8j3jjiufef32" path="res://assets/UI/Plance_Level_select/segment_023.png" id="4_yaayl"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_b4hde"]
+texture = ExtResource("1_2ikwg")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ddael"]
+texture = ExtResource("2_yaayl")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ctgk8"]
+texture = ExtResource("2_yaayl")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+expand_margin_left = 15.0
+expand_margin_top = 15.0
+expand_margin_right = 20.0
+expand_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yaayl"]
+texture = ExtResource("2_yaayl")
+texture_margin_left = 15.0
+texture_margin_top = 15.0
+texture_margin_right = 15.0
+texture_margin_bottom = 15.0
+expand_margin_left = 15.0
+expand_margin_top = 15.0
+expand_margin_right = 20.0
+expand_margin_bottom = 15.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h4vo3"]
+bg_color = Color(0, 0, 0, 0.5882353)
+
+[node name="MapItem" type="Button" unique_id=1026106258]
+custom_minimum_size = Vector2(600, 150)
+offset_right = 570.0
+offset_bottom = 144.0
+theme_override_styles/normal = SubResource("StyleBoxTexture_b4hde")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxTexture_ddael")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ctgk8")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxTexture_ctgk8")
+theme_override_styles/hover = SubResource("StyleBoxTexture_yaayl")
+theme_override_styles/hover_pressed = SubResource("StyleBoxTexture_ctgk8")
+theme_override_styles/focus = SubResource("StyleBoxTexture_yaayl")
+toggle_mode = true
+script = ExtResource("2_ddael")
+
+[node name="MapPreview" type="NinePatchRect" parent="." unique_id=2083882162]
+layout_mode = 0
+offset_left = 304.0
+offset_top = 14.0
+offset_right = 582.0
+offset_bottom = 133.0
+texture = ExtResource("2_b4hde")
+
+[node name="TitleLabel" type="Label" parent="." unique_id=1288224697]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 31.0
+offset_top = -11.5
+offset_right = 71.0
+offset_bottom = 11.5
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.8352941, 0.89411765, 0.94509804, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0)
+theme_override_colors/font_outline_color = Color(0, 0, 0.47058824, 0.5882353)
+theme_override_constants/shadow_offset_y = 1
+theme_override_constants/outline_size = 2
+theme_override_constants/shadow_outline_size = 1
+theme_override_font_sizes/font_size = 45
+text = "#1 地图"
+
+[node name="Panel" type="Panel" parent="." unique_id=1626765116]
+layout_mode = 0
+offset_left = 503.0
+offset_top = 111.0
+offset_right = 573.0
+offset_bottom = 126.0
+pivot_offset = Vector2(6, 6)
+theme_override_styles/panel = SubResource("StyleBoxFlat_h4vo3")
+
+[node name="StartBox" type="HBoxContainer" parent="Panel" unique_id=2102182723]
+layout_mode = 0
+offset_left = -6.0
+offset_right = 75.0
+offset_bottom = 15.0
+theme_override_constants/separation = -13
+alignment = 1
+
+[node name="Star1" type="TextureRect" parent="Panel/StartBox" unique_id=1018664700]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("3_ddael")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star2" type="TextureRect" parent="Panel/StartBox" unique_id=246746493]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("3_ddael")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star3" type="TextureRect" parent="Panel/StartBox" unique_id=1527722121]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("4_yaayl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Star4" type="TextureRect" parent="Panel/StartBox" unique_id=204328139]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("4_yaayl")
+expand_mode = 1
+stretch_mode = 5
