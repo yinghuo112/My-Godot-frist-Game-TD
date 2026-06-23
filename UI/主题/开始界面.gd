@@ -18,6 +18,9 @@ func _ready():
 	# 连接关卡选择面板的关闭按钮
 	var close_btn = _level_scene.get_node("LevelSelectionUI/TextureRect/BottomButtons/CloseBtn")
 	close_btn.pressed.connect(_on_level_close)
+	# 连接关卡选择面板的退出按钮
+	var exit_game_btn = _level_scene.get_node("LevelSelectionUI/ExitGameBtn")
+	exit_game_btn.pressed.connect(_on_quit)
 
 func _on_start():
 	get_tree().change_scene_to_file("res://tower_defense.tscn")

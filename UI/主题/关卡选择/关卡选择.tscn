@@ -17,6 +17,8 @@
 [ext_resource type="Texture2D" uid="uid://cxpag0um8k350" path="res://assets/UI/Plance_Level_select/segment_011.png" id="8_nvncb"]
 [ext_resource type="Texture2D" uid="uid://cdwcuk5rjrpm6" path="res://assets/UI/Plance_Level_select/segment_021.png" id="9_rc0q4"]
 [ext_resource type="Script" uid="uid://duhy5f67ldgjh" path="res://UI/主题/关卡选择/exit_game_btn.gd" id="16_rc0q4"]
+[ext_resource type="Script" uid="uid://dc68fmsmb3yhe" path="res://UI/主题/关卡选择/hover_texture_btn.gd" id="17_2n3q5"]
+[ext_resource type="Theme" uid="uid://cjbc7omrls2xp" path="res://UI/MY_UI/LevelSelectBtn.tres" id="18_q4h7h"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qmmlf"]
 texture = ExtResource("3_0fgwt")
@@ -30,6 +32,7 @@ custom_minimum_size = Vector2(900, 1200)
 layout_mode = 3
 anchors_preset = 0
 size_flags_vertical = 4
+theme = ExtResource("18_q4h7h")
 script = ExtResource("1_5efq8")
 map_item_scene = ExtResource("2_nvncb")
 
@@ -183,6 +186,7 @@ layout_mode = 2
 texture_normal = ExtResource("3_pbg6l")
 ignore_texture_size = true
 stretch_mode = 5
+script = ExtResource("17_2n3q5")
 
 [node name="Icon" type="TextureRect" parent="LevelSelectionUI/TextureRect/BottomButtons/GenerateBtn" unique_id=792352877]
 layout_mode = 1
@@ -232,9 +236,9 @@ layout_mode = 2
 custom_minimum_size = Vector2(280, 50)
 layout_mode = 2
 texture_normal = ExtResource("3_pbg6l")
-texture_hover = ExtResource("3_pbg6l")
 ignore_texture_size = true
 stretch_mode = 5
+script = ExtResource("17_2n3q5")
 
 [node name="Icon" type="TextureRect" parent="LevelSelectionUI/TextureRect/BottomButtons/CloseBtn" unique_id=1853940189]
 layout_mode = 1
@@ -281,6 +285,7 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("7_5efq8")
+script = ExtResource("17_2n3q5")
 
 [node name="Text" type="Label" parent="LevelSelectionUI/TextureRect/StartButton" unique_id=816325360]
 layout_mode = 1
@@ -320,7 +325,7 @@ grow_horizontal = 2
 grow_vertical = 0
 scale = Vector2(0.5, 0.5)
 texture_normal = ExtResource("8_nvncb")
-script = ExtResource("16_rc0q4")
+script = ExtResource("17_2n3q5")
 
 [node name="Icon" type="TextureRect" parent="LevelSelectionUI/ExitGameBtn" unique_id=252301169]
 layout_mode = 1
