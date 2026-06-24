@@ -13,6 +13,7 @@ var _config_path: String = "user://audio_settings.cfg"
 var _current_set: String = "1"
 
 func _ready():
+	process_mode = PROCESS_MODE_WHEN_PAUSED
 	_load_external_sounds()
 	_generate_sounds()
 	_setup_players()
@@ -149,11 +150,13 @@ func _setup_players():
 	_music_player.name = "MusicPlayer"
 	_music_player.stream = load("res://音乐/BJ_TD.mp3")
 	_music_player.volume_db = linear_to_db(music_volume)
+	_music_player.process_mode = PROCESS_MODE_WHEN_PAUSED
 	add_child(_music_player)
 
 	for i in range(8):
 		var p = AudioStreamPlayer.new()
 		p.name = "SfxPlayer" + str(i)
+		p.process_mode = PROCESS_MODE_WHEN_PAUSED
 		add_child(p)
 		_sfx_players.append(p)
 

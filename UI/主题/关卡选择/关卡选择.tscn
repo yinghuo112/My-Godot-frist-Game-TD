@@ -17,7 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://cxpag0um8k350" path="res://assets/UI/Plance_Level_select/segment_011.png" id="8_nvncb"]
 [ext_resource type="Texture2D" uid="uid://cdwcuk5rjrpm6" path="res://assets/UI/Plance_Level_select/segment_021.png" id="9_rc0q4"]
 [ext_resource type="Script" uid="uid://duhy5f67ldgjh" path="res://UI/主题/关卡选择/exit_game_btn.gd" id="16_rc0q4"]
-[ext_resource type="Script" uid="uid://dc68fmsmb3yhe" path="res://UI/主题/关卡选择/hover_texture_btn.gd" id="17_2n3q5"]
+[ext_resource type="Script" path="res://UI/主题/关卡选择/hover_texture_btn.gd" id="17_2n3q5"]
 [ext_resource type="Theme" uid="uid://cjbc7omrls2xp" path="res://UI/MY_UI/LevelSelectBtn.tres" id="18_q4h7h"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qmmlf"]

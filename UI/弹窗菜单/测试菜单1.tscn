@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://5pj6bhbf36es"]
+
+[ext_resource type="Script" uid="uid://d0xy1d6r7vmey" path="res://UI/弹窗菜单/popup_menu_2.gd" id="2_wplx7"]
+
+[node name="测试菜单" type="Node2D" unique_id=743968764]
+
+[node name="Label" type="Label" parent="." unique_id=1120403017]
+offset_right = 55.0
+offset_bottom = 23.0
+text = "123123"
+
+[node name="PopupMenu2" type="PopupMenu" parent="." unique_id=1391197513]
+oversampling_override = 1.0
+hide_on_checkable_item_selection = false
+script = ExtResource("2_wplx7")

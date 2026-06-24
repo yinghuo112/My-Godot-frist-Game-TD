@@ -1,7 +1,7 @@
 extends Node2D
 
 @onready var toolbar: Control = $UI/Toolbar
-@onready var settings_panel: Control = $UI/SettingsPanel
+@onready var settings_panel: Control = $"UI/设置界面"
 @onready var game_over_bg: ColorRect = $UI/GameOverBG
 @onready var game_over_label: Label = $UI/GameOverLabel
 @onready var map_manager: MapManager = $MapManager

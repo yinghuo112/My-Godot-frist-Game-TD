@@ -3,12 +3,12 @@
 [ext_resource type="Script" uid="uid://lm7ow4ohma2p" path="res://核心/main.gd" id="1_8fhpj"]
 [ext_resource type="TileSet" uid="uid://dmx6wrley15e4" path="res://data/tileSet/new_tile_set.tres" id="2_3oumy"]
 [ext_resource type="PackedScene" uid="uid://07sie8ex2xn3" path="res://怪物/green_monster.tscn" id="3_8fgb4"]
-[ext_resource type="PackedScene" uid="uid://cpfuaeo4uvigo" path="res://UI/panel_settings.tscn" id="5_7k3j9"]
 [ext_resource type="PackedScene" uid="uid://m76ufcttltpb" path="res://Tower/TowerActionRing.tscn" id="6_6t6t6"]
 [ext_resource type="PackedScene" uid="uid://dh1yua7d4vc4l" path="res://UI/DialogueUI.tscn" id="7_i3l6g"]
 [ext_resource type="PackedScene" uid="uid://2v2qfgwom1yw" path="res://UI/InfoPlane.tscn" id="8_info"]
 [ext_resource type="PackedScene" path="res://SkillSystem/ui/SkillBookPlane.tscn" id="9_skill"]
 [ext_resource type="PackedScene" uid="uid://bqyv1ckhua0c6" path="res://UI/Toolbar.tscn" id="10_toolbar"]
+[ext_resource type="PackedScene" uid="uid://bwba5tse7yo16" path="res://UI/主题/设置界面/设置界面.tscn" id="11_3oumy"]
 [ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
 [ext_resource type="Script" uid="uid://b0y8cx23iwbjw" path="res://核心/map_manager.gd" id="132_map"]
 
@@ -76,9 +76,6 @@ text = "GAME OVER"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SettingsPanel" parent="UI" unique_id=571369356 instance=ExtResource("5_7k3j9")]
-visible = false
-
 [node name="DialogueUi" parent="UI" unique_id=1636842548 instance=ExtResource("7_i3l6g")]
 
 [node name="TowerActionRing" parent="UI" unique_id=1827179157 instance=ExtResource("6_6t6t6")]
@@ -93,3 +90,6 @@ visible = false
 offset_left = 360.0
 offset_top = 44.0
 grow_vertical = 2
+
+[node name="设置界面" parent="UI" unique_id=1902695593 instance=ExtResource("11_3oumy")]
+visible = false

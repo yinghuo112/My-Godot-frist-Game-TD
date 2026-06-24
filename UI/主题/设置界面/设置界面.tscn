@@ -5,6 +5,31 @@
 [ext_resource type="Theme" uid="uid://dl0fdstuj43tn" path="res://UI/MY_UI/金色字体V1.tres" id="3_eie03"]
 [ext_resource type="FontFile" uid="uid://rin1egjnb28e" path="res://UI/Font/联盟起艺卢帅正锐黑体.ttf" id="3_hslst"]
 [ext_resource type="Theme" uid="uid://b5o36b5aljrkv" path="res://UI/MY_UI/白色字体V1.tres" id="5_qi1u3"]
+[ext_resource type="Texture2D" uid="uid://ck76xa03s5kdo" path="res://assets/UI/设置面板/slider_bg.png" id="6_qi1u3"]
+[ext_resource type="Texture2D" uid="uid://d0gj54wj8acdi" path="res://assets/UI/设置面板/球.png" id="6_sq2im"]
+[ext_resource type="Texture2D" uid="uid://dnds2ggpd3xeb" path="res://assets/UI/设置面板/slider_fill.png" id="7_2uaf1"]
+[ext_resource type="Theme" uid="uid://dkic3kxot2hpe" path="res://UI/MY_UI/设置界面/CheckBtnTheme.tres" id="9_7wl4n"]
+[ext_resource type="Script" uid="uid://cangh2ang3f85" path="res://UI/主题/设置界面/设置界面.gd" id="10_2n3q5"]
+[ext_resource type="Texture2D" uid="uid://1cr77dnfh4g7" path="res://assets/UI/设置面板/下拉框.png" id="11_ghl5e"]
+[ext_resource type="Texture2D" uid="uid://d0d64wxj2unl7" path="res://assets/UI/Plance_Level_select/按钮底框_冰雪.png" id="11_idq66"]
+[ext_resource type="Script" uid="uid://bb1nu1q0ghd33" path="res://UI/主题/关卡选择/hover_texture_btn.gd" id="12_ghl5e"]
+[ext_resource type="Texture2D" uid="uid://bgmb7ri7j8ga0" path="res://assets/UI/Plance_Level_select/segment_019.png" id="13_fqo01"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2uaf1"]
+texture = ExtResource("6_qi1u3")
+texture_margin_top = 13.0
+texture_margin_bottom = 13.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_sq2im"]
+texture = ExtResource("7_2uaf1")
+texture_margin_top = 13.0
+texture_margin_bottom = 13.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7wl4n"]
+texture = ExtResource("7_2uaf1")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fqo01"]
+texture = ExtResource("11_ghl5e")
 
 [node name="设置界面" type="PanelContainer" unique_id=1902695593]
 custom_minimum_size = Vector2(400, 400)
@@ -20,6 +45,7 @@ offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = ExtResource("1_wph6n")
+script = ExtResource("10_2n3q5")
 
 [node name="标题冰雪" type="Sprite2D" parent="." unique_id=1210288326]
 position = Vector2(196.9097, 6.999999)
@@ -50,20 +76,137 @@ theme_override_fonts/font = ExtResource("3_hslst")
 theme_override_font_sizes/font_size = 98
 text = "设  置"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1360738156]
+[node name="主面板" type="VBoxContainer" parent="." unique_id=1360738156]
 layout_mode = 2
 
-[node name="VSplitContainer" type="VSplitContainer" parent="VBoxContainer" unique_id=522959828]
-custom_minimum_size = Vector2(0, 10)
+[node name="空白填充" type="VSplitContainer" parent="主面板" unique_id=522959828]
+custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
-drag_area_margin_begin = 7
+drag_area_margin_begin = 11
 drag_area_margin_end = 8
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer" unique_id=1325607998]
+[node name="音量盒" type="HBoxContainer" parent="主面板" unique_id=1325607998]
 layout_mode = 2
+theme_override_constants/separation = 19
 
-[node name="音量" type="Label" parent="VBoxContainer/HBoxContainer" unique_id=1560398260]
+[node name="音量" type="Label" parent="主面板/音量盒" unique_id=1560398260]
 layout_mode = 2
 theme = ExtResource("5_qi1u3")
 theme_override_font_sizes/font_size = 26
 text = "音量"
+
+[node name="HSlider" type="HSlider" parent="主面板/音量盒" unique_id=944517248]
+custom_minimum_size = Vector2(270, 27)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/center_grabber = 1
+theme_override_icons/grabber = ExtResource("6_sq2im")
+theme_override_icons/grabber_highlight = ExtResource("6_sq2im")
+theme_override_icons/grabber_disabled = ExtResource("6_sq2im")
+theme_override_styles/slider = SubResource("StyleBoxTexture_2uaf1")
+theme_override_styles/grabber_area = SubResource("StyleBoxTexture_sq2im")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_7wl4n")
+value = 60.0
+
+[node name="音效盒" type="HBoxContainer" parent="主面板" unique_id=1336264044]
+layout_mode = 2
+theme_override_constants/separation = 19
+
+[node name="音效" type="Label" parent="主面板/音效盒" unique_id=498919074]
+layout_mode = 2
+theme = ExtResource("5_qi1u3")
+theme_override_font_sizes/font_size = 26
+text = "音效"
+
+[node name="HSlider" type="HSlider" parent="主面板/音效盒" unique_id=927981909]
+custom_minimum_size = Vector2(270, 27)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/center_grabber = 1
+theme_override_icons/grabber = ExtResource("6_sq2im")
+theme_override_icons/grabber_highlight = ExtResource("6_sq2im")
+theme_override_icons/grabber_disabled = ExtResource("6_sq2im")
+theme_override_styles/slider = SubResource("StyleBoxTexture_2uaf1")
+theme_override_styles/grabber_area = SubResource("StyleBoxTexture_sq2im")
+theme_override_styles/grabber_area_highlight = SubResource("StyleBoxTexture_7wl4n")
+value = 80.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="主面板" unique_id=979985722]
+layout_mode = 2
+
+[node name="全屏" type="Label" parent="主面板/HBoxContainer" unique_id=1206673031]
+layout_mode = 2
+theme = ExtResource("5_qi1u3")
+theme_override_font_sizes/font_size = 20
+text = "全屏"
+
+[node name="CheckButton" type="CheckButton" parent="主面板/HBoxContainer" unique_id=1777137977]
+layout_mode = 2
+theme = ExtResource("9_7wl4n")
+theme_override_constants/icon_max_width = 36
+theme_override_font_sizes/font_size = 23
+
+[node name="分辨率" type="Label" parent="主面板/HBoxContainer" unique_id=47337124]
+layout_mode = 2
+theme = ExtResource("5_qi1u3")
+theme_override_font_sizes/font_size = 20
+text = "分辨率"
+
+[node name="Tree" type="Tree" parent="主面板/HBoxContainer" unique_id=1468303710]
+custom_minimum_size = Vector2(150, 20)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_fqo01")
+
+[node name="空白填充2" type="VSplitContainer" parent="主面板" unique_id=1269117765]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+drag_area_margin_begin = 11
+drag_area_margin_end = 8
+
+[node name="ButtonHBox" type="HBoxContainer" parent="主面板" unique_id=2000000001]
+layout_mode = 2
+alignment = 2
+
+[node name="Control" type="Control" parent="主面板/ButtonHBox" unique_id=2000000002]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="CloseBtn2" type="TextureButton" parent="主面板/ButtonHBox" unique_id=1995308708]
+custom_minimum_size = Vector2(100, 50)
+layout_mode = 2
+texture_normal = ExtResource("11_idq66")
+ignore_texture_size = true
+stretch_mode = 5
+script = ExtResource("12_ghl5e")
+
+[node name="Icon" type="TextureRect" parent="主面板/ButtonHBox/CloseBtn2" unique_id=424252521]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 12.0
+offset_top = 18.0
+offset_right = 100.0
+offset_bottom = 56.0
+grow_vertical = 2
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("13_fqo01")
+stretch_mode = 5
+
+[node name="Text" type="Label" parent="主面板/ButtonHBox/CloseBtn2" unique_id=1219450684]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 12.0
+offset_right = 97.0
+offset_bottom = 45.0
+theme_override_colors/font_color = Color(0.8862745, 0.92941177, 0.96862745, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.7058824)
+theme_override_colors/font_outline_color = Color(0.09411765, 0.14901961, 0.20784314, 1)
+theme_override_constants/shadow_offset_x = 0
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 5
+theme_override_constants/shadow_outline_size = 5
+theme_override_fonts/font = ExtResource("3_hslst")
+theme_override_font_sizes/font_size = 15
+text = "关  闭"

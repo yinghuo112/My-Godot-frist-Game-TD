@@ -25,7 +25,6 @@ AudioManager="*res://核心/audio_manager.gd"
 BulletManager="*res://子弹/bullet_manager.gd"
 FontManager="*res://核心/font_manager.gd"
 MobileAdapter="*res://addons/mobile_adapter/MobileAdapter.gd"
-_mcp_game_helper="*res://addons/godot_ai/runtime/game_helper.gd"
 
 [debug]
 
@@ -40,7 +39,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_ai/plugin.cfg", "res://addons/map_panel/plugin.cfg", "res://addons/我的插件/plugin.cfg")
+enabled=PackedStringArray("res://addons/map_panel/plugin.cfg", "res://addons/我的插件/plugin.cfg")
 
 [input_devices]
 
