@@ -152,10 +152,12 @@ theme = ExtResource("5_qi1u3")
 theme_override_font_sizes/font_size = 20
 text = "分辨率"
 
-[node name="Tree" type="Tree" parent="主面板/HBoxContainer" unique_id=1468303710]
-custom_minimum_size = Vector2(150, 20)
+[node name="ResolutionDropdown" type="OptionButton" parent="主面板/HBoxContainer" unique_id=1468303710]
+custom_minimum_size = Vector2(150, 30)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_fqo01")
+theme_override_styles/normal = SubResource("StyleBoxTexture_fqo01")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fqo01")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_fqo01")
 
 [node name="空白填充2" type="VSplitContainer" parent="主面板" unique_id=1269117765]
 custom_minimum_size = Vector2(0, 30)
