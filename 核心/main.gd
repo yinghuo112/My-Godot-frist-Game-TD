@@ -11,13 +11,7 @@ extends Node2D
 @onready var info_plane: PanelContainer = $UI/InfoPlane
 @onready var skill_book_plane: PanelContainer = $UI/SkillBookPlane
 
-var tower_types: Array[TowerType] = [
-	preload("res://config/Tower_constor/arrow.tres"),
-	preload("res://config/Tower_constor/cannon.tres"),
-	preload("res://config/Tower_constor/magic.tres"),
-	preload("res://config/Tower_constor/mage_tower.tres"),
-	preload("res://config/test_tower.tres"),
-]
+var tower_types: Array[TowerType] = []  # 🗼 从 CSV 加载，见 _ready()
 var _build_panel: Panel
 var _build_buttons: Array[Button] = []
 var _pending_slot: TowerSlot = null
@@ -48,6 +42,14 @@ func _ready() -> void:
 	_test_enemy = enemies_db.get("test_T")
 	_test_enemy_2 = enemies_db.get("test_Y")
 	_test_enemy_3 = enemies_db.get("test_U")
+	# 🗼 从 CSV 加载塔类型（不再依赖 .tres 文件）
+	var towers_db = CSVLoader.load_towers("res://data/towers.csv")
+	var tower_ids = ["arrow", "cannon", "magic", "mage_tower", "雪塔", "test_tower"]
+	for id in tower_ids:
+		if towers_db.has(id):
+			tower_types.append(towers_db[id])
+		else:
+			push_warning("⚠️ 塔类型缺失: %s" % id)
 	# 模拟手机视口
 	get_window().content_scale_size = Vector2i(960, 540)
 	_session_id = _generate_session_id()

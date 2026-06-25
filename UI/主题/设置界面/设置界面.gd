@@ -48,8 +48,8 @@ func _populate_resolutions():
 func _on_resolution_selected(idx: int):
 	if idx < 0 or idx >= resolutions.size():
 		return
-	var size = resolutions[idx]
-	DisplayServer.window_set_size(size)
+	var res_size = resolutions[idx]
+	DisplayServer.window_set_size(res_size)
 
 func _on_fullscreen_toggled(toggled_on: bool):
 	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN if toggled_on else DisplayServer.WINDOW_MODE_WINDOWED)

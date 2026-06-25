@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="TowerType" format=3 uid="uid://c3emrih55f5ec"]
+
+[ext_resource type="PackedScene" uid="uid://dqjhd3nwiv5kh" path="res://子弹/雪球/雪球.tscn" id="1_47jet"]
+[ext_resource type="Script" uid="uid://chxc0a8vjbkuo" path="res://config/tower_type.gd" id="1_hah0w"]
+[ext_resource type="PackedScene" uid="uid://drnxknnimkrc4" path="res://Tower/雪塔/雪塔.tscn" id="2_610a4"]
+
+[resource]
+script = ExtResource("1_hah0w")
+display_name = "雪塔"
+chinese_type = "雪塔.cn"
+name_prefixes = Array[String](["冰霜", "寒冰", "凛冬", "暴雪", "永冻"])
+damage = 30.0
+fire_rate = 5.0
+range_radius = 300.0
+cost = 80
+scene = ExtResource("2_610a4")
+bullet_scene = ExtResource("1_47jet")
+attack_type = 1
+description = "雪塔。发射滚动的雪球撞击路径上的敌人。"
+metadata/_custom_type_script = "uid://chxc0a8vjbkuo"

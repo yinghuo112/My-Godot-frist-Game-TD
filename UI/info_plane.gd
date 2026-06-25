@@ -56,7 +56,7 @@ func _populate(tower: Node2D) -> void:
 	set_stat("攻速:", "%.2f/s" % [1.0 / fr])
 	set_stat("射程:", "%.0f" % [rng])
 	set_stat("暴击率:", "%d%%" % [tt.crit_chance * 100])
-	set_stat("暴击倍率:", "x%.1f" % [tt.crit_multiplier])
+	set_stat("暴击倍率:", "x%.1f" % [tt.crit_mult])
 	set_stat("命中率:", "%d%%" % [tt.hit_chance * 100])
 
 	if tt.description and tt.description != "":

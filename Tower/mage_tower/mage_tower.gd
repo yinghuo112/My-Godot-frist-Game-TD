@@ -19,7 +19,7 @@ func _shoot():
 			tower_type.chain_jumps, tower_type.chain_falloff, tower_type.chain_range, self, _last_skills)
 	else:
 		bullet.initialize(target, _cached_damage,
-			tower_type.crit_chance, tower_type.crit_multiplier,
+			tower_type.crit_chance, tower_type.crit_mult,
 			tower_type.hit_chance, tower_type.attack_type, self, _last_skills)
 	for s in _last_skills:
 		if s and s.has_method("on_pre_shot"):

@@ -55,7 +55,7 @@ var _cached_range: float
 var _cached_fire_rate: float
 
 @onready var _bullet_manager = get_node("/root/BulletManager")
-@onready var _tower_defense_root = get_tree().root.get_node("TowerDefense")
+@onready var _tower_defense_root = get_tree().root.get_node_or_null("TowerDefense")
 @onready var sprite = get_node_or_null("AnimatedSprite2D")
 @onready var range_area: Area2D = $RangeArea
 @onready var range_shape: CollisionShape2D = $RangeArea/CollisionShape2D
@@ -236,7 +236,7 @@ func _fire_bullet(is_triple: bool):
 	bullet.global_position = bullet_spawn.global_position
 	bullet.modulate = Color.RED if is_triple else Color.WHITE
 	bullet.initialize(target, _cached_damage,
-		tower_type.crit_chance, tower_type.crit_multiplier,
+		tower_type.crit_chance, tower_type.crit_mult,
 		tower_type.hit_chance, tower_type.attack_type, self,
 		_last_skills)
 

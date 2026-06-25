@@ -6,8 +6,19 @@
 [ext_resource type="Texture2D" uid="uid://dcbgjj2ovj1yp" path="res://assets/UI/wave.png" id="4_wave"]
 [ext_resource type="Texture2D" uid="uid://bpv3vxvoot4mb" path="res://assets/UI/set.png" id="5_set"]
 
+[sub_resource type="StyleBoxFlat" id="panel_bg"]
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+bg_color = Color(0.12, 0.12, 0.18, 0.9)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [sub_resource type="SystemFont" id="bold_font"]
-font_names = ["Open Sans", "Arial", "sans-serif"]
+font_names = PackedStringArray("Open Sans", "Arial", "sans-serif")
 font_weight = 700
 
 [sub_resource type="StyleBoxFlat" id="progress_bg"]
@@ -19,17 +30,6 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="progress_fill"]
 bg_color = Color(0.2, 0.5, 0.9, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="panel_bg"]
-content_margin_left = 4.0
-content_margin_top = 2.0
-content_margin_right = 4.0
-content_margin_bottom = 2.0
-bg_color = Color(0.12, 0.12, 0.18, 0.9)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -82,8 +82,8 @@ texture = ExtResource("2_gold")
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.84, 0, 1)
-theme_override_font_sizes/font_size = 15
 theme_override_fonts/font = SubResource("bold_font")
+theme_override_font_sizes/font_size = 15
 text = "1000"
 
 [node name="HPPanel" type="PanelContainer" parent="MainHBox/LeftGroup" unique_id=517021270]
@@ -105,8 +105,8 @@ texture = ExtResource("3_hp")
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
-theme_override_font_sizes/font_size = 15
 theme_override_fonts/font = SubResource("bold_font")
+theme_override_font_sizes/font_size = 15
 text = "20"
 
 [node name="WavePanel" type="PanelContainer" parent="MainHBox/LeftGroup" unique_id=1290344941]
@@ -132,20 +132,18 @@ texture = ExtResource("4_wave")
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(0.3, 0.6, 1, 1)
-theme_override_font_sizes/font_size = 13
 theme_override_fonts/font = SubResource("bold_font")
+theme_override_font_sizes/font_size = 13
 text = "WAVE 0/0"
 
 [node name="WaveProgressBar" type="ProgressBar" parent="MainHBox/LeftGroup/WavePanel/WaveVBox" unique_id=1532611932]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 8)
 layout_mode = 2
 size_flags_horizontal = 3
-custom_minimum_size = Vector2(0, 8)
-max_value = 100
-value = 0
-show_percentage = false
 theme_override_styles/background = SubResource("progress_bg")
 theme_override_styles/fill = SubResource("progress_fill")
+show_percentage = false
 
 [node name="SpacerL" type="Control" parent="MainHBox" unique_id=982101915]
 layout_mode = 2
@@ -162,19 +160,19 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 14
 text = "Start Wave"
 
-[node name="Route1Btn" type="Button" parent="MainHBox/CenterGroup"]
+[node name="Route1Btn" type="Button" parent="MainHBox/CenterGroup" unique_id=1354430562]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
 text = "路线1"
-visible = false
 
-[node name="Route2Btn" type="Button" parent="MainHBox/CenterGroup"]
+[node name="Route2Btn" type="Button" parent="MainHBox/CenterGroup" unique_id=1539326339]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
 text = "路线2"
-visible = false
 
 [node name="SpacerR" type="Control" parent="MainHBox" unique_id=1885545408]
 layout_mode = 2

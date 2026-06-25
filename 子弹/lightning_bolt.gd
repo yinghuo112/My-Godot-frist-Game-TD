@@ -66,7 +66,7 @@ func 初始化(起点: Vector2, 首个目标: Node2D, 伤害: float,
 	if 来源塔 and "tower_type" in 来源塔:
 		var tt = 来源塔.tower_type
 		_crit_chance = tt.crit_chance
-		_crit_multiplier = tt.crit_multiplier
+		_crit_multiplier = tt.crit_mult
 		_hit_chance = tt.hit_chance
 		_attack_type = tt.attack_type
 		var c = tt.get("lightning_color")

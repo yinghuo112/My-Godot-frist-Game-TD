@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://dqjhd3nwiv5kh"]
+
+[ext_resource type="Script" uid="uid://dehuim3lgxnif" path="res://子弹/雪球/雪球.gd" id="1_008ue"]
+[ext_resource type="Texture2D" uid="uid://icc0dxq8ctok" path="res://assets/bullet/雪球/雪球1.png" id="1_kv6jl"]
+[ext_resource type="Texture2D" uid="uid://dxcpb7l7hid2r" path="res://assets/bullet/雪球/雪球5.png" id="5_n6rjq"]
+[ext_resource type="Texture2D" uid="uid://blpvv5o8bpkai" path="res://assets/bullet/雪球/雪球7.png" id="7_3ayga"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ut55t"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_kv6jl")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_n6rjq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_3ayga")
+}],
+"loop": true,
+"name": &"滚动",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_cap8q"]
+radius = 44.04543
+
+[node name="雪球" type="Area2D" unique_id=1320480584]
+script = ExtResource("1_008ue")
+_speed = 200.0
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=576985072]
+sprite_frames = SubResource("SpriteFrames_ut55t")
+animation = &"滚动"
+frame_progress = 0.6193517
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1175031996]
+position = Vector2(-1, 2)
+shape = SubResource("CircleShape2D_cap8q")

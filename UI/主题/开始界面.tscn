@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://br6v6tqpkeb4g" path="res://UI/主题/开始界面.gd" id="0"]
 [ext_resource type="PackedScene" uid="uid://bwba5tse7yo16" path="res://UI/主题/设置界面/设置界面.tscn" id="0_fm6ru"]
-[ext_resource type="PackedScene" uid="uid://csd2mqbkqnw86" path="res://UI/panel_level_select.tscn" id="0_g4n5d"]
 [ext_resource type="FontFile" uid="uid://rin1egjnb28e" path="res://UI/Font/联盟起艺卢帅正锐黑体.ttf" id="1_arn5o"]
 [ext_resource type="Theme" uid="uid://c70anje2poj2g" path="res://UI/MY_UI/Button-blue.tres" id="1_dgibt"]
 [ext_resource type="Texture2D" uid="uid://mwk1rctahf6o" path="res://assets/UI/图标-皮肤.jpg" id="3_0ckk4"]
@@ -144,6 +143,18 @@ texture = ExtResource("3_0ckk4")
 
 [node name="SettingsPanel" parent="CanvasLayer/Control" unique_id=704353829 instance=ExtResource("0_fm6ru")]
 visible = false
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 0.0
+offset_top = 0.0
+offset_right = 400.0
+offset_bottom = 400.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="关卡选择" parent="CanvasLayer/Control" unique_id=822911077 instance=ExtResource("7_yu6tx")]
 visible = false
