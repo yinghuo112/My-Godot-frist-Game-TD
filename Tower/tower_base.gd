@@ -45,6 +45,8 @@ var peak_dps: float = 0.0
 var _realtime_dps: float = 0.0
 var _dps_counter: float = 0.0
 
+var slot_difficulty: float = 1.0          # 所在槽位难度系数（由 main.gd 放置时设置）
+
 var _range_indicator: TowerRangeIndicator
 
 # ===== #1 / #3: signal-driven target + cached refs + cached stats =====

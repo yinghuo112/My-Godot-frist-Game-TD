@@ -6,6 +6,7 @@ var _path_node: Path2D = null
 var _baked_offset: float = 0.0
 var _move_dir: int = -1             # -1 = 朝起点（怪巢方向）
 var _hit_enemies: Array = []        # 记录攻击到的敌人，防止重复伤害
+var knockback_force: float = 50.0   # 击退力度
 var _initialized: bool = false      # 是否已完成初始化
 
 
@@ -57,9 +58,8 @@ func _on_area_entered(area):
 			return
 		_hit_enemies.append(enemy)
 		_apply_damage(enemy)
-		# 击退接口（待 enemy_base.gd 实现后启用）
-		# if enemy.has_method("apply_knockback"):
-		#     enemy.apply_knockback(knockback_force)
+		if enemy.has_method("apply_knockback"):
+			enemy.apply_knockback(knockback_force)
 		
 		
 ## 子弹回池时，清空攻击到的敌人列表

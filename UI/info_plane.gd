@@ -58,6 +58,8 @@ func _populate(tower: Node2D) -> void:
 	set_stat("暴击率:", "%d%%" % [tt.crit_chance * 100])
 	set_stat("暴击倍率:", "x%.1f" % [tt.crit_mult])
 	set_stat("命中率:", "%d%%" % [tt.hit_chance * 100])
+	if tt.power > 0:
+		set_stat("战力:", "%.0f" % [tt.power])
 
 	if tt.description and tt.description != "":
 		desc_label.text = tt.description

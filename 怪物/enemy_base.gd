@@ -32,6 +32,11 @@ var overtake_target: Node2D = null
 var _floating_text_scene = preload("res://工具/FloatingText.tscn")
 var _frame_skip: int = 0
 var _main_scene: Node = null
+var _original_modulate: Color
+
+# --- 击退状态 ---
+var _knockback_remaining: float = 0.0
+var _knockback_speed: float = 250.0    # 击退速度（像素/秒）
 
 # 由 GameManager 在生成时调用，传入 EnemyType 数据覆盖默认值
 func init(data):
@@ -47,9 +52,15 @@ func init(data):
 func _ready():
 	current_hp = max_hp
 	_main_scene = get_tree().current_scene
+	_original_modulate = modulate
 	if sprite:
 		sprite.play("walk")
 	_update_health_bar()
+
+# 击退：沿路径向后推
+func apply_knockback(force: float) -> void:
+	_knockback_remaining += force
+	modulate = Color(1.0, 0.5, 0.5)
 
 # 每帧沿路径前进，检测前方障碍并执行超车逻辑
 func _physics_process(delta: float) -> void:
@@ -57,6 +68,8 @@ func _physics_process(delta: float) -> void:
 	var can_ray = _frame_skip >= 5
 	if can_ray:
 		_frame_skip = 0
+
+	var did_block_move := false
 
 	if not is_overtaking:
 		if can_ray and ray_cast.is_colliding():
@@ -73,7 +86,7 @@ func _physics_process(delta: float) -> void:
 				else:
 					progress += front_monster.speed * delta
 					v_offset = move_toward(v_offset, 0.0, lane_change_speed * delta)
-					return
+					did_block_move = true
 	else:
 		if is_instance_valid(overtake_target):
 			if progress > overtake_target.progress + 50.0:
@@ -84,8 +97,17 @@ func _physics_process(delta: float) -> void:
 			is_overtaking = false
 			target_v_offset = 0.0
 
-	v_offset = move_toward(v_offset, target_v_offset, lane_change_speed * delta)
-	progress += speed * delta
+	if not did_block_move:
+		v_offset = move_toward(v_offset, target_v_offset, lane_change_speed * delta)
+		progress += speed * delta
+
+	if _knockback_remaining > 0:
+		var step = minf(_knockback_remaining, _knockback_speed * delta)
+		_knockback_remaining -= step
+		progress -= step
+		if _knockback_remaining <= 0:
+			_knockback_remaining = 0.0
+			modulate = _original_modulate
 
 	var dx := global_position.x - _last_pos.x
 	if dx < 0:

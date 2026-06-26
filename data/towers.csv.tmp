@@ -1,8 +1,0 @@
-id,chinese_type,damage,fire_rate,range_radius,cost,attack_type,crit_chance,crit_mult,hit_chance,skill_name,skill_categories,战力,scene_path,bullet_scene_path,display_name,description,skill_book_path,chain_jumps,chain_falloff,chain_range,name_prefixes
-ID,中文类型,攻击力,射速,射程,价格,攻击类型,暴击率,暴击倍率,命中率,技能名,技能类别,战力,场景路径,子弹场景,显示名称,描述,技能书路径,链跳数,链衰减,链范围,名称前缀
-arrow,弓箭塔,10,0.8,150,50,0,0.15,2.0,0.95,,通用|弹道,10012.5,res://Tower/弓箭手塔/ArrowTower.tscn,res://子弹/arrow_bullet.tscn,Arrow,📏 基础弓箭塔·远程物伤·稳定输出,res://SkillSystem/books/弓箭手技能书.tres,0,1.0,0,疾风|穿云|追风|破空|流星
-cannon,炮塔,43,2.0,120,80,0,0.05,2.0,0.9,,通用|范围|重炮,15892.8,res://Tower/炮塔/cannon_tower.tscn,res://子弹/fireball_bullet/fireball_bullet.tscn,Cannon,💥 重型炮塔·范围物伤·低攻速高伤害,res://SkillSystem/books/炮塔技能书.tres,0,1.0,0,雷霆|震地|碎岩|灭世|怒焰
-magic,魔法塔,24,1.2,100,70,1,0.1,2.0,1.0,,魔法|元素|远程,13947.2,res://Tower/magic_tower/magic_tower.tscn,res://子弹/fireball_bullet.tscn,Magic,🔥 魔法塔·火球必中·溅射范围伤害,res://SkillSystem/books/魔法塔技能书.tres,0,1.0,0,烈焰|寒冰|奥术|秘法|虚空
-mage_tower,闪电塔,6.15,0.8,150,75,1,0.0,1.0,1.0,,魔法|元素|远程,6157.7,res://Tower/mage_tower/mage_tower.tscn,res://子弹/lightning_bolt.tscn,Mage,⚡ 闪电塔·弹射3跳·衰减0.8·等效75金,res://SkillSystem/books/魔法塔技能书.tres,3,0.8,150,天雷|紫电|雷鸣|闪电|狂风
-雪塔,雪塔,30,5.0,300,80,1,0.05,2.0,1.0,,无,6627.2,res://Tower/雪塔/雪塔.tscn,res://子弹/雪球/雪球.tscn,雪塔,❄️ 雪塔·雪球沿路滚动·无视射程·击退(施工中),空,0,1.0,0,冰霜|寒冰|凛冬|暴雪|永冻
-test_tower,测试塔,10,0.8,150,50,0,0.0,1.0,1.0,,通用|弹道,10012.5,res://Tower/弓箭手塔/ArrowTower.tscn,空,TestTower,🧪 调试用测试塔·等同50金标准塔,res://SkillSystem/books/弓箭手技能书.tres,0,1.0,0,调试弓箭手

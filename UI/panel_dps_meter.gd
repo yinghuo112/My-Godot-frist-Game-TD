@@ -43,6 +43,9 @@ func _refresh():
 	hdr.add_child(mk_label.call("实际秒伤", 50, Color(0.6, 0.8, 0.6), 2))
 	hdr.add_child(mk_label.call("战斗时间", 50, Color(0.6, 0.6, 0.7), 2))
 	hdr.add_child(mk_label.call("路线覆盖", 50, Color(0.5, 0.8, 0.7), 2))
+	hdr.add_child(mk_label.call("参考战力", 55, Color(0.7, 0.7, 0.5), 2))
+	hdr.add_child(mk_label.call("槽位难度", 45, Color(0.5, 0.7, 0.9), 2))
+	hdr.add_child(mk_label.call("有效战力", 55, Color(0.8, 0.6, 0.8), 2))
 	hdr.add_child(mk_label.call("峰值", 50, Color(0.5, 0.7, 0.8), 2))
 	hdr.add_child(mk_label.call("现在的秒伤", 50, Color(0.8, 0.6, 0.4), 2))
 	list_container.add_child(hdr)
@@ -86,6 +89,25 @@ func _refresh():
 		cov_lbl.custom_minimum_size.x = 50
 		cov_lbl.add_theme_font_size_override("font_size", 10)
 		cov_lbl.add_theme_color_override("font_color", Color(0.5, 0.9, 0.7))
+		var pw_lbl = Label.new()
+		pw_lbl.text = "%.0f" % [t.tower_type.power] if t.tower_type and t.tower_type.power > 0 else "-"
+		pw_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		pw_lbl.custom_minimum_size.x = 55
+		pw_lbl.add_theme_font_size_override("font_size", 10)
+		pw_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.5))
+		var sd_lbl = Label.new()
+		sd_lbl.text = "x%.2f" % [t.slot_difficulty]
+		sd_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		sd_lbl.custom_minimum_size.x = 45
+		sd_lbl.add_theme_font_size_override("font_size", 10)
+		sd_lbl.add_theme_color_override("font_color", Color(0.5, 0.7, 0.9))
+		var ep_lbl = Label.new()
+		var eff_power = t.tower_type.power * t.slot_difficulty if t.tower_type and t.tower_type.power > 0 else 0
+		ep_lbl.text = "%.0f" % [eff_power] if eff_power > 0 else "-"
+		ep_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		ep_lbl.custom_minimum_size.x = 55
+		ep_lbl.add_theme_font_size_override("font_size", 10)
+		ep_lbl.add_theme_color_override("font_color", Color(0.8, 0.6, 0.8))
 		var peak_lbl = Label.new()
 		peak_lbl.text = "%.1f" % [t.get_peak_dps()]
 		peak_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
@@ -104,6 +126,9 @@ func _refresh():
 		row.add_child(dps_lbl)
 		row.add_child(ct_lbl)
 		row.add_child(cov_lbl)
+		row.add_child(pw_lbl)
+		row.add_child(sd_lbl)
+		row.add_child(ep_lbl)
 		row.add_child(peak_lbl)
 		row.add_child(rt_lbl)
 		list_container.add_child(row)

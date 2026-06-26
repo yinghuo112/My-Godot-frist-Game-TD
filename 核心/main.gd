@@ -56,8 +56,7 @@ func _ready() -> void:
 	
 	_session_id = _generate_session_id()
 	toolbar.wave_start_requested.connect(_on_start_wave)
-	toolbar.settings_requested.connect(_on_settings)
-	toolbar.debug_requested.connect(_toggle_console)
+	toolbar.menu_action.connect(_on_menu_action)
 	toolbar.route_changed.connect(_on_route_changed)
 	GameManager.reset()
 	GameManager.gold_changed.connect(_update_gold)
@@ -87,6 +86,7 @@ func _ready() -> void:
 	info_plane.closed.connect(_on_info_plane_closed)
 	info_plane.skill_book_requested.connect(_on_skill_book_requested)
 	skill_book_plane.closed.connect(_on_skill_book_plane_closed)
+	$UI/弹窗.link_clicked.connect(_on_popup_link)
 
 	_info_overlay = _DEBUG_PANEL_SCENE.instantiate()
 	_info_overlay.name = "DebugInfoOverlay"
@@ -310,6 +310,7 @@ func _place_tower(slot: TowerSlot, tt: TowerType) -> void:
 	var tower = tt.scene.instantiate()
 	tower.init(tt)
 	tower.add_to_group("tower")
+	tower.slot_difficulty = map_manager.get_slot_difficulty(slot.global_position)
 	map_manager.build_tower_at(slot.global_position, tower)
 	GameManager.spend_gold(tt.cost)
 	AudioManager.play("place")
@@ -438,6 +439,40 @@ func _spawn_one_test_enemy_3():
 	path.add_child(enemy)
 	_test_wave_3_remaining -= 1
 	print("3号测试怪已生成，剩余: %d，血量: %.0f, 速度: %.1f" % [_test_wave_3_remaining, debug_type.max_hp, debug_type.speed])
+
+func _on_menu_action(id: int) -> void:
+	match id:
+		0:  # ⚙ 设置
+			settings_panel.open()
+		1:  # 📖 说明
+			$UI/弹窗.show_popup("📖 按键说明", _get_help_content())
+		2:  # 🔧 调试
+			_toggle_console()
+		3:  # 返回主页
+			get_window().content_scale_size = Vector2i(1280, 720)
+			get_tree().change_scene_to_file("res://UI/主题/开始界面.tscn")
+		5:  # ℹ 关于
+			$UI/弹窗.show_popup("ℹ 关于", _get_about_content())
+
+func _get_help_content() -> String:
+	return """[center][b]操作说明[/b][/center]
+[left]
+[color=#ffcc44]左键[/color] 选择/放置塔
+[color=#ffcc44]右键[/color] 取消/关闭面板
+[color=#ffcc44]滚轮[/color] 缩放地图
+[color=#ffcc44]T/U/Y[/color] 调试波次
+[color=#ffcc44]F3[/color] 打开调试面板
+[color=#ffcc44]P[/color] 暂停
+[color=#ffcc44]空格[/color] 开始波次
+[/left]"""
+
+func _get_about_content() -> String:
+	return """[center][b]塔防游戏[/b][/center]
+[center]版本 1.0[/center]
+[center][color=#4488ff][url=https://github.com/yinghuo112/My-Godot-frist-Game-TD]GitHub 仓库[/url][/color][/center]"""
+
+func _on_popup_link(url: String) -> void:
+	OS.shell_open(url)
 
 func _on_route_changed(route: int) -> void:
 	GameManager.current_route = route
