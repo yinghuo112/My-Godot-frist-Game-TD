@@ -1,6 +1,7 @@
 extends PanelContainer
 
 signal link_clicked(url: String)
+signal popup_closed
 
 @onready var title_label = %TitleLabel
 @onready var content = %ContentLabel
@@ -19,4 +20,5 @@ func _on_link(url: String):
 	link_clicked.emit(url)
 
 func _on_close():
+	popup_closed.emit()
 	hide()

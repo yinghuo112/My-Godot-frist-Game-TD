@@ -1,9 +1,9 @@
 extends Node2D
 
 @onready var toolbar: Control = $UI/Toolbar
-@onready var settings_panel: Control = $"UI/设置界面"
-@onready var game_over_bg: ColorRect = $UI/GameOverBG
-@onready var game_over_label: Label = $UI/GameOverLabel
+@onready var settings_panel: Control = $"UI_Overlay/设置界面"
+@onready var game_over_bg: ColorRect = $UI_Overlay/GameOverBG
+@onready var game_over_label: Label = $UI_Overlay/GameOverLabel
 @onready var map_manager: MapManager = $MapManager
 @onready var wave_config_label: Label = $UI/WaveConfigLabel
 @onready var tower_ring: Control = $UI/TowerActionRing
@@ -86,7 +86,8 @@ func _ready() -> void:
 	info_plane.closed.connect(_on_info_plane_closed)
 	info_plane.skill_book_requested.connect(_on_skill_book_requested)
 	skill_book_plane.closed.connect(_on_skill_book_plane_closed)
-	$UI/弹窗.link_clicked.connect(_on_popup_link)
+	$UI_Overlay/弹窗.link_clicked.connect(_on_popup_link)
+	$UI_Overlay/弹窗.popup_closed.connect(_on_popup_closed)
 
 	_info_overlay = _DEBUG_PANEL_SCENE.instantiate()
 	_info_overlay.name = "DebugInfoOverlay"
@@ -445,14 +446,16 @@ func _on_menu_action(id: int) -> void:
 		0:  # ⚙ 设置
 			settings_panel.open()
 		1:  # 📖 说明
-			$UI/弹窗.show_popup("📖 按键说明", _get_help_content())
+			$UI_Overlay/弹窗.show_popup("📖 按键说明", _get_help_content())
+			$UI_Overlay/DimOverlay.show()
 		2:  # 🔧 调试
 			_toggle_console()
 		3:  # 返回主页
 			get_window().content_scale_size = Vector2i(1280, 720)
 			get_tree().change_scene_to_file("res://UI/主题/开始界面.tscn")
 		5:  # ℹ 关于
-			$UI/弹窗.show_popup("ℹ 关于", _get_about_content())
+			$UI_Overlay/弹窗.show_popup("ℹ 关于", _get_about_content())
+			$UI_Overlay/DimOverlay.show()
 
 func _get_help_content() -> String:
 	return """[center][b]操作说明[/b][/center]
@@ -473,6 +476,9 @@ func _get_about_content() -> String:
 
 func _on_popup_link(url: String) -> void:
 	OS.shell_open(url)
+
+func _on_popup_closed() -> void:
+	$UI_Overlay/DimOverlay.hide()
 
 func _on_route_changed(route: int) -> void:
 	GameManager.current_route = route
