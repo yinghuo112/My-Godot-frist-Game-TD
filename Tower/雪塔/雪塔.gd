@@ -11,6 +11,8 @@ func _ready():
 	shoot_timer.wait_time = _cached_fire_rate
 	shoot_timer.start()
 
+var _pending_attack: bool = false
+
 func init(data):
 	super(data)
 
@@ -21,6 +23,8 @@ func _process(delta):
 	_combat_timeout = max(_combat_timeout, 0.0)
 
 func _on_snow_timer():
+	if _pending_attack:
+		return
 	var enemies = get_tree().get_nodes_in_group("enemy")
 	var has_target = false
 	for area in enemies:
@@ -28,12 +32,16 @@ func _on_snow_timer():
 			has_target = true
 			break
 	if has_target:
-		_shoot()
+		_start_attack()
 
-func _shoot():
+func _start_attack():
 	_combat_timeout = 2.0
+	_pending_attack = true
+	_last_skills = _get_active_skills()
 	if sprite and sprite.sprite_frames.has_animation("attack"):
 		sprite.play("attack")
+
+func _fire_snowball():
 	var bullet = _bullet_manager.get_bullet(bullet_scene) if _bullet_manager else bullet_scene.instantiate()
 	if not bullet:
 		return
@@ -42,7 +50,6 @@ func _shoot():
 		_tower_defense_root.add_child(bullet)
 	else:
 		get_parent().add_child(bullet)
-	_last_skills = _get_active_skills()
 	bullet.initialize(null, _cached_damage,
 		tower_type.crit_chance, tower_type.crit_mult,
 		tower_type.hit_chance, tower_type.attack_type, self,
@@ -52,6 +59,10 @@ func _shoot():
 			s.on_pre_shot(self, bullet, null, get_skill_level(s))
 
 func _on_attack_anim_finished():
+	if not _pending_attack:
+		return
+	_fire_snowball()
+	_pending_attack = false
 	if sprite and sprite.sprite_frames.has_animation("idle"):
 		sprite.play("idle")
 	else:

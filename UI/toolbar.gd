@@ -9,9 +9,6 @@ extends Control
 ## 当用户点击“开始波次”按钮时发射
 signal wave_start_requested
 
-## 当用户点击“设置”菜单项时发射（暂未使用）
-signal settings_requested
-
 ## 当用户点击菜单（MenuBtn）中的任意项时发射，参数为菜单项 ID
 signal menu_action(action_id: int)
 

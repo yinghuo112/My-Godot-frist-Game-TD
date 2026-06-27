@@ -1,10 +1,12 @@
+@tool
 extends Control
 
 # 环形菜单：点击塔后在周围弹出的操作按钮（升级 / 出售 / 信息）
 # 信息详情用 InfoPlane（右侧滑入面板），升级/出售用本地 InfoPopupPanel
 
-const RADIUS: float = 75.0
 var floating_text_scene = preload("res://工具/FloatingText.tscn")
+
+
 
 var target_tower: Node2D = null
 var _confirm_action: Callable = Callable()
@@ -15,6 +17,7 @@ signal show_info_requested(tower)
 @onready var btn_upgrade: Button = $BtnUpgrade
 @onready var btn_sell: Button = $BtnSell
 @onready var btn_info: Button = $BtnInfo
+@onready var center_marker: Node2D = $CenterMarker
 @onready var info_popup: PanelContainer = $InfoPopupPanel
 @onready var popup_label: Label = $InfoPopupPanel/Margin/VBox/PopupLabel
 @onready var confirm_btn: Button = $InfoPopupPanel/Margin/VBox/HBox/ConfirmBtn
@@ -27,7 +30,10 @@ func _ready():
 	btn_info.pressed.connect(_on_info_click)
 	confirm_btn.pressed.connect(_on_confirm)
 	cancel_btn.pressed.connect(_on_cancel)
-	hide()
+	if not Engine.is_editor_hint():
+		hide()
+	queue_redraw()
+
 
 # 在目标塔周围显示环形菜单，更新按钮状态
 func show_for_tower(tower: Node2D):
@@ -41,11 +47,8 @@ func show_for_tower(tower: Node2D):
 	var viewport = get_viewport()
 	var center = (tower.global_position - camera.global_position) * camera.zoom
 	center += viewport.get_visible_rect().size / 2
-
-	var half = btn_upgrade.size / 2
-	btn_upgrade.position = center + Vector2(0, -RADIUS) - half
-	btn_sell.position = center + Vector2(-RADIUS * 0.866, RADIUS * 0.5) - half
-	btn_info.position = center + Vector2(RADIUS * 0.866, RADIUS * 0.5) - half
+	position = center - center_marker.position
+	queue_redraw()
 
 	if tower.has_method("can_upgrade") and tower.can_upgrade():
 		btn_upgrade.disabled = false

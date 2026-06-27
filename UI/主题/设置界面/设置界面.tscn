@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://cangh2ang3f85" path="res://UI/主题/设置界面/设置界面.gd" id="10_2n3q5"]
 [ext_resource type="Texture2D" uid="uid://1cr77dnfh4g7" path="res://assets/UI/设置面板/下拉框.png" id="11_ghl5e"]
 [ext_resource type="Texture2D" uid="uid://d0d64wxj2unl7" path="res://assets/UI/Plance_Level_select/按钮底框_冰雪.png" id="11_idq66"]
+[ext_resource type="Script" uid="uid://ctljevecjuohx" path="res://UI/主题/设置界面/跳过聊天.gd" id="12_fqo01"]
 [ext_resource type="Script" uid="uid://bb1nu1q0ghd33" path="res://UI/主题/关卡选择/hover_texture_btn.gd" id="12_ghl5e"]
 [ext_resource type="Texture2D" uid="uid://bgmb7ri7j8ga0" path="res://assets/UI/Plance_Level_select/segment_019.png" id="13_fqo01"]
 
@@ -156,8 +157,24 @@ text = "分辨率"
 custom_minimum_size = Vector2(150, 30)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxTexture_fqo01")
-theme_override_styles/hover = SubResource("StyleBoxTexture_fqo01")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_fqo01")
+theme_override_styles/hover = SubResource("StyleBoxTexture_fqo01")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="主面板" unique_id=1602020815]
+layout_mode = 2
+
+[node name="全屏" type="Label" parent="主面板/HBoxContainer2" unique_id=1887437289]
+layout_mode = 2
+theme = ExtResource("5_qi1u3")
+theme_override_font_sizes/font_size = 20
+text = "跳过聊天"
+
+[node name="跳过聊天" type="CheckButton" parent="主面板/HBoxContainer2" unique_id=1145068044]
+layout_mode = 2
+theme = ExtResource("9_7wl4n")
+theme_override_constants/icon_max_width = 36
+theme_override_font_sizes/font_size = 23
+script = ExtResource("12_fqo01")
 
 [node name="空白填充2" type="VSplitContainer" parent="主面板" unique_id=1269117765]
 custom_minimum_size = Vector2(0, 30)

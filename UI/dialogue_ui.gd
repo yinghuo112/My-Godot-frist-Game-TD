@@ -49,6 +49,8 @@ func load_and_start_dialogue(file_path: String, start_id: String):
 		push_error("[DUI] JSON解析失败: ", json.get_error_message())
 
 func start(data: Dictionary, start_id: String):
+	if GameManager.skip_chat:
+		return
 	print("[DUI] start() id=", start_id, " data_size=", data.size())
 	self.dialogue_data = data
 	get_tree().paused = true

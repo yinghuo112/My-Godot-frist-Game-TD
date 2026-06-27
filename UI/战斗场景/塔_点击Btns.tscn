@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://bbdvmig836pgu"]
+
+[ext_resource type="Script" path="res://addons/TextureCircle.gd" id="1_ni10m"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_7htrq"]
+specular_color = Color(0.5045055, 0.9931832, 0.76550376, 1)
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_ni10m"]
+specular_color = Color(0.08627451, 0.39215687, 1, 1)
+
+[node name="塔点击btns" type="Control" unique_id=217831654]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="TextureCircle" type="Node2D" parent="." unique_id=2003160965]
+script = ExtResource("1_ni10m")
+texture_fill = SubResource("CanvasTexture_7htrq")
+texture_outline = SubResource("CanvasTexture_ni10m")
+radius = 156.424
+length_degrees = 292.094

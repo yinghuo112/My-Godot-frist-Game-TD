@@ -1,6 +1,136 @@
 [gd_scene format=3 uid="uid://m76ufcttltpb"]
 
 [ext_resource type="Script" uid="uid://dkojt2bdqbnci" path="res://Tower/tower_action_ring.gd" id="1"]
+[ext_resource type="Shader" uid="uid://dryhd7il2wdve" path="res://UI/Shader/ring_3d.gdshader" id="2_rjjw0"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_p3h72"]
+shader = ExtResource("2_rjjw0")
+shader_parameter/inner_radius = 0.4330000205675
+shader_parameter/outer_radius = 0.4730000224675
+shader_parameter/base_color = Color(0.18039216, 0.5647059, 0, 1)
+shader_parameter/light_dir = Vector3(0.255, 0.005, 3.93)
+shader_parameter/shininess = 0.5470000259825
+shader_parameter/spec_power = 111.47200524742
+shader_parameter/ambient_strength = 0.3
+shader_parameter/diffuse_strength = 0.7
+shader_parameter/gradient_min = 0.8870000421325
+shader_parameter/gradient_max = 0.9670000459325
+
+[sub_resource type="Gradient" id="Gradient_jnpp7"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_c66pl"]
+gradient = SubResource("Gradient_jnpp7")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p3h72"]
+bg_color = Color(0.35372567, 0.69242597, 0.3162399, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_pressed"]
+bg_color = Color(0.25, 0.55, 0.2, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_upgrade_hover"]
+bg_color = Color(0.45, 0.8, 0.4, 1)
+corner_radius_top_left = 40
+corner_radius_top_right = 40
+corner_radius_bottom_right = 40
+corner_radius_bottom_left = 40
+shadow_color = Color(0, 0.7, 0.3, 0.4)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_upgrade"]
+shader = ExtResource("2_rjjw0")
+shader_parameter/inner_radius = 0.433
+shader_parameter/outer_radius = 0.5
+shader_parameter/base_color = Color(0, 0.7, 0.3, 1)
+shader_parameter/light_dir = Vector3(0.3, -0.2, 0.9)
+shader_parameter/shininess = 0.5
+shader_parameter/spec_power = 16.0
+shader_parameter/ambient_strength = 0.3
+shader_parameter/diffuse_strength = 0.7
+shader_parameter/gradient_min = 0.5
+shader_parameter/gradient_max = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rjjw0"]
+bg_color = Color(0.49019608, 0.42352942, 0.23137255, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sell_pressed"]
+bg_color = Color(0.38, 0.32, 0.15, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sell_hover"]
+bg_color = Color(0.6, 0.53, 0.33, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(0.9, 0.7, 0.1, 0.35)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_sell"]
+shader = ExtResource("2_rjjw0")
+shader_parameter/inner_radius = 0.433
+shader_parameter/outer_radius = 0.5
+shader_parameter/base_color = Color(0.9, 0.7, 0.1, 1)
+shader_parameter/light_dir = Vector3(0.3, -0.2, 0.9)
+shader_parameter/shininess = 0.5
+shader_parameter/spec_power = 16.0
+shader_parameter/ambient_strength = 0.3
+shader_parameter/diffuse_strength = 0.7
+shader_parameter/gradient_min = 0.5
+shader_parameter/gradient_max = 1.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jnpp7"]
+bg_color = Color(0.06905012, 0.45301503, 0.5087256, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info_pressed"]
+bg_color = Color(0.04, 0.35, 0.4, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info_hover"]
+bg_color = Color(0.18, 0.55, 0.61, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_color = Color(0.2, 0.5, 1, 0.35)
+shadow_size = 4
+shadow_offset = Vector2(0, 2)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_info"]
+shader = ExtResource("2_rjjw0")
+shader_parameter/inner_radius = 0.433
+shader_parameter/outer_radius = 0.5
+shader_parameter/base_color = Color(0.2, 0.5, 1, 1)
+shader_parameter/light_dir = Vector3(0.3, -0.2, 0.9)
+shader_parameter/shininess = 0.5
+shader_parameter/spec_power = 16.0
+shader_parameter/ambient_strength = 0.3
+shader_parameter/diffuse_strength = 0.7
+shader_parameter/gradient_min = 0.5
+shader_parameter/gradient_max = 1.0
 
 [sub_resource type="StyleBoxFlat" id="Style_info"]
 bg_color = Color(0.08, 0.08, 0.15, 0.92)
@@ -10,38 +140,104 @@ corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
 [node name="TowerActionRing" type="Control" unique_id=1415092191]
+custom_minimum_size = Vector2(200, 200)
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
+offset_left = 70.0
+offset_top = 14.0
+offset_right = 270.0
+offset_bottom = 214.0
 mouse_filter = 2
 script = ExtResource("1")
+
+[node name="CenterMarker" type="Node2D" parent="." unique_id=999999991]
+visible = false
+position = Vector2(100, 100)
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1430462955]
+material = SubResource("ShaderMaterial_p3h72")
+layout_mode = 0
+offset_right = 201.0
+offset_bottom = 197.0
+texture = SubResource("GradientTexture2D_c66pl")
 
 [node name="BtnUpgrade" type="Button" parent="." unique_id=1134477041]
 custom_minimum_size = Vector2(52, 52)
 layout_mode = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 14
+offset_left = 79.0
+offset_top = -11.0
+offset_right = 131.0
+offset_bottom = 41.0
+theme_override_colors/font_color = Color(0.2, 0.40784314, 0.11764706, 1)
+theme_override_colors/font_hover_color = Color(0.12, 0.28, 0.06, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.14509805, 0.3137255, 0.019607844, 1)
+theme_override_colors/font_outline_color = Color(0, 0.78431374, 0, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 17
+theme_override_styles/normal = SubResource("StyleBoxFlat_p3h72")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_upgrade_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_upgrade_hover")
 text = "升级"
+
+[node name="BtnUpgradeBG" type="ColorRect" parent="BtnUpgrade" unique_id=57834220]
+material = SubResource("ShaderMaterial_upgrade")
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 0
+offset_right = 52.0
+offset_bottom = 52.0
+mouse_filter = 2
 
 [node name="BtnSell" type="Button" parent="." unique_id=16691955]
 custom_minimum_size = Vector2(52, 52)
 layout_mode = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+offset_left = 7.0
+offset_top = 129.0
+offset_right = 59.0
+offset_bottom = 181.0
+theme_override_colors/font_color = Color(0.9019608, 0.6745098, 0.30980393, 1)
+theme_override_colors/font_hover_color = Color(0.7490196, 0.38039216, 0.18039216, 1)
+theme_override_colors/font_outline_color = Color(0.6313726, 0.34509805, 0.1764706, 1)
+theme_override_constants/outline_size = 1
 theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_rjjw0")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_sell_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_sell_hover")
 text = "出售"
+
+[node name="BtnSellBG" type="ColorRect" parent="BtnSell" unique_id=1171729041]
+material = SubResource("ShaderMaterial_sell")
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 0
+offset_left = -1.0
+offset_top = 1.0
+offset_right = 51.0
+offset_bottom = 53.0
+mouse_filter = 2
 
 [node name="BtnInfo" type="Button" parent="." unique_id=1877771461]
 custom_minimum_size = Vector2(52, 52)
 layout_mode = 0
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+offset_left = 148.0
+offset_top = 127.0
+offset_right = 200.0
+offset_bottom = 179.0
+theme_override_colors/font_color = Color(0.14901961, 0.16862746, 0.9843137, 1)
+theme_override_colors/font_hover_color = Color(0.08, 0.1, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0, 0.5803922, 0.9647059, 1)
+theme_override_constants/outline_size = 1
 theme_override_font_sizes/font_size = 14
-text = "信息"
+theme_override_styles/normal = SubResource("StyleBoxFlat_jnpp7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_info_pressed")
+theme_override_styles/hover = SubResource("StyleBoxFlat_info_hover")
+text = "技能"
+
+[node name="BtnInfoBG" type="ColorRect" parent="BtnInfo" unique_id=2114786107]
+material = SubResource("ShaderMaterial_info")
+custom_minimum_size = Vector2(52, 52)
+layout_mode = 0
+offset_right = 52.0
+offset_bottom = 52.0
+mouse_filter = 2
 
 [node name="InfoPopupPanel" type="PanelContainer" parent="." unique_id=455038412]
 visible = false
@@ -74,7 +270,6 @@ layout_mode = 2
 alignment = 1
 
 [node name="ConfirmBtn" type="Button" parent="InfoPopupPanel/Margin/VBox/HBox" unique_id=1499291513]
-visible = false
 custom_minimum_size = Vector2(60, 28)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -82,7 +277,6 @@ theme_override_font_sizes/font_size = 13
 text = "确认"
 
 [node name="CancelBtn" type="Button" parent="InfoPopupPanel/Margin/VBox/HBox" unique_id=1616541629]
-visible = false
 custom_minimum_size = Vector2(60, 28)
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)

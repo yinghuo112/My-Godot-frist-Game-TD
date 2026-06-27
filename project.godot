@@ -1,4 +1,4 @@
-; Engine configuration file.
+﻿; Engine configuration file.
 ; It's best edited using the editor UI and not directly,
 ; since the parameters that go here are not all obvious.
 ;
@@ -39,7 +39,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/map_panel/plugin.cfg", "res://addons/我的插件/plugin.cfg")
+enabled=PackedStringArray("res://addons/map_panel/plugin.cfg", "res://addons/我的插件/plugin.cfg", "res://addons/vircle/plugin.cfg")
 
 [input_devices]
 

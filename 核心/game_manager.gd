@@ -15,6 +15,7 @@ var wave: int = 0
 var enemies_to_spawn: int = 0
 var enemies_on_field: int = 0
 var is_wave_active: bool = false
+var skip_chat: bool = false
 
 var current_route: int = 1
 
@@ -32,6 +33,18 @@ func _ready():
 	add_child(timer)
 
 	_config = _load_config()
+	_load_skip_chat()
+
+func _load_skip_chat():
+	var cfg = ConfigFile.new()
+	if cfg.load("user://settings.cfg") == OK:
+		skip_chat = cfg.get_value("game", "skip_chat", false)
+
+func save_skip_chat(value: bool):
+	skip_chat = value
+	var cfg = ConfigFile.new()
+	cfg.set_value("game", "skip_chat", skip_chat)
+	cfg.save("user://settings.cfg")
 
 # 重置所有游戏状态到初始值
 func reset():
