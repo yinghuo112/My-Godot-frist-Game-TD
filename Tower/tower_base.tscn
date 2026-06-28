@@ -21,6 +21,7 @@ sprite_frames = SubResource("SpriteFrames_oirtp")
 animation = &"attack"
 
 [node name="RangeArea" type="Area2D" parent="." unique_id=1830428088]
+visible = false
 collision_mask = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RangeArea" unique_id=2105987512]

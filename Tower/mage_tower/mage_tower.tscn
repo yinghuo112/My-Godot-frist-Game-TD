@@ -1,33 +1,9 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://vep0mt01ijkh"]
 
 [ext_resource type="PackedScene" uid="uid://d0srg3wgtcit1" path="res://Tower/tower_base.tscn" id="1_base"]
-[ext_resource type="Script" path="res://Tower/mage_tower/mage_tower.gd" id="2_script"]
+[ext_resource type="Script" uid="uid://btxkb3dqwhpkh" path="res://Tower/mage_tower/mage_tower.gd" id="2_script"]
 [ext_resource type="Texture2D" uid="uid://dgbolysoytco3" path="res://assets/mage/mage_idle.png" id="3_idle"]
 [ext_resource type="Texture2D" uid="uid://drarrset4vwcs" path="res://assets/mage/mage_cast.png" id="4_cast"]
-
-[sub_resource type="AtlasTexture" id="idle_0"]
-atlas = ExtResource("3_idle")
-region = Rect2(0, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="idle_1"]
-atlas = ExtResource("3_idle")
-region = Rect2(128, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="idle_2"]
-atlas = ExtResource("3_idle")
-region = Rect2(256, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="idle_3"]
-atlas = ExtResource("3_idle")
-region = Rect2(384, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="idle_4"]
-atlas = ExtResource("3_idle")
-region = Rect2(512, 0, 128, 128)
-
-[sub_resource type="AtlasTexture" id="idle_5"]
-atlas = ExtResource("3_idle")
-region = Rect2(640, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="cast_0"]
 atlas = ExtResource("4_cast")
@@ -53,31 +29,32 @@ region = Rect2(512, 0, 128, 128)
 atlas = ExtResource("4_cast")
 region = Rect2(640, 0, 128, 128)
 
+[sub_resource type="AtlasTexture" id="idle_0"]
+atlas = ExtResource("3_idle")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="idle_1"]
+atlas = ExtResource("3_idle")
+region = Rect2(128, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="idle_2"]
+atlas = ExtResource("3_idle")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="idle_3"]
+atlas = ExtResource("3_idle")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="idle_4"]
+atlas = ExtResource("3_idle")
+region = Rect2(512, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="idle_5"]
+atlas = ExtResource("3_idle")
+region = Rect2(640, 0, 128, 128)
+
 [sub_resource type="SpriteFrames" id="frames"]
 animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("idle_0")
-}, {
-"duration": 1.0,
-"texture": SubResource("idle_1")
-}, {
-"duration": 1.0,
-"texture": SubResource("idle_2")
-}, {
-"duration": 1.0,
-"texture": SubResource("idle_3")
-}, {
-"duration": 1.0,
-"texture": SubResource("idle_4")
-}, {
-"duration": 1.0,
-"texture": SubResource("idle_5")
-}],
-"loop": true,
-"name": &"idle",
-"speed": 8.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("cast_0")
@@ -100,10 +77,34 @@ animations = [{
 "loop": false,
 "name": &"attack",
 "speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("idle_0")
+}, {
+"duration": 1.0,
+"texture": SubResource("idle_1")
+}, {
+"duration": 1.0,
+"texture": SubResource("idle_2")
+}, {
+"duration": 1.0,
+"texture": SubResource("idle_3")
+}, {
+"duration": 1.0,
+"texture": SubResource("idle_4")
+}, {
+"duration": 1.0,
+"texture": SubResource("idle_5")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
 }]
 
-[node name="mage_tower" instance=ExtResource("1_base")]
+[node name="mage_tower" unique_id=975101352 instance=ExtResource("1_base")]
 script = ExtResource("2_script")
 
-[node name="AnimatedSprite2D" parent="." index="0"]
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=741884957]
 sprite_frames = SubResource("frames")
+

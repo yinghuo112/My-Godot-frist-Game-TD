@@ -1,6 +1,7 @@
 extends CheckButton
 
 func _ready():
+	# 按钮效果
 	button_pressed = GameManager.skip_chat
 	toggled.connect(_on_toggled)
 

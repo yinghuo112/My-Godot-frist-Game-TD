@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://2v2qfgwom1yw"]
 
-[ext_resource type="Theme" uid="uid://wgm1qn0org5k" path="res://UI/主题/褐色字体.tres" id="1_3ebp6"]
+[ext_resource type="Theme" uid="uid://wgm1qn0org5k" path="res://UI/起始界面/褐色字体.tres" id="1_3ebp6"]
 [ext_resource type="Texture2D" uid="uid://kuf0ctw1e711" path="res://assets/UI/info_UI.png" id="1_8x4wp"]
 [ext_resource type="Script" uid="uid://dr37cy67pkufj" path="res://UI/info_plane.gd" id="1_r7jkc"]
 [ext_resource type="Texture2D" uid="uid://ca26uq0jo40xp" path="res://assets/UI/stone_btn.png" id="3_dy0i4"]

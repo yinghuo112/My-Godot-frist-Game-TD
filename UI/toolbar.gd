@@ -58,7 +58,7 @@ func _setup_menu() -> void:
 	popup.add_item("📖 说明", 1)
 	popup.add_item("🔧 调试", 2)
 	popup.add_item("返回主页", 3)
-	popup.add_separator()
+	popup.add_separator()     # 下划线
 	popup.add_item("ℹ 关于", 5)
 
 # ----- 对外接口（供父节点或外部调用） --------------------------------------
@@ -168,4 +168,5 @@ func _update_speed_buttons() -> void:
 	var speeds = [0.5, 1.0, 2.0, 4.0]
 	for i in range(btns.size()):
 		btns[i].disabled = (_current_speed == speeds[i] and not _paused)
-	%PauseBtn.disabled = _paused   # 注：暂停时禁用暂停按钮（可能不符合直觉，建议改为切换文本）
+	%PauseBtn.text = "|>" if _paused else "||"
+	%PauseBtn.disabled = false   # 注：暂停时禁用暂停按钮（可能不符合直觉，建议改为切换文本）

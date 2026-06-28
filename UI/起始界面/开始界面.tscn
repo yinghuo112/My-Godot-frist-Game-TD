@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://48dobf0wud5k"]
 
-[ext_resource type="Script" uid="uid://br6v6tqpkeb4g" path="res://UI/主题/开始界面.gd" id="0"]
-[ext_resource type="PackedScene" uid="uid://bwba5tse7yo16" path="res://UI/主题/设置界面/设置界面.tscn" id="0_fm6ru"]
+[ext_resource type="Script" uid="uid://br6v6tqpkeb4g" path="res://UI/起始界面/开始界面.gd" id="0"]
+[ext_resource type="PackedScene" uid="uid://bwba5tse7yo16" path="res://UI/起始界面/设置界面/设置界面.tscn" id="0_fm6ru"]
 [ext_resource type="FontFile" uid="uid://rin1egjnb28e" path="res://UI/Font/联盟起艺卢帅正锐黑体.ttf" id="1_arn5o"]
 [ext_resource type="Theme" uid="uid://c70anje2poj2g" path="res://UI/MY_UI/Button-blue.tres" id="1_dgibt"]
 [ext_resource type="Texture2D" uid="uid://mwk1rctahf6o" path="res://assets/UI/图标-皮肤.jpg" id="3_0ckk4"]
-[ext_resource type="PackedScene" uid="uid://bs305m0l53k1f" path="res://UI/主题/关卡选择/关卡选择.tscn" id="7_yu6tx"]
+[ext_resource type="PackedScene" uid="uid://bs305m0l53k1f" path="res://UI/起始界面/关卡选择/关卡选择.tscn" id="7_yu6tx"]
 
 [sub_resource type="Gradient" id="Gradient_dgibt"]
 colors = PackedColorArray(0.1764706, 0.13333334, 0.3019608, 1, 0.039215688, 0.023529412, 0.078431375, 1)
@@ -115,6 +115,10 @@ text = "开始游戏"
 [node name="LevelBtn" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/ButtonContainer" unique_id=148892035]
 layout_mode = 2
 text = "关卡选择"
+
+[node name="Button" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/ButtonContainer" unique_id=191130356]
+layout_mode = 2
+text = "图鉴"
 
 [node name="SettingBtn" type="Button" parent="CanvasLayer/Control/CenterContainer/VBoxContainer/ButtonContainer" unique_id=1053809859]
 layout_mode = 2

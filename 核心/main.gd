@@ -35,6 +35,7 @@ var _test_wave_3_timer: Timer
 
 var _debug_console: Control
 var _info_overlay: Control
+var _slot_clicked: bool = false  # 🛡 slot 点击标志，_unhandled_input 中跳过同帧隐藏
 const _DEBUG_CONSOLE_SCENE = preload("res://UI/DebugConsole/DebugConsole.tscn")
 
 func _ready() -> void:
@@ -275,6 +276,8 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func _on_slot_clicked(slot: TowerSlot, is_empty: bool):
+	# 🛡 标记本次左键由 slot 触发，_unhandled_input 应跳过隐藏
+	_slot_clicked = true
 	if is_empty:
 		_show_build_panel(slot)
 	else:
@@ -296,6 +299,10 @@ func _on_skill_book_plane_closed() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		# 🛡 如果本次点击来自 slot 信号，跳过隐藏（ring/面板刚才已被显示）
+		if _slot_clicked:
+			_slot_clicked = false
+			return
 		if _build_panel.visible:
 			_hide_build_panel()
 		if tower_ring.visible:

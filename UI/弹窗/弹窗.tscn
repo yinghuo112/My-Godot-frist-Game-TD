@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dl57v7il6hxya"]
 
-[ext_resource type="Theme" uid="uid://wgm1qn0org5k" path="res://UI/主题/褐色字体.tres" id="1_3ebp6"]
+[ext_resource type="Theme" uid="uid://wgm1qn0org5k" path="res://UI/起始界面/褐色字体.tres" id="1_3ebp6"]
 [ext_resource type="Texture2D" uid="uid://kuf0ctw1e711" path="res://assets/UI/info_UI.png" id="1_8x4wp"]
-[ext_resource type="Script" path="res://UI/弹窗/弹窗.gd" id="1_r7jkc"]
+[ext_resource type="Script" uid="uid://boybp1hwcyvnx" path="res://UI/弹窗/弹窗.gd" id="1_r7jkc"]
 [ext_resource type="Texture2D" uid="uid://chvaa2si5tx4h" path="res://assets/UI/btn_close.png" id="4_11pgh"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3hs5n"]

@@ -8,8 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://2v2qfgwom1yw" path="res://UI/InfoPlane.tscn" id="8_info"]
 [ext_resource type="PackedScene" path="res://SkillSystem/ui/SkillBookPlane.tscn" id="9_skill"]
 [ext_resource type="PackedScene" uid="uid://bqyv1ckhua0c6" path="res://UI/Toolbar.tscn" id="10_toolbar"]
-[ext_resource type="PackedScene" uid="uid://bwba5tse7yo16" path="res://UI/主题/设置界面/设置界面.tscn" id="11_3oumy"]
-[ext_resource type="PackedScene" path="res://UI/弹窗/弹窗.tscn" id="12_popup"]
+[ext_resource type="PackedScene" uid="uid://bwba5tse7yo16" path="res://UI/起始界面/设置界面/设置界面.tscn" id="11_3oumy"]
+[ext_resource type="PackedScene" uid="uid://dl57v7il6hxya" path="res://UI/弹窗/弹窗.tscn" id="12_popup"]
 [ext_resource type="Script" uid="uid://bxunfrnknop5k" path="res://工具/camera_2d.gd" id="131_fsg3x"]
 [ext_resource type="Script" uid="uid://b0y8cx23iwbjw" path="res://核心/map_manager.gd" id="132_map"]
 

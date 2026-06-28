@@ -1,6 +1,6 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://cwjrfjd425aty"]
 
-[ext_resource type="Script" path="res://SkillSystem/ui/skill_book_plane.gd" id="1_book"]
+[ext_resource type="Script" uid="uid://f1vlakvvb7dh" path="res://SkillSystem/ui/skill_book_plane.gd" id="1_book"]
 
 [sub_resource type="StyleBoxFlat" id="bg_dark"]
 content_margin_left = 12.0
@@ -14,68 +14,67 @@ corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="btn_close"]
-bg_color = Color(0.3, 0.15, 0.15, 1.0)
+bg_color = Color(0.3, 0.15, 0.15, 1)
 corner_radius_top_left = 6
 corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="SkillBookPlane" type="PanelContainer"]
+[node name="SkillBookPlane" type="PanelContainer" unique_id=1780439782]
 custom_minimum_size = Vector2(340, 0)
-layout_mode = 3
 anchors_preset = 11
 anchor_left = 1.0
-anchor_top = 0.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 360
+offset_left = 360.0
 grow_horizontal = 0
+grow_vertical = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("bg_dark")
 script = ExtResource("1_book")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1027855489]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1959464665]
 layout_mode = 2
 
-[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HeaderHBox" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=890176101]
 layout_mode = 2
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderHBox"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer/HeaderHBox" unique_id=756202313]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 18
 text = "技能书"
 
-[node name="CloseBtn" type="Button" parent="MarginContainer/VBoxContainer/HeaderHBox"]
+[node name="CloseBtn" type="Button" parent="MarginContainer/VBoxContainer/HeaderHBox" unique_id=929106853]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_horizontal = 0
-theme_override_styles/normal = SubResource("btn_close")
-theme_override_styles/hover = SubResource("btn_close")
-theme_override_styles/pressed = SubResource("btn_close")
 theme_override_colors/font_color = Color(1, 0.6, 0.6, 1)
 theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("btn_close")
+theme_override_styles/pressed = SubResource("btn_close")
+theme_override_styles/hover = SubResource("btn_close")
 text = "X"
 
-[node name="InfoLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="InfoLabel" type="Label" parent="MarginContainer/VBoxContainer" unique_id=759258690]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 12
 text = "技能点: 0  |  已解锁: 0/0"
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=539737326]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=411377546]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="SkillContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="SkillContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1969901114]
 unique_name_in_owner = true
 layout_mode = 2
