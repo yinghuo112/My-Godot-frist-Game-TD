@@ -3,6 +3,7 @@ extends Resource
 
 # ===== 技能基础属性（在 .tres 子资源中配置）=====
 @export var name: String = ""             # 技能显示名
+@export var icon: Texture2D = null        # 技能图标（用于技能书面板）
 @export var tags: Array = []              # 技能标签（如 ["元素", "火焰"]，用于匹配塔的分类）
 @export var description: String = ""      # 技能描述文本
 @export var max_level: int = 5            # 最大等级

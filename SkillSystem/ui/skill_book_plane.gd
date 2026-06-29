@@ -87,8 +87,22 @@ func _create_skill_card(book, idx: int, skill,
 	var vbox = VBoxContainer.new()
 	vbox.add_theme_constant_override("separation", 2)
 
-	# 第一行：技能名 + 等级 + 操作按钮
+	# 第一行：图标 + 技能名 + 等级 + 操作按钮
 	var hbox = HBoxContainer.new()
+
+	# 技能图标（带灰度shader：激活=原色，未激活=灰度）
+	var icon_rect = TextureRect.new()
+	icon_rect.custom_minimum_size = Vector2(48, 48)
+	icon_rect.expand_mode = TextureRect.EXPAND_KEEP_SIZE
+	icon_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	if skill.icon:
+		icon_rect.texture = skill.icon
+		var mat = ShaderMaterial.new()
+		mat.shader = preload("res://UI/Shader/变灰色.gdshader")
+		mat.set_shader_parameter("grayscale_amount", 0.0 if is_unlocked else 1.0)
+		icon_rect.material = mat
+	hbox.add_child(icon_rect)
+
 	var name_label = Label.new()
 	name_label.text = skill.name
 	name_label.add_theme_font_size_override("font_size", 15)

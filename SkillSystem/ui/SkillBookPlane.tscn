@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://cwjrfjd425aty"]
 
 [ext_resource type="Script" uid="uid://f1vlakvvb7dh" path="res://SkillSystem/ui/skill_book_plane.gd" id="1_book"]
+[ext_resource type="Texture2D" uid="uid://cwv4v154q5o0m" path="res://assets/skill/skill_火球.png" id="2_k6qqk"]
+[ext_resource type="Texture2D" uid="uid://ceov60gxboaaw" path="res://assets/skill/框01.png" id="4_c1rqd"]
 
 [sub_resource type="StyleBoxFlat" id="bg_dark"]
 content_margin_left = 12.0
@@ -20,7 +22,7 @@ corner_radius_top_right = 6
 corner_radius_bottom_right = 6
 corner_radius_bottom_left = 6
 
-[node name="SkillBookPlane" type="PanelContainer" unique_id=1780439782]
+[node name="SkillBookPlane340_" type="PanelContainer" unique_id=1780439782]
 custom_minimum_size = Vector2(340, 0)
 anchors_preset = 11
 anchor_left = 1.0
@@ -71,10 +73,610 @@ text = "技能点: 0  |  已解锁: 0/0"
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer" unique_id=539737326]
 layout_mode = 2
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=411377546]
+[node name="填充" type="Control" parent="MarginContainer/VBoxContainer" unique_id=1820316508]
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
+size_flags_vertical = 0
+
+[node name="ScrollContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=283355756]
+layout_mode = 2
+size_flags_horizontal = 4
 size_flags_vertical = 3
+theme_override_constants/separation = 21
 
 [node name="SkillContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1969901114]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="火球" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer" unique_id=263137263]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/火球" unique_id=2060270811]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="技能名" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/火球/TextureRect" unique_id=838808870]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="技能图片按钮" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/火球" unique_id=1295535389]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill2" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer" unique_id=1881813985]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill2" unique_id=748446955]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill2/TextureRect" unique_id=522573183]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill2" unique_id=134495477]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill3" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer" unique_id=784745121]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill3" unique_id=1655690752]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill3/TextureRect" unique_id=296993294]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill3" unique_id=1122004678]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill4" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer" unique_id=504968973]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill4" unique_id=1989076749]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill4/TextureRect" unique_id=1295839980]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill4" unique_id=34575032]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill5" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer" unique_id=23105416]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill5" unique_id=1220912965]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill5/TextureRect" unique_id=697903281]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer/Skill5" unique_id=2119265082]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="SkillContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1476428054]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Skill" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2" unique_id=831801726]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill" unique_id=731614905]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill/TextureRect" unique_id=921786925]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill" unique_id=2093260302]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill2" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2" unique_id=499171364]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill2" unique_id=1447816565]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill2/TextureRect" unique_id=1946056953]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill2" unique_id=1522069654]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill3" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2" unique_id=1524163616]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill3" unique_id=2016231755]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill3/TextureRect" unique_id=1487170583]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill3" unique_id=1428630230]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill4" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2" unique_id=712710260]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill4" unique_id=140118445]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill4/TextureRect" unique_id=33390432]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill4" unique_id=103924705]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill5" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2" unique_id=580546277]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill5" unique_id=1483483747]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill5/TextureRect" unique_id=1693083309]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer2/Skill5" unique_id=1695988370]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="SkillContainer3" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=491133244]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Skill" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3" unique_id=1375564125]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill" unique_id=1305731908]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill/TextureRect" unique_id=145926029]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill" unique_id=1996786416]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill2" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3" unique_id=528893091]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill2" unique_id=1698064792]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill2/TextureRect" unique_id=445412520]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill2" unique_id=935897249]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill3" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3" unique_id=446539451]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill3" unique_id=1708466306]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill3/TextureRect" unique_id=551299056]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill3" unique_id=654816492]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill4" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3" unique_id=1686941568]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill4" unique_id=12202341]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill4/TextureRect" unique_id=1233099543]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill4" unique_id=222964313]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Skill5" type="Control" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3" unique_id=806058594]
+custom_minimum_size = Vector2(80, 100)
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill5" unique_id=674326020]
+custom_minimum_size = Vector2(60, 20)
+layout_mode = 0
+offset_left = 6.0
+offset_top = 63.0
+offset_right = 66.0
+offset_bottom = 84.0
+texture = ExtResource("4_c1rqd")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill5/TextureRect" unique_id=546278405]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -11.0
+offset_top = -16.0
+offset_right = 11.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 11
+text = "火球"
+
+[node name="Button" type="TextureButton" parent="MarginContainer/VBoxContainer/ScrollContainer/SkillContainer3/Skill5" unique_id=1200436477]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 0
+offset_right = 50.0
+offset_bottom = 50.0
+texture_normal = ExtResource("2_k6qqk")
+ignore_texture_size = true
+stretch_mode = 5
